@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BAB00890-013F-4542-A304-805BA8E40837}</ProjectGuid>
+    <RootNamespace>GDevStudio</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)..\bin\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\bin\obj\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)..\bin\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\bin\obj\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\src;..\..\Commun\DObject\include;..\..\Commun\Outils\\include;..\..\Commun\SQLite\\include;..\..\..\Poco\Crypto\include;..\..\Poco\Foundation\include;..\..\Poco\JSON\include;..\..\Poco\Net\include;..\..\Poco\NetSSL_OpenSSL\include;..\..\Poco\Util\include;..\..\Poco\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\Commun\bin\$(Configuration)\;..\..\Poco\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>DObject.lib;Outils.lib;SQLite.lib</AdditionalDependencies>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <CustomBuildStep>
+      <Command>SET CONFIG=$(Configuration)
+SET DEST=$(ProjectDir)..\bin\$(Configuration)
+
+
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoCryptod.dll		"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoFoundationd.dll		"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoJSONd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoNetd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoNetSSLd.dll		"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoUtild.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoXMLd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+
+
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoCrypto.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoFoundation.dll		"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoJSON.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoNet.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoNetSSL.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoUtil.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bin\$(Configuration)"
+</Command>
+      <Outputs>Poco Dlls</Outputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MinimalRebuild>false</MinimalRebuild>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\src;..\..\Commun\DObject\include;..\..\Commun\Outils\\include;..\..\Commun\SQLite\\include;..\..\..\Poco\Crypto\include;..\..\Poco\Foundation\include;..\..\Poco\JSON\include;..\..\Poco\Net\include;..\..\Poco\NetSSL_OpenSSL\include;..\..\Poco\Util\include;..\..\Poco\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>..\..\Commun\bin\$(Configuration)\;..\..\Poco\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>DObject.lib;Outils.lib;SQLite.lib</AdditionalDependencies>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <CustomBuildStep>
+      <Command>SET CONFIG=$(Configuration)
+SET DEST=$(ProjectDir)..\bin\$(Configuration)
+
+
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoCryptod.dll		"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoFoundationd.dll		"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoJSONd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoNetd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoNetSSLd.dll		"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoUtild.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoXMLd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+
+
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoCrypto.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoFoundation.dll		"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoJSON.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoNet.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoNetSSL.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoUtil.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bin\$(Configuration)"
+</Command>
+      <Outputs>Poco Dlls</Outputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\DObject\Filtre.h" />
+    <ClInclude Include="..\src\DObject\Projet.h" />
+    <ClInclude Include="..\src\GDevStudio.h" />
+    <ClInclude Include="..\src\GDevStudioDoc.h" />
+    <ClInclude Include="..\src\GDevStudioView.h" />
+    <ClInclude Include="..\src\MainFrm.h" />
+    <ClInclude Include="..\src\ProjetDlg.h" />
+    <ClInclude Include="..\src\SItemProjet.h" />
+    <ClInclude Include="..\src\SItemStructure.h" />
+    <ClInclude Include="..\src\StructureMgr.h" />
+    <ClInclude Include="..\src\TreeIconMgr.h" />
+    <ClInclude Include="..\src\SQLite\SQLiteSource.h" />
+    <ClInclude Include="..\src\TreeGrille.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\DObject\Filtre.cpp" />
+    <ClCompile Include="..\src\DObject\Projet.cpp" />
+    <ClCompile Include="..\src\GDevStudio.cpp" />
+    <ClCompile Include="..\src\GDevStudioDoc.cpp" />
+    <ClCompile Include="..\src\GDevStudioView.cpp" />
+    <ClCompile Include="..\src\MainFrm.cpp" />
+    <ClCompile Include="..\src\ProjetDlg.cpp" />
+    <ClCompile Include="..\src\SItemProjet.cpp" />
+    <ClCompile Include="..\src\SItemStructure.cpp" />
+    <ClCompile Include="..\src\StructureMgr.cpp" />
+    <ClCompile Include="..\src\TreeIconMgr.cpp" />
+    <ClCompile Include="..\src\SQLite\SQLiteSource.cpp" />
+    <ClCompile Include="..\src\TreeGrille.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GDevStudio.reg" />
+    <None Include="res\BCGSoft_ribbon\GDevStudio.ribbon.rc2" />
+    <None Include="res\GDevStudio.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GDevStudio.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\BCGSoft_ribbon\category_large_0.png" />
+    <Image Include="res\BCGSoft_ribbon\category_main_large.png" />
+    <Image Include="res\BCGSoft_ribbon\category_main_small.png" />
+    <Image Include="res\BCGSoft_ribbon\category_small_0.png" />
+    <Image Include="res\BCGSoft_ribbon\main.png" />
+    <Image Include="res\BCGSoft_ribbon\ribbon_bar.png" />
+    <Image Include="res\GDevStudio.ico" />
+    <Image Include="res\GDevStudioDoc.ico" />
+    <Image Include="res\Png\filtre.png" />
+    <Image Include="res\Png\filtreRessource.png" />
+    <Image Include="res\Png\filtreSQL.png" />
+    <Image Include="res\Png\filtreSQLite.png" />
+    <Image Include="res\Png\projet.png" />
+    <Image Include="res\Toolbar.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="res\BCGSoft_ribbon\ribbon.xml" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="GDevStudio.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

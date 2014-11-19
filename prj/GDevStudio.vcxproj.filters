@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\src\GDevStudio.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MainFrm.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SQLite\SQLiteSource.cpp">
+      <Filter>DObject\SQLite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DObject\Projet.cpp">
+      <Filter>DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DObject\Filtre.cpp">
+      <Filter>DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TreeGrille.cpp">
+      <Filter>Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TreeIconMgr.cpp">
+      <Filter>Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ProjetDlg.cpp">
+      <Filter>Structure\Création/Modification</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\StructureMgr.cpp">
+      <Filter>Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudioDoc.cpp">
+      <Filter>Structure\Doc/Vue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudioView.cpp">
+      <Filter>Structure\Doc/Vue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SItemProjet.cpp">
+      <Filter>Structure\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SItemStructure.cpp">
+      <Filter>Structure\Items</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\GDevStudio.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MainFrm.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Ressources</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SQLite\SQLiteSource.h">
+      <Filter>DObject\SQLite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DObject\Projet.h">
+      <Filter>DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DObject\Filtre.h">
+      <Filter>DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\TreeGrille.h">
+      <Filter>Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\TreeIconMgr.h">
+      <Filter>Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ProjetDlg.h">
+      <Filter>Structure\Création/Modification</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\StructureMgr.h">
+      <Filter>Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GDevStudioDoc.h">
+      <Filter>Structure\Doc/Vue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GDevStudioView.h">
+      <Filter>Structure\Doc/Vue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SItemProjet.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SItemStructure.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\BCGSoft_ribbon\category_large_0.png">
+      <Filter>Ressources</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\category_main_large.png">
+      <Filter>Ressources</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\category_main_small.png">
+      <Filter>Ressources</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\category_small_0.png">
+      <Filter>Ressources</Filter>
+    </Image>
+    <Image Include="res\GDevStudio.ico">
+      <Filter>Ressources</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\main.png">
+      <Filter>Ressources</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\ribbon_bar.png">
+      <Filter>Ressources</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>Ressources</Filter>
+    </Image>
+    <Image Include="res\GDevStudioDoc.ico">
+      <Filter>Ressources</Filter>
+    </Image>
+    <Image Include="res\Png\projet.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\filtre.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\filtreRessource.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\filtreSQL.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\filtreSQLite.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\GDevStudio.rc2">
+      <Filter>Ressources</Filter>
+    </None>
+    <None Include="res\BCGSoft_ribbon\GDevStudio.ribbon.rc2">
+      <Filter>Ressources</Filter>
+    </None>
+    <None Include="GDevStudio.reg">
+      <Filter>Application</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Ressources">
+      <UniqueIdentifier>{24ad185c-ce62-4488-98a7-def229fc5362}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{abdecf4a-c706-4e0c-abbd-546f78b09b61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DObject">
+      <UniqueIdentifier>{b86de93d-ad36-4ec3-a86d-e4d318c71b9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DObject\SQLite">
+      <UniqueIdentifier>{89fb3480-a2ae-4b2c-bbb5-7c0d45e12fd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ressources\Png">
+      <UniqueIdentifier>{8c2378a0-9204-4b87-9990-631e4e4a9791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure">
+      <UniqueIdentifier>{a3a264e5-d867-4b23-ab0b-670dce3d32c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Items">
+      <UniqueIdentifier>{b1d38686-2df1-4e2b-9c9a-fafb13103d3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Création/Modification">
+      <UniqueIdentifier>{6df30510-fb3d-4fcb-8bcd-ce2db736ea13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Doc/Vue">
+      <UniqueIdentifier>{4a1c9b9d-d8b4-471f-81c0-944b9603ee1a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GDevStudio.rc">
+      <Filter>Ressources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="res\BCGSoft_ribbon\ribbon.xml">
+      <Filter>Ressources</Filter>
+    </Xml>
+  </ItemGroup>
+</Project>
