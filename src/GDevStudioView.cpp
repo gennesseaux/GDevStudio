@@ -163,7 +163,8 @@ void CGDevStudioView::OnContextMenu(CWnd*, CPoint point)
 void CGDevStudioView::OnInitialUpdate()
 {
 	// Initialisation de la grille
-	m_pStructureMgr = new CStructureMgr(m_pTreeGrille);
+	if(m_pStructureMgr==nullptr)
+		m_pStructureMgr = new CStructureMgr(m_pTreeGrille);
 	m_pStructureMgr->Initialiser(GetDocument()->Projet()->GetId());
 }
 

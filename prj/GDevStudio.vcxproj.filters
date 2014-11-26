@@ -43,6 +43,9 @@
     <ClCompile Include="..\src\SItemStructure.cpp">
       <Filter>Structure\Items</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SItemFiltre.cpp">
+      <Filter>Structure\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\GDevStudio.h">
@@ -91,6 +94,9 @@
       <Filter>Structure\Items</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SItemDef.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SItemFiltre.h">
       <Filter>Structure\Items</Filter>
     </ClInclude>
   </ItemGroup>

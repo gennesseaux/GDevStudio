@@ -167,6 +167,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClInclude Include="..\src\MainFrm.h" />
     <ClInclude Include="..\src\ProjetDlg.h" />
     <ClInclude Include="..\src\SItemDef.h" />
+    <ClInclude Include="..\src\SItemFiltre.h" />
     <ClInclude Include="..\src\SItemProjet.h" />
     <ClInclude Include="..\src\SItemStructure.h" />
     <ClInclude Include="..\src\StructureMgr.h" />
@@ -184,6 +185,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClCompile Include="..\src\GDevStudioView.cpp" />
     <ClCompile Include="..\src\MainFrm.cpp" />
     <ClCompile Include="..\src\ProjetDlg.cpp" />
+    <ClCompile Include="..\src\SItemFiltre.cpp" />
     <ClCompile Include="..\src\SItemProjet.cpp" />
     <ClCompile Include="..\src\SItemStructure.cpp" />
     <ClCompile Include="..\src\StructureMgr.cpp" />

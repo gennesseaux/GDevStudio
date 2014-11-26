@@ -6,8 +6,11 @@
 #include "SItemStructure.h"
 #include "DObject/Projet.h"
 
+//
+using GDSObject::CProjet;
 
-class CSItemProjet : public CSItemStructure, GDSObject::CProjet
+
+class CSItemProjet : public CSItemStructure, public CProjet
 {
 public:
 	// Constructeur
@@ -16,5 +19,5 @@ public:
 	virtual ~CSItemProjet();
 
 protected:
-	GDSObject::CProjet*	m_pProjet = nullptr;
+	CProjet*	m_pProjet = nullptr;
 };

@@ -26,6 +26,9 @@ CStructureMgr::~CStructureMgr()
 // Initialisation de la structure
 void CStructureMgr::Initialiser(unsigned long ulIdProjet)
 {
+	// Vide le tree grille
+	GetTreeGrille()->RemoveAll();
+
 	// Projet
 	m_pSItemProjet = new CSItemProjet(this,ulIdProjet);
 }
