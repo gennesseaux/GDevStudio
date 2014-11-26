@@ -3,21 +3,19 @@
 
 
 // Inculsions
+#include "SItemDef.h"
+
+// Inculsions
 class CTreeGrille;
 class CSItemStructure;
 class CSItemProjet;
 class CSItemFiltre;
 
-//
-enum class SItemType
-{
-	Projet,
-	Filtre
-};
 
 //
 class CStructureMgr
 {
+	friend class CSItemStructure;
 	friend class CSItemProjet;
 	friend class CSItemFiltre;
 

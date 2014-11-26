@@ -90,6 +90,9 @@
     <ClInclude Include="..\src\SItemStructure.h">
       <Filter>Structure\Items</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SItemDef.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BCGSoft_ribbon\category_large_0.png">

@@ -65,7 +65,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\Commun\bin\$(Configuration)\;..\..\Poco\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DObject.lib;Outils.lib;SQLite.lib</AdditionalDependencies>
+      <AdditionalDependencies>DObject.lib;SQLite.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -82,22 +82,22 @@
 SET DEST=$(ProjectDir)..\bin\$(Configuration)
 
 
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoCryptod.dll		"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoFoundationd.dll		"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoJSONd.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoNetd.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoNetSSLd.dll		"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoUtild.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoXMLd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoCryptod.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoFoundationd.dll		"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoJSONd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoNetd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoNetSSLd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoUtild.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoXMLd.dll			"$(ProjectDir)..\bin\$(Configuration)"
 
 
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoCrypto.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoFoundation.dll		"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoJSON.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoNet.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoNetSSL.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoUtil.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoCrypto.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoFoundation.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoJSON.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoNet.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoNetSSL.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoUtil.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bin\$(Configuration)"
 </Command>
       <Outputs>Poco Dlls</Outputs>
     </CustomBuildStep>
@@ -121,7 +121,7 @@ if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\..\Commun\bin\$(Configuration)\;..\..\Poco\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DObject.lib;Outils.lib;SQLite.lib</AdditionalDependencies>
+      <AdditionalDependencies>DObject.lib;SQLite.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -138,22 +138,22 @@ if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..
 SET DEST=$(ProjectDir)..\bin\$(Configuration)
 
 
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoCryptod.dll		"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoFoundationd.dll		"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoJSONd.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoNetd.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoNetSSLd.dll		"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoUtild.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==debug	copy /v /y ..\..\..\Poco\bin\PocoXMLd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoCryptod.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoFoundationd.dll		"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoJSONd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoNetd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoNetSSLd.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoUtild.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==debug	copy /v /y ..\..\Poco\bin\PocoXMLd.dll			"$(ProjectDir)..\bin\$(Configuration)"
 
 
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoCrypto.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoFoundation.dll		"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoJSON.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoNet.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoNetSSL.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoUtil.dll			"$(ProjectDir)..\bin\$(Configuration)"
-if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoCrypto.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoFoundation.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoJSON.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoNet.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoNetSSL.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoUtil.dll			"$(ProjectDir)..\bin\$(Configuration)"
+if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bin\$(Configuration)"
 </Command>
       <Outputs>Poco Dlls</Outputs>
     </CustomBuildStep>
@@ -166,6 +166,7 @@ if /I %CONFIG%==Release	copy /y ..\..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..
     <ClInclude Include="..\src\GDevStudioView.h" />
     <ClInclude Include="..\src\MainFrm.h" />
     <ClInclude Include="..\src\ProjetDlg.h" />
+    <ClInclude Include="..\src\SItemDef.h" />
     <ClInclude Include="..\src\SItemProjet.h" />
     <ClInclude Include="..\src\SItemStructure.h" />
     <ClInclude Include="..\src\StructureMgr.h" />

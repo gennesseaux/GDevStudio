@@ -6,6 +6,9 @@
 #include <BCGPGridCtrl.h>
 #include "TreeGrille.h"
 #include "TreeIconMgr.h"
+#include "SItemDef.h"
+
+
 
 // Inclusions
 class CStructureMgr;

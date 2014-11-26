@@ -6,7 +6,7 @@
 
 
 // Constructeur
-CSItemProjet::CSItemProjet(CStructureMgr* pStructureMgr, unsigned long ulIdProjet) : CSItemStructure(pStructureMgr), GDSObject::CProjet(ulIdProjet)
+CSItemProjet::CSItemProjet(CStructureMgr* pStructureMgr, unsigned long ulIdProjet) : CSItemStructure(SItemType::Projet,pStructureMgr), GDSObject::CProjet(ulIdProjet)
 {
 	// Ajout du projet dans la grille
 	CSItemStructure::SetLibelle(GDSObject::CProjet::GetLibelle().c_str());
