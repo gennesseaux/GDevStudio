@@ -19,5 +19,4 @@ public:
 	virtual ~CSItemProjet();
 
 protected:
-	CProjet*	m_pProjet = nullptr;
 };

@@ -49,6 +49,23 @@ BOOL CGDevStudioDoc::OnNewDocument()
 	pFiltreSql->SetLibelle("SQL");
 	pFiltreSql->SetType(GDSObject::FiltreType::SQL);
 
+	#ifdef _DEBUG
+		GDSObject::CFiltre* pFiltre01 = new GDSObject::CFiltre();
+		pFiltre01->SetLibelle("Filtre 01");
+		pFiltre01->SetType(GDSObject::FiltreType::Filtre);
+		pFiltreSql->GetFiltreListe(false)->Add(pFiltre01);
+
+		GDSObject::CFiltre* pFiltre02 = new GDSObject::CFiltre();
+		pFiltre02->SetLibelle("Filtre 02");
+		pFiltre02->SetType(GDSObject::FiltreType::Filtre);
+		pFiltreSql->GetFiltreListe(false)->Add(pFiltre02);
+
+		GDSObject::CFiltre* pFiltre03 = new GDSObject::CFiltre();
+		pFiltre03->SetLibelle("Filtre 03");
+		pFiltre03->SetType(GDSObject::FiltreType::Filtre);
+		pFiltreSql->GetFiltreListe(false)->Add(pFiltre03);
+	#endif
+
 	GDSObject::CFiltre* pFiltreSqlite = new GDSObject::CFiltre();
 	pFiltreSqlite->SetLibelle("SQLite");
 	pFiltreSqlite->SetType(GDSObject::FiltreType::SQLite);

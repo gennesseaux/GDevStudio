@@ -11,9 +11,6 @@
 //	-----------------------------------------------------------------------
 //	 Révisions		:	16/7/2014 : 
 //	-----------------------------------------------------------------------
-//
-//	http://census.soe.com/s:H41PS2SL/get/ps2/Filtre?c:lang=fr&c:limit=100
-//
 //*/
 
 #pragma once
@@ -50,6 +47,7 @@ namespace GDSObject
 		CFiltre(const CFiltre &source);
 		//! Opérateur =
 		CFiltre &operator=(const CFiltre &source);
+
 		//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
 		void ClonnerDonnees(const CFiltre &source);
 
@@ -84,6 +82,8 @@ namespace GDSObject
 
 		Poco::Path GetCppFolder();
 		bool SetCppFolder(Poco::Path ptCppFolder);
+		
+		CFiltreListe* GetFiltreListe(bool bInit = true);
 
 	protected:
 		// Données membres
@@ -93,6 +93,8 @@ namespace GDSObject
 		unsigned long	m_ulFtrIdent;		// Identifiant du filtre parent
 		Poco::Path		m_ptHFolder;
 		Poco::Path		m_ptCppFolder;
+		// Pointeurs
+		CFiltreListe*	m_pFiltreListe;		// Liste des diltre directement associés au projet
 	};
 
 

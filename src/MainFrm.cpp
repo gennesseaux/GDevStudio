@@ -51,11 +51,21 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 
-	// TODO: add your status bar panes here:
-	m_wndStatusBar.AddElement (new CBCGPRibbonStatusBarPane (
-		ID_STATUSBAR_PANE1, _T("Pane 1"), TRUE), _T("Pane 1"));
-	m_wndStatusBar.AddExtendedElement (new CBCGPRibbonStatusBarPane (
-		ID_STATUSBAR_PANE2, _T("Pane 2"), TRUE), _T("Pane 2"));
+	
+	CBCGPToolBar::SetMenuSizes (CSize (22, 22), CSize (16, 16));
+	CBCGPToolBar::AddToolBarForImageCollection (IDR_TOOLBAR_IMAGES
+												, IDB_TOOLBAR_IMAGES_16		// Hot
+												, IDB_TOOLBAR_IMAGES_16		// Cold
+												, IDB_TOOLBAR_IMAGES_16		// Menu
+												, IDB_TOOLBAR_IMAGES_D16	// Disable
+												, IDB_TOOLBAR_IMAGES_D16);	// Menu Disable
+
+
+	//// TODO: add your status bar panes here:
+	//m_wndStatusBar.AddElement (new CBCGPRibbonStatusBarPane (
+	//	ID_STATUSBAR_PANE1, _T("Pane 1"), TRUE), _T("Pane 1"));
+	//m_wndStatusBar.AddExtendedElement (new CBCGPRibbonStatusBarPane (
+	//	ID_STATUSBAR_PANE2, _T("Pane 2"), TRUE), _T("Pane 2"));
 
 	EnableDocking(CBRS_ALIGN_ANY);
 	return 0;

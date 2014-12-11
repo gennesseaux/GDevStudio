@@ -16,6 +16,9 @@ CSItemStructure::CSItemStructure(SItemType sitemType, CStructureMgr* pStructureM
 
 	m_pRow = m_pTreeGrille->CreateRow(1);
 	m_pRow->AllowSubItems();
+	m_pRow->SetData((DWORD_PTR)this);
+
+	m_SItemType = sitemType;
 
 	pStructureMgr->AddToMap(sitemType, this);
 }
@@ -41,4 +44,14 @@ void CSItemStructure::SetImage(TreeImage image)
 void CSItemStructure::AjouterLigneGrille()
 {
 	m_pTreeGrille->AddRow(m_pRow);
+}
+
+void CSItemStructure::AjouterLigneGrille(CSItemStructure* pParent)
+{
+	pParent->GetLigne()->AddSubItem(m_pRow);
+}
+
+CBCGPGridRow* CSItemStructure::GetLigne()
+{
+	return m_pRow;
 }

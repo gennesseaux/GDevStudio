@@ -40,10 +40,16 @@ public:
 	void SetImage(TreeImage image);
 	// Ajout de la ligne à la grille
 	void AjouterLigneGrille();
-
+	// Ajout de la ligne à la grille
+	void AjouterLigneGrille(CSItemStructure* pParent);
+	//
+	CBCGPGridRow* GetLigne();
+	//
+	SItemType GetTypeItem() const { return m_SItemType; }
 
 protected:
 	CStructureMgr*	m_pStructureMgr = nullptr;
 	CTreeGrille*	m_pTreeGrille = nullptr;
 	CBCGPGridRow*	m_pRow = nullptr;
+	SItemType		m_SItemType;
 };

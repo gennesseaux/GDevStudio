@@ -28,6 +28,7 @@ namespace GDSObject
 	CFiltre::CFiltre(unsigned long ulId) : CDObjBase(ulId)
 	{
 		/* Initialisation des pointeurs. */
+		m_pFiltreListe = nullptr;
 
 		/* Initialisation des données. */
 		InitialiserDonnees();
@@ -44,6 +45,7 @@ namespace GDSObject
 	CFiltre::CFiltre(const CFiltre &source)
 	{
 		/* Initialisation des pointeurs. */
+		m_pFiltreListe = nullptr;
 
 		/* Initialisation des données. */
 		InitialiserDonnees();
@@ -71,22 +73,28 @@ namespace GDSObject
 
 		/* Copie des variables membres de l'objet. */
 		m_sLibelle = source.m_sLibelle;
+		m_iType = source.m_iType;
 		m_ulPrjIdent = source.m_ulPrjIdent;
 		m_ulFtrIdent = source.m_ulFtrIdent;
 		m_ptHFolder = source.m_ptHFolder;
 		m_ptCppFolder = source.m_ptCppFolder;
 
 		/* Copie des pointeurs membres de l'objet. */
+		if (source.m_pFiltreListe)
+			m_pFiltreListe = new CFiltreListe(*source.m_pFiltreListe);
 	}
 
 	//! Initialisation des données membres de la classe
 	void CFiltre::InitialiserDonnees()
 	{
 		m_sLibelle = std::string();
+		m_iType = FiltreType::Filtre;
 		m_ulPrjIdent = DefULong;
 		m_ulFtrIdent = DefULong;
 		m_ptHFolder.clear();
 		m_ptCppFolder.clear();
+
+		delete m_pFiltreListe; m_pFiltreListe = nullptr;
 	}
 
 	//! Initialisation de l'objet
@@ -105,10 +113,10 @@ namespace GDSObject
 			{
 				m_sLibelle		= query.getColumn(0).getText();
 				m_iType			= (FiltreType)query.getColumn(1).getInt();
-				m_ulPrjIdent	= query.getColumn(1).isNull() ? DefULong : query.getColumn(1).getInt();
-				m_ulFtrIdent	= query.getColumn(2).isNull() ? DefULong : query.getColumn(2).getInt();
-				m_ptHFolder		= query.getColumn(3).isNull() ? Poco::Path() : query.getColumn(3).getText();
-				m_ptCppFolder	= query.getColumn(5).isNull() ? Poco::Path() : query.getColumn(4).getText();
+				m_ulPrjIdent	= query.getColumn(2).isNull() ? DefULong : query.getColumn(2).getInt();
+				m_ulFtrIdent	= query.getColumn(3).isNull() ? DefULong : query.getColumn(3).getInt();
+				m_ptHFolder		= query.getColumn(4).isNull() ? Poco::Path() : query.getColumn(4).getText();
+				m_ptCppFolder	= query.getColumn(5).isNull() ? Poco::Path() : query.getColumn(5).getText();
 
 				// L'objet est acquis
 				SetAcquis();
@@ -167,8 +175,8 @@ namespace GDSObject
 					osQuery << "insert into FILTRE (FTR_IDENT, FTR_LIBELLE, FTR_TYPE, FTR_PRJ_IDENT, FTR_FTR_IDENT, FTR_H_FOLDER, FTR_CPP_FOLDER)";
 					osQuery << " values (";
 					osQuery << "	" << ToQuery(DefULong) << ",";
-					osQuery << "	" << ToQuery((int)m_iType) << ",";
 					osQuery << "	" << ToQuery(m_sLibelle) << ",";
+					osQuery << "	" << ToQuery((int)m_iType) << ",";
 					osQuery << "	" << ToQuery(m_ulPrjIdent) << ",";
 					osQuery << "	" << ToQuery(m_ulFtrIdent) << ",";
 					osQuery << "	" << ToQuery(m_ptHFolder.toString()) << ",";
@@ -208,6 +216,24 @@ namespace GDSObject
 				__TRANSACTION_AUTO_ANNULE__;
 				return false;
 			}
+		}
+
+		//
+		if (!SontEnfantsModifier())
+		{
+			// Fin de la transaction automatique
+			__TRANSACTION_AUTO_VALIDE__;
+			return true;
+		}
+
+		//
+		if (m_pFiltreListe && (!((m_pFiltreListe->SetFtrIdent(m_ulId)) && (m_pFiltreListe->Sauver()))))
+		{
+			// Restauration de l'état précédent
+			state.Restore();
+			// Fin de la transaction automatique
+			__TRANSACTION_AUTO_ANNULE__;
+			return false;
 		}
 
 		// Fin de la transaction automatique
@@ -417,6 +443,28 @@ namespace GDSObject
 		return true;
 	}
 
+	CFiltreListe* CFiltre::GetFiltreListe(bool bInit)
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return nullptr;
+
+		// Si la liste n'existe pas, alosr on la crée. 
+		if (m_pFiltreListe == nullptr)
+		{
+			m_pFiltreListe = new CFiltreListe();
+			m_pFiltreListe->AddParent(this);
+			if (bInit) m_pFiltreListe->InitialiserAPartirDeFtrIdent(m_ulId);
+		}
+		// 
+		else if (m_pFiltreListe && m_pFiltreListe->GetFtrIdent() != m_ulId)
+		{
+			delete m_pFiltreListe; m_pFiltreListe = nullptr;
+			return GetFiltreListe(bInit);
+		}
+
+		return m_pFiltreListe;
+	}
+
 
 
 
@@ -500,11 +548,11 @@ namespace GDSObject
 			{
 				CFiltre* pFiltre		= new CFiltre(query.getColumn(0).getInt());
 				pFiltre->m_sLibelle		= query.getColumn(1).getText();
-				pFiltre->m_iType		= (FiltreType)query.getColumn(1).getInt();
-				pFiltre->m_ulPrjIdent	= query.getColumn(2).isNull() ? DefULong : query.getColumn(2).getInt();
-				pFiltre->m_ulFtrIdent	= query.getColumn(3).isNull() ? DefULong : query.getColumn(3).getInt();
-				pFiltre->m_ptHFolder	= query.getColumn(4).isNull() ? Poco::Path() : query.getColumn(4).getText();
-				pFiltre->m_ptCppFolder	= query.getColumn(5).isNull() ? Poco::Path() : query.getColumn(5).getText();
+				pFiltre->m_iType		= (FiltreType)query.getColumn(2).getInt();
+				pFiltre->m_ulPrjIdent	= query.getColumn(3).isNull() ? DefULong : query.getColumn(3).getInt();
+				pFiltre->m_ulFtrIdent	= query.getColumn(4).isNull() ? DefULong : query.getColumn(4).getInt();
+				pFiltre->m_ptHFolder	= query.getColumn(5).isNull() ? Poco::Path() : query.getColumn(5).getText();
+				pFiltre->m_ptCppFolder	= query.getColumn(6).isNull() ? Poco::Path() : query.getColumn(6).getText();
 
 				// L'objet est acquis
 				pFiltre->SetAcquis();
@@ -599,10 +647,10 @@ namespace GDSObject
 				CFiltre* pFiltre		= new CFiltre(query.getColumn(0).getInt());
 				pFiltre->m_sLibelle		= query.getColumn(1).getText();
 				pFiltre->m_iType		= (FiltreType)query.getColumn(2).getInt();
-				pFiltre->m_ulPrjIdent	= query.getColumn(2).isNull() ? DefULong : query.getColumn(2).getInt();
-				pFiltre->m_ulFtrIdent	= query.getColumn(3).isNull() ? DefULong : query.getColumn(3).getInt();
-				pFiltre->m_ptHFolder	= query.getColumn(4).isNull() ? Poco::Path() : query.getColumn(4).getText();
-				pFiltre->m_ptCppFolder	= query.getColumn(5).isNull() ? Poco::Path() : query.getColumn(5).getText();
+				pFiltre->m_ulPrjIdent	= query.getColumn(3).isNull() ? DefULong : query.getColumn(3).getInt();
+				pFiltre->m_ulFtrIdent	= query.getColumn(4).isNull() ? DefULong : query.getColumn(4).getInt();
+				pFiltre->m_ptHFolder	= query.getColumn(5).isNull() ? Poco::Path() : query.getColumn(5).getText();
+				pFiltre->m_ptCppFolder	= query.getColumn(6).isNull() ? Poco::Path() : query.getColumn(6).getText();
 
 				// L'objet est acquis
 				pFiltre->SetAcquis();
@@ -637,10 +685,10 @@ namespace GDSObject
 				CFiltre* pFiltre		= new CFiltre(query.getColumn(0).getInt());
 				pFiltre->m_sLibelle		= query.getColumn(1).getText();
 				pFiltre->m_iType		= (FiltreType)query.getColumn(2).getInt();
-				pFiltre->m_ulPrjIdent	= query.getColumn(2).isNull() ? DefULong : query.getColumn(2).getInt();
-				pFiltre->m_ulFtrIdent	= query.getColumn(3).isNull() ? DefULong : query.getColumn(3).getInt();
-				pFiltre->m_ptHFolder	= query.getColumn(4).isNull() ? Poco::Path() : query.getColumn(4).getText();
-				pFiltre->m_ptCppFolder	= query.getColumn(5).isNull() ? Poco::Path() : query.getColumn(5).getText();
+				pFiltre->m_ulPrjIdent	= query.getColumn(3).isNull() ? DefULong : query.getColumn(3).getInt();
+				pFiltre->m_ulFtrIdent	= query.getColumn(4).isNull() ? DefULong : query.getColumn(4).getInt();
+				pFiltre->m_ptHFolder	= query.getColumn(5).isNull() ? Poco::Path() : query.getColumn(5).getText();
+				pFiltre->m_ptCppFolder	= query.getColumn(6).isNull() ? Poco::Path() : query.getColumn(6).getText();
 
 				// L'objet est acquis
 				pFiltre->SetAcquis();

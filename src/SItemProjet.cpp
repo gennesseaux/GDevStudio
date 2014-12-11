@@ -25,7 +25,7 @@ CSItemProjet::CSItemProjet(CStructureMgr* pStructureMgr, unsigned long ulIdProje
 		CFiltre* pFiltre = pFiltreListe->GetAt(i);
 		pFiltre->Initialiser();
 
-		CSItemFiltre* pSItemFiltre = new CSItemFiltre(pStructureMgr,*pFiltre);
+		CSItemFiltre* pSItemFiltre = new CSItemFiltre(pStructureMgr,*pFiltre, this);
 
 		pFiltreListe->RemoveAt(i);
 		pFiltreListe->InsertAt(i,pSItemFiltre);

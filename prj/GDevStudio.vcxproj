@@ -165,6 +165,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClInclude Include="..\src\GDevStudioDoc.h" />
     <ClInclude Include="..\src\GDevStudioView.h" />
     <ClInclude Include="..\src\MainFrm.h" />
+    <ClInclude Include="..\src\Outils\MenuFunctions\MenuFunctions.h" />
     <ClInclude Include="..\src\ProjetDlg.h" />
     <ClInclude Include="..\src\SItemDef.h" />
     <ClInclude Include="..\src\SItemFiltre.h" />
@@ -184,6 +185,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClCompile Include="..\src\GDevStudioDoc.cpp" />
     <ClCompile Include="..\src\GDevStudioView.cpp" />
     <ClCompile Include="..\src\MainFrm.cpp" />
+    <ClCompile Include="..\src\Outils\MenuFunctions\MenuFunctions.cpp" />
     <ClCompile Include="..\src\ProjetDlg.cpp" />
     <ClCompile Include="..\src\SItemFiltre.cpp" />
     <ClCompile Include="..\src\SItemProjet.cpp" />
@@ -219,7 +221,9 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <Image Include="res\Png\filtreSQL.png" />
     <Image Include="res\Png\filtreSQLite.png" />
     <Image Include="res\Png\projet.png" />
-    <Image Include="res\Toolbar.bmp" />
+    <Image Include="res\Toolbar\ToolbarImages.bmp" />
+    <Image Include="res\Toolbar\ToolbarImages16.bmp" />
+    <Image Include="res\Toolbar\ToolbarImagesD16.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\BCGSoft_ribbon\ribbon.xml" />

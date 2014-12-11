@@ -2,7 +2,7 @@
 <BCGP_RIBBON>
 	<HEADER>
 		<VERSION>1</VERSION>
-		<VERSION_STAMP>1</VERSION_STAMP>
+		<VERSION_STAMP>2</VERSION_STAMP>
 	</HEADER>
 	<RIBBON_BAR>
 		<ELEMENT_NAME>RibbonBar</ELEMENT_NAME>
@@ -50,22 +50,12 @@
 				<ELEMENT>
 					<ELEMENT_NAME>Button</ELEMENT_NAME>
 					<ID>
-						<NAME>ID_FILE_SAVE</NAME>
-						<VALUE>57603</VALUE>
-					</ID>
-					<TEXT>&amp;Save</TEXT>
-					<INDEX_SMALL>2</INDEX_SMALL>
-					<INDEX_LARGE>2</INDEX_LARGE>
-				</ELEMENT>
-				<ELEMENT>
-					<ELEMENT_NAME>Button</ELEMENT_NAME>
-					<ID>
 						<NAME>ID_FILE_SAVE_AS</NAME>
 						<VALUE>57604</VALUE>
 					</ID>
 					<TEXT>Save &amp;As...</TEXT>
-					<INDEX_SMALL>3</INDEX_SMALL>
-					<INDEX_LARGE>3</INDEX_LARGE>
+					<INDEX_SMALL>2</INDEX_SMALL>
+					<INDEX_LARGE>2</INDEX_LARGE>
 				</ELEMENT>
 				<ELEMENT>
 					<ELEMENT_NAME>Button_Main_Panel</ELEMENT_NAME>
@@ -74,7 +64,7 @@
 						<VALUE>32853</VALUE>
 					</ID>
 					<TEXT>Opt&amp;ions</TEXT>
-					<INDEX_SMALL>9</INDEX_SMALL>
+					<INDEX_SMALL>4</INDEX_SMALL>
 				</ELEMENT>
 				<ELEMENT>
 					<ELEMENT_NAME>Button_Main_Panel</ELEMENT_NAME>
@@ -83,7 +73,7 @@
 						<VALUE>57665</VALUE>
 					</ID>
 					<TEXT>E&amp;xit</TEXT>
-					<INDEX_SMALL>8</INDEX_SMALL>
+					<INDEX_SMALL>3</INDEX_SMALL>
 				</ELEMENT>
 			</ELEMENTS>
 			<RECENT_FILE_LIST>
@@ -159,8 +149,8 @@
 									<VALUE>57600</VALUE>
 								</ID>
 								<TEXT>&amp;Nouveau</TEXT>
-								<INDEX_SMALL>9</INDEX_SMALL>
-								<INDEX_LARGE>3</INDEX_LARGE>
+								<INDEX_SMALL>4</INDEX_SMALL>
+								<INDEX_LARGE>1</INDEX_LARGE>
 							</ELEMENT>
 							<ELEMENT>
 								<ELEMENT_NAME>Button</ELEMENT_NAME>
@@ -169,8 +159,8 @@
 									<VALUE>57601</VALUE>
 								</ID>
 								<TEXT>&amp;Ouvrir</TEXT>
-								<INDEX_SMALL>10</INDEX_SMALL>
-								<INDEX_LARGE>4</INDEX_LARGE>
+								<INDEX_SMALL>5</INDEX_SMALL>
+								<INDEX_LARGE>2</INDEX_LARGE>
 							</ELEMENT>
 							<ELEMENT>
 								<ELEMENT_NAME>Button</ELEMENT_NAME>
@@ -179,8 +169,8 @@
 									<VALUE>57604</VALUE>
 								</ID>
 								<TEXT>Enregistrer &amp;sous</TEXT>
-								<INDEX_SMALL>12</INDEX_SMALL>
-								<INDEX_LARGE>6</INDEX_LARGE>
+								<INDEX_SMALL>6</INDEX_SMALL>
+								<INDEX_LARGE>3</INDEX_LARGE>
 							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>

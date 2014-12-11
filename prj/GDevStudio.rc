@@ -260,6 +260,29 @@ IDB_FILTRE_SQLITE       PNG                     "res\\Png\\filtreSQLite.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Toolbar
+//
+
+IDR_TOOLBAR_IMAGES TOOLBAR 16, 16
+BEGIN
+    BUTTON      IDMS__NOUVEAU_FILTRE
+    SEPARATOR
+    BUTTON      IDMS__MODIFIER
+    BUTTON      IDMS__SUPPRIMER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_TOOLBAR_IMAGES      BITMAP                  "res\\Toolbar\\ToolbarImages.bmp"
+IDB_TOOLBAR_IMAGES_16   BITMAP                  "res\\Toolbar\\ToolbarImages16.bmp"
+IDB_TOOLBAR_IMAGES_D16   BITMAP                  "res\\Toolbar\\ToolbarImagesD16.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 

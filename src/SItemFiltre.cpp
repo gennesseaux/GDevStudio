@@ -3,23 +3,55 @@
 // Inclusions
 #include "Stdafx.h"
 #include "SItemFiltre.h"
+#include "SItemProjet.h"
 
 
 // Constructeur
-CSItemFiltre::CSItemFiltre(CStructureMgr* pStructureMgr, unsigned long ulIdFiltre) : CSItemStructure(SItemType::Filtre,pStructureMgr), CFiltre(ulIdFiltre)
-{
-	// Ajout du Filtre dans la grille
-	CSItemStructure::SetLibelle(CFiltre::GetLibelle().c_str());
-	SetImage(GetType());
-	CSItemStructure::AjouterLigneGrille();
-}
-
 CSItemFiltre::CSItemFiltre(CStructureMgr* pStructureMgr, const CFiltre &source) : CSItemStructure(SItemType::Filtre,pStructureMgr), CFiltre(source)
 {
 	// Ajout du Filtre dans la grille
 	CSItemStructure::SetLibelle(CFiltre::GetLibelle().c_str());
 	SetImage(GetType());
-	CSItemStructure::AjouterLigneGrille();
+}
+
+// Constructeur
+CSItemFiltre::CSItemFiltre(CStructureMgr* pStructureMgr, const CFiltre &source, CSItemProjet* pSItemProjet) : CSItemFiltre(pStructureMgr,source)
+{
+	// Ajout du Filtre dans la grille
+	CSItemStructure::AjouterLigneGrille(pSItemProjet);
+
+	// Ajout des filtres du filtre
+	CFiltreListe* pFiltreListe = GetFiltreListe();
+	for (int i = 0; i < pFiltreListe->GetCount() ; i++)
+	{
+		CFiltre* pFiltre = pFiltreListe->GetAt(i);
+		pFiltre->Initialiser();
+
+		CSItemFiltre* pSItemFiltre = new CSItemFiltre(pStructureMgr,*pFiltre, this);
+
+		pFiltreListe->RemoveAt(i);
+		pFiltreListe->InsertAt(i,pSItemFiltre);
+	}
+}
+
+// Constructeur
+CSItemFiltre::CSItemFiltre(CStructureMgr* pStructureMgr, const CFiltre &source, CSItemFiltre* pSItemFiltre) : CSItemFiltre(pStructureMgr,source)
+{
+	// Ajout du Filtre dans la grille
+	CSItemStructure::AjouterLigneGrille(pSItemFiltre);
+
+	// Ajout des filtres du filtre
+	CFiltreListe* pFiltreListe = GetFiltreListe();
+	for (int i = 0; i < pFiltreListe->GetCount() ; i++)
+	{
+		CFiltre* pFiltre = pFiltreListe->GetAt(i);
+		pFiltre->Initialiser();
+
+		CSItemFiltre* pSItemFiltre = new CSItemFiltre(pStructureMgr,*pFiltre, this);
+
+		pFiltreListe->RemoveAt(i);
+		pFiltreListe->InsertAt(i,pSItemFiltre);
+	}
 }
 
 // Destructeur
