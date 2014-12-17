@@ -11,7 +11,7 @@
 		</IMAGE>
 		<BUTTON_MAIN>
 			<ELEMENT_NAME>Button_Main</ELEMENT_NAME>
-			<TOOLTIP>File</TOOLTIP>
+			<TOOLTIP>Fichier</TOOLTIP>
 			<KEYS>f</KEYS>
 			<IMAGE>
 				<NAME>IDR_BCGP_IMAGE_MAIN</NAME>
@@ -33,7 +33,9 @@
 						<NAME>ID_FILE_NEW</NAME>
 						<VALUE>57600</VALUE>
 					</ID>
-					<TEXT>&amp;New</TEXT>
+					<TEXT>&amp;Nouveau</TEXT>
+					<TOOLTIP>Nouveau</TOOLTIP>
+					<DESCRIPTION>Nouveau projet</DESCRIPTION>
 					<INDEX_SMALL>0</INDEX_SMALL>
 					<INDEX_LARGE>0</INDEX_LARGE>
 				</ELEMENT>
@@ -43,7 +45,9 @@
 						<NAME>ID_FILE_OPEN</NAME>
 						<VALUE>57601</VALUE>
 					</ID>
-					<TEXT>&amp;Open...</TEXT>
+					<TEXT>&amp;Ouvrir</TEXT>
+					<TOOLTIP>Ouvrir</TOOLTIP>
+					<DESCRIPTION>Ouvrir un projet existant</DESCRIPTION>
 					<INDEX_SMALL>1</INDEX_SMALL>
 					<INDEX_LARGE>1</INDEX_LARGE>
 				</ELEMENT>
@@ -53,7 +57,9 @@
 						<NAME>ID_FILE_SAVE_AS</NAME>
 						<VALUE>57604</VALUE>
 					</ID>
-					<TEXT>Save &amp;As...</TEXT>
+					<TEXT>Enregistrer &amp;sous</TEXT>
+					<TOOLTIP>Enregistrer sous</TOOLTIP>
+					<DESCRIPTION>Enregistrer le projet sous un nom différent</DESCRIPTION>
 					<INDEX_SMALL>2</INDEX_SMALL>
 					<INDEX_LARGE>2</INDEX_LARGE>
 				</ELEMENT>
@@ -64,6 +70,7 @@
 						<VALUE>32853</VALUE>
 					</ID>
 					<TEXT>Opt&amp;ions</TEXT>
+					<TOOLTIP>Options</TOOLTIP>
 					<INDEX_SMALL>4</INDEX_SMALL>
 				</ELEMENT>
 				<ELEMENT>
@@ -72,7 +79,8 @@
 						<NAME>ID_APP_EXIT</NAME>
 						<VALUE>57665</VALUE>
 					</ID>
-					<TEXT>E&amp;xit</TEXT>
+					<TEXT>&amp;Quitter</TEXT>
+					<TOOLTIP>Quitter</TOOLTIP>
 					<INDEX_SMALL>3</INDEX_SMALL>
 				</ELEMENT>
 			</ELEMENTS>
@@ -122,6 +130,8 @@
 						<NAME>ID_APP_ABOUT</NAME>
 						<VALUE>57664</VALUE>
 					</ID>
+					<TEXT>A propos</TEXT>
+					<TOOLTIP>A propos</TOOLTIP>
 					<KEYS>a</KEYS>
 					<INDEX_SMALL>0</INDEX_SMALL>
 				</ELEMENT>
@@ -149,6 +159,8 @@
 									<VALUE>57600</VALUE>
 								</ID>
 								<TEXT>&amp;Nouveau</TEXT>
+								<TOOLTIP>Nouveau</TOOLTIP>
+								<DESCRIPTION>Nouveau projet</DESCRIPTION>
 								<INDEX_SMALL>4</INDEX_SMALL>
 								<INDEX_LARGE>1</INDEX_LARGE>
 							</ELEMENT>
@@ -159,6 +171,8 @@
 									<VALUE>57601</VALUE>
 								</ID>
 								<TEXT>&amp;Ouvrir</TEXT>
+								<TOOLTIP>Ouvrir</TOOLTIP>
+								<DESCRIPTION>Ouvrir un projet existant</DESCRIPTION>
 								<INDEX_SMALL>5</INDEX_SMALL>
 								<INDEX_LARGE>2</INDEX_LARGE>
 							</ELEMENT>
@@ -169,6 +183,8 @@
 									<VALUE>57604</VALUE>
 								</ID>
 								<TEXT>Enregistrer &amp;sous</TEXT>
+								<TOOLTIP>Enregistrer sous</TOOLTIP>
+								<DESCRIPTION>Enregistrer le projet sous un nom différent</DESCRIPTION>
 								<INDEX_SMALL>6</INDEX_SMALL>
 								<INDEX_LARGE>3</INDEX_LARGE>
 							</ELEMENT>
@@ -176,7 +192,7 @@
 					</PANEL>
 					<PANEL>
 						<ELEMENT_NAME>Panel</ELEMENT_NAME>
-						<NAME>Clipboard</NAME>
+						<NAME>Presse-papiers</NAME>
 						<KEYS>zc</KEYS>
 						<ELEMENTS>
 							<ELEMENT>
@@ -185,7 +201,8 @@
 									<NAME>ID_EDIT_PASTE</NAME>
 									<VALUE>57637</VALUE>
 								</ID>
-								<TEXT>Paste</TEXT>
+								<TEXT>Coller</TEXT>
+								<TOOLTIP>Coller</TOOLTIP>
 								<KEYS>v</KEYS>
 								<INDEX_SMALL>0</INDEX_SMALL>
 								<INDEX_LARGE>0</INDEX_LARGE>
@@ -214,7 +231,8 @@
 									<NAME>ID_EDIT_CUT</NAME>
 									<VALUE>57635</VALUE>
 								</ID>
-								<TEXT>Cut</TEXT>
+								<TEXT>Couper</TEXT>
+								<TOOLTIP>Couper</TOOLTIP>
 								<KEYS>x</KEYS>
 								<INDEX_SMALL>1</INDEX_SMALL>
 							</ELEMENT>
@@ -224,7 +242,8 @@
 									<NAME>ID_EDIT_COPY</NAME>
 									<VALUE>57634</VALUE>
 								</ID>
-								<TEXT>Copy</TEXT>
+								<TEXT>Copier</TEXT>
+								<TOOLTIP>Copier</TOOLTIP>
 								<KEYS>c</KEYS>
 								<INDEX_SMALL>2</INDEX_SMALL>
 							</ELEMENT>
@@ -234,7 +253,8 @@
 									<NAME>ID_EDIT_CLEAR</NAME>
 									<VALUE>57632</VALUE>
 								</ID>
-								<TEXT>Erase</TEXT>
+								<TEXT>Supprimer</TEXT>
+								<TOOLTIP>Supprimer</TOOLTIP>
 								<KEYS>r</KEYS>
 								<INDEX_SMALL>3</INDEX_SMALL>
 							</ELEMENT>

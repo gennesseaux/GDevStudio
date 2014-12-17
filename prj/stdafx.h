@@ -88,6 +88,45 @@ inline void SetFontBoldUnderline(CWnd* pWnd)
 	pWnd->SendMessage(WM_SETFONT, (int)hFontBold, true);
 }
 
+// Transforme un CString en std::string
+inline std::string ToStdString(__in CString cString)
+{
+#ifdef UNICODE
+     std::wstring w;
+     w = cString;
+     return std::string(w.begin(), w.end());
+#else
+     return cString;
+#endif
+}
+// Transforme un std::string en CString
+inline CString ToString(__in std::string string)
+{
+	return CString(string.c_str());
+}
+// 
+inline void SetCWndWindowText(__in CWnd* pWnd, __in std::string str)
+{
+	pWnd->SetWindowText(ToString(str));
+}
+// Retourne le CString obtenu par GetWindowText sur un CWnd*
+inline CString GetCWndWindowText(__in CWnd* pWnd)
+{
+	CString sTexte;
+	pWnd->GetWindowText(sTexte);
+	return sTexte;
+}
+// Retourne le CString obtenu par GetWindowText sur un CWnd*
+inline std::string GetCWndWindowTextString(__in CWnd* pWnd)
+{
+	return ToStdString(GetCWndWindowText(pWnd));
+}
+// Retourne le CString obtenu par GetWindowText su un CWnd*
+inline int GetCWndWindowTextLength(__in CWnd* pWnd)
+{
+	return GetCWndWindowText(pWnd).GetLength();
+}
+
 
 
 

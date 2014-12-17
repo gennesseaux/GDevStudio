@@ -168,7 +168,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Informations sur le projet :",IDC_LBL_INFO,8,4,296,8
     LTEXT           "Code :",IDC_LBL_CODE,8,20,22,8
-    EDITTEXT        IDC_PROJET_CODE,52,17,84,14,ES_UPPERCASE | ES_AUTOHSCROLL
+    EDITTEXT        IDC_PROJET_CODE,52,17,84,14,ES_AUTOHSCROLL
     LTEXT           "Description :",IDC_LBL_DESCRIPTION,8,36,41,8
     EDITTEXT        IDC_PROJET_DESCRIPTION,52,33,252,68,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
     LTEXT           "Répertoires de sorties par défaut :",IDC_LBL_REPERTOIRES,8,110,296,8
@@ -267,8 +267,13 @@ IDR_TOOLBAR_IMAGES TOOLBAR 16, 16
 BEGIN
     BUTTON      IDMS__NOUVEAU_FILTRE
     SEPARATOR
-    BUTTON      IDMS__MODIFIER
+    BUTTON      IDMS__COUPER
+    BUTTON      IDMS__COPIER
+    BUTTON      IDMS__COLLER
+    BUTTON      IDMS__RENOMMER
     BUTTON      IDMS__SUPPRIMER
+    SEPARATOR
+    BUTTON      IDMS__MODIFIER
 END
 
 
@@ -279,7 +284,7 @@ END
 
 IDR_TOOLBAR_IMAGES      BITMAP                  "res\\Toolbar\\ToolbarImages.bmp"
 IDB_TOOLBAR_IMAGES_16   BITMAP                  "res\\Toolbar\\ToolbarImages16.bmp"
-IDB_TOOLBAR_IMAGES_D16   BITMAP                  "res\\Toolbar\\ToolbarImagesD16.bmp"
+IDB_TOOLBAR_IMAGES_D16  BITMAP                  "res\\Toolbar\\ToolbarImagesD16.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

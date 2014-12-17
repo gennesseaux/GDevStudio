@@ -18,5 +18,6 @@ public:
 	// Destructeur
 	virtual ~CSItemProjet();
 
-protected:
+public:
+	void UpdateTreeItem();
 };

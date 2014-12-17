@@ -5,10 +5,17 @@
 #include "TreeGrille.h"
 
 // Inclusions
+#include "Outils\MenuFunctions\MenuFunctions.h"
+
+// Inclusions
 #include "TreeIconMgr.h"
 #include "StructureMgr.h"
 #include "SItemStructure.h"
-#include "Outils\MenuFunctions\MenuFunctions.h"
+#include "SItemProjet.h"
+#include "SItemFiltre.h"
+
+// Inclusions
+#include "ProjetDlg.h"
 
 // Macros
 #define NbColumns 1
@@ -23,8 +30,15 @@ BEGIN_MESSAGE_MAP(CTreeGrille, CBCGPGridCtrl)
 	//			-~  COMMANDES LIEES AU MENU ~-
 	// --------------------------------------------------
 	ON_COMMAND(IDMS__NOUVEAU_FILTRE,		&CTreeGrille::OnNouveauFilte)
-	ON_COMMAND(IDMS__MODIFIER,				&CTreeGrille::OnModifier)
+	ON_COMMAND(IDMS__COUPER,				&CTreeGrille::OnCouper)
+	ON_COMMAND(IDMS__COPIER,				&CTreeGrille::OnCopier)
+	ON_COMMAND(IDMS__COLLER,				&CTreeGrille::OnColler)
 	ON_COMMAND(IDMS__SUPPRIMER,				&CTreeGrille::OnSupprimer)
+	ON_COMMAND(IDMS__RENOMMER,				&CTreeGrille::OnRenommer)
+	ON_COMMAND(IDMS__MODIFIER,				&CTreeGrille::OnModifier)
+	
+	ON_UPDATE_COMMAND_UI(IDMS__MODIFIER,	&CTreeGrille::OnUpdateMenu)
+	ON_UPDATE_COMMAND_UI(IDMS__SUPPRIMER,	&CTreeGrille::OnUpdateMenu)
 
 END_MESSAGE_MAP()
 
@@ -41,6 +55,7 @@ CTreeGrille::CTreeGrille()
 // Destructeur
 CTreeGrille::~CTreeGrille()
 {
+	delete m_pTreeImageMgr; m_pTreeImageMgr = nullptr;
 }
 
 // Création de la grille
@@ -64,6 +79,57 @@ BOOL CTreeGrille::Create(CView* pView)
 	ShowWindow(SW_SHOW);
 
 	return TRUE;
+}
+
+BOOL CTreeGrille::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg && (pMsg->message == WM_SYSKEYDOWN) && (GetParent()))
+	{
+		// AltDown
+		if (GetKeyState(VK_MENU) < 0)
+		{
+			//switch (pMsg->wParam)
+			//{
+			//case 'A':		SendMessage(WM_COMMAND, IDMS__FORMULAIRE_DEMANDE_ACHAT);	return TRUE; break;
+			//case 'B':		SendMessage(WM_COMMAND, IDMS__MISE_EN_BARRE);				return TRUE; break;
+			//case 'E':		SendMessage(WM_COMMAND, IDMS__FORMULAIRE_EDITION);			return TRUE; break;
+			//case 'T':		SendMessage(WM_COMMAND, IDMS__FORMULAIRE_TRANSMISSION);		return TRUE; break;
+			//}
+		}
+	}
+	else if (pMsg && (pMsg->message == WM_KEYDOWN) && (GetParent()))
+	{
+		// CtrlDown
+		if (GetKeyState(VK_CONTROL) < 0)
+		{
+			switch (pMsg->wParam)
+			{
+			case 'X':		SendMessage(WM_COMMAND, IDMS__COUPER);	return TRUE; break;
+			case 'C':		SendMessage(WM_COMMAND, IDMS__COPIER);	return TRUE; break;
+			case VK_INSERT:	SendMessage(WM_COMMAND, IDMS__COPIER);	return TRUE; break;
+			case 'V':		SendMessage(WM_COMMAND, IDMS__COLLER);	return TRUE; break;
+			}
+		}
+		// ShiftDown
+		else if (GetKeyState(VK_SHIFT) < 0)
+		{
+			switch (pMsg->wParam)
+			{
+			case VK_DELETE:	SendMessage(WM_COMMAND, IDMS__COUPER);	return TRUE; break;
+			case VK_INSERT:	SendMessage(WM_COMMAND, IDMS__COLLER);	return TRUE; break;
+			}
+		}
+		else 
+		{
+			switch (pMsg->wParam)
+			{
+			case VK_F2:			SendMessage(WM_COMMAND, IDMS__RENOMMER);				return TRUE; break;
+			case VK_DELETE:		SendMessage(WM_COMMAND, IDMS__SUPPRIMER);				return TRUE; break;
+			}
+		}
+	}
+
+	return CBCGPGridCtrl::PreTranslateMessage(pMsg);
 }
 
 void CTreeGrille::SetRowHeight ()
@@ -92,8 +158,8 @@ void CTreeGrille::InitialiserProprites()
 	// Propriétés
 	EnableColumnAutoSize(TRUE);
 	SetSingleSel(FALSE);
-	SetWholeRowSel();
-	SetReadOnly();
+	SetReadOnly(TRUE);
+	SetWholeRowSel(TRUE);
 	EnableGroupByBox(FALSE);
 	EnableHeader(FALSE, 0);
 	EnableGridLines(FALSE);
@@ -121,21 +187,6 @@ void CTreeGrille::InitialiserImages()
 {
 	if (m_pTreeImageMgr == nullptr)
 		m_pTreeImageMgr = new CTreeIconMgr(this);
-
-	//// Create root item:
-	//CBCGPGridRow* pRoot = CreateRow(1);
-	//ASSERT_VALID(pRoot);
-	//pRoot->AllowSubItems();
-	//pRoot->GetItem(0)->SetValue(_T("My Computer"));
-	//pRoot->GetItem(0)->SetImage(m_pTreeImageMgr->GetIndex(TreeImage::Projet));
-	//AddRow(pRoot, FALSE);
-	//
-	//CBCGPGridRow* pDiskC = CreateRow(1);
-	//ASSERT_VALID(pDiskC);
-	//pDiskC->GetItem(0)->SetValue(_T("My Local Disk (C:)"));
-	//pDiskC->AllowSubItems();
-	//pDiskC->GetItem(0)->SetImage(m_pTreeImageMgr->GetIndex(TreeImage::Filtre));
-	//pRoot->AddSubItem(pDiskC, FALSE);
 }
 
 // Initialisation de la grille
@@ -186,30 +237,113 @@ void CTreeGrille::OnContextMenu(CWnd* pWnd, CPoint point)
 	// -> Nouveau 
 	bool bFiltre =	IsFiltreAllowed(pSItem);
 	if(bFiltre)		MenuFunctions::AddMenuItem(hMenu, _T("Filtre"),		IDMS__NOUVEAU_FILTRE);
-
  	if(bFiltre)
  		MenuFunctions::AddMenuItem(hMenu, _T("Séparateur"), 0);
 
 	
-	// -> Modifier
-	// -> Suprimer 
-	bool bModifier =	IsModifierAllowed(pSItem);
+	// -> Couper
+	// -> Copier
+	// -> Coller
+	// -> Supprimer
+	// -> Renommer
+	bool bCouper =		IsCouperAllowed(pSItem);
+	bool bCopier =		IsCopierAllowed(pSItem);
+	bool bColler =		IsCollerAllowed(pSItem);
 	bool bSuprimer =	IsSupprimerAllowed(pSItem);
-	MenuFunctions::AddMenuItem(hMenu, _T("Modifier"),			IDMS__MODIFIER);
-	MenuFunctions::AddMenuItem(hMenu, _T("Supprimer\tSuppr"),	IDMS__SUPPRIMER);
-	MenuFunctions::EnableMenuItem(hMenu,IDMS__MODIFIER,bModifier);
-	MenuFunctions::EnableMenuItem(hMenu,IDMS__SUPPRIMER,bSuprimer);
-	MenuFunctions::AddMenuItem(hMenu, _T("Séparateur"), 0);
+	bool bRenommer =	IsRenommerAllowed(pSItem);
+	if(bCouper)			MenuFunctions::AddMenuItem(hMenu, _T("Couper\tCtrl+X"),			IDMS__COUPER);
+	if(bCopier)			MenuFunctions::AddMenuItem(hMenu, _T("Copier\tCtrl+C"),			IDMS__COPIER);
+	if(bColler)			MenuFunctions::AddMenuItem(hMenu, _T("Coller\tCtrl+V"),			IDMS__COLLER);
+	if(bSuprimer)		MenuFunctions::AddMenuItem(hMenu, _T("Supprimer\tSuppr"),		IDMS__SUPPRIMER);
+	if(bRenommer)		MenuFunctions::AddMenuItem(hMenu, _T("Renommer\tF2"),			IDMS__RENOMMER);
+	if(bCouper | bCopier | bColler | bSuprimer | bRenommer)
+		MenuFunctions::AddMenuItem(hMenu, _T("Séparateur"), 0);
 
 
 	// Affiche le menu
 	theApp.GetContextMenuManager ()->ShowPopupMenu(hMenu,point.x,point.y,this,TRUE);
 }
 
+void CTreeGrille::OnUpdateMenu(CCmdUI* pCmdUI)
+{
+	// Récupère le CSItemStructure sélectionné
+	CSItemStructure* pSItem = GetSelectedItem();
+
+	switch (pCmdUI->m_nID)
+	{
+		case IDMS__MODIFIER:	pCmdUI->Enable(pSItem ? IsModifierAllowed(pSItem) : FALSE);		break;
+		case IDMS__SUPPRIMER:	pCmdUI->Enable(pSItem ? IsSupprimerAllowed(pSItem) : FALSE);	break;
+	}
+}
+
+// Début de l'édition dans la grille
+void CTreeGrille::OnAfterInplaceEditCreated(CBCGPGridItem* pItem, CWnd* pInplaceEdit)
+{
+	CBCGPGridCtrl::OnAfterInplaceEditCreated (pItem, pInplaceEdit);
+
+	//CEdit* pEdit = DYNAMIC_DOWNCAST(CEdit, pInplaceEdit);
+	//if(pEdit != NULL)
+	//{
+	//}
+}
+
+// Fin de l'édition dans la grille
+void CTreeGrille::OnEndInplaceEdit(CBCGPGridItem* pItem)
+{
+	CSItemStructure* pSItem = (CSItemStructure*)pItem->GetParentRow()->GetData();
+
+ 	switch (pSItem->GetTypeItem())
+ 	{
+ 		case SItemType::Projet :
+ 			OnRenommerProjet(pSItem);
+ 			break;
+ 
+ 		case SItemType::Filtre :
+ 			OnRenommerFiltre(pSItem);
+ 			break;
+ 
+ 		default :
+ 			break;
+ 	}
+}
+
+
 // Filtre
 bool CTreeGrille::IsFiltreAllowed(CSItemStructure* pSItem)
 {
 	if(pSItem == nullptr)								return false;
+	if(pSItem->GetTypeItem() == SItemType::Filtre)		return true;
+
+	return false;
+}
+
+bool CTreeGrille::IsCouperAllowed(CSItemStructure* pSItem)
+{
+	return false;
+}
+
+bool CTreeGrille::IsCopierAllowed(CSItemStructure* pSItem)
+{
+	return false;
+}
+
+bool CTreeGrille::IsCollerAllowed(CSItemStructure* pSItem)
+{
+	return false;
+}
+
+bool CTreeGrille::IsSupprimerAllowed(CSItemStructure* pSItem)
+{
+	if(pSItem == nullptr)								return false;
+	if(pSItem->GetTypeItem() == SItemType::Filtre)		return true;
+
+	return false;
+}
+
+bool CTreeGrille::IsRenommerAllowed(CSItemStructure* pSItem)
+{
+	if(pSItem == nullptr)								return false;
+	if(pSItem->GetTypeItem() == SItemType::Projet)		return true;
 	if(pSItem->GetTypeItem() == SItemType::Filtre)		return true;
 
 	return false;
@@ -224,52 +358,50 @@ bool CTreeGrille::IsModifierAllowed(CSItemStructure* pSItem)
 	return false;
 }
 
-bool CTreeGrille::IsSupprimerAllowed(CSItemStructure* pSItem)
-{
-	if(pSItem == nullptr)								return false;
-	if(pSItem->GetTypeItem() == SItemType::Filtre)		return true;
-
-	return false;
-}
-
-
 void CTreeGrille::OnNouveauFilte()
 {
 
 }
 
-void CTreeGrille::OnModifier()
+void CTreeGrille::OnCouper()
 {
 	// Récupère l'item sélectionné
 	CSItemStructure* pSItem = GetSelectedItem();
 	if (pSItem == nullptr) return;
 
-	switch (pSItem->GetTypeItem())
-	{
-		case SItemType::Projet :
-			OnModifierProjet(pSItem);
-			break;
-
-		case SItemType::Filtre :
-			OnModifierFilte(pSItem);
-			break;
-
-		default :
-			break;
-	}
+	OnCouper(pSItem);
 }
 
-void CTreeGrille::OnModifierProjet(CSItemStructure* pSItem)
+void CTreeGrille::OnCouper(CSItemStructure* pSItem)
 {
-	// Test de cohérence
-	if(!IsModifierAllowed(pSItem)) return;
 
 }
 
-void CTreeGrille::OnModifierFilte(CSItemStructure* pSItem)
+void CTreeGrille::OnCopier()
 {
-	// Test de cohérence
-	if(!IsModifierAllowed(pSItem)) return;
+	// Récupère l'item sélectionné
+	CSItemStructure* pSItem = GetSelectedItem();
+	if (pSItem == nullptr) return;
+
+	OnCopier(pSItem);
+}
+
+void CTreeGrille::OnCopier(CSItemStructure* pSItem)
+{
+
+}
+
+void CTreeGrille::OnColler()
+{
+	// Récupère l'item sélectionné
+	CSItemStructure* pSItem = GetSelectedItem();
+	if (pSItem == nullptr) return;
+
+	OnColler(pSItem);
+}
+
+void CTreeGrille::OnColler(CSItemStructure* pSItem)
+{
 
 }
 
@@ -295,8 +427,134 @@ bool CTreeGrille::OnSupprimerFilte(CSItemStructure* pSItem)
 	// Test de cohérence
 	if(!IsSupprimerAllowed(pSItem)) return false;
 
+	//
+	CSItemFiltre* pSFiltre = (CSItemFiltre*)pSItem;
+	GDSObject::CFiltre* pFiltre = (GDSObject::CFiltre*)pSFiltre;
+
+	// Ligne de la grille
+	CBCGPGridRow* pRow = pSItem->GetLigne();
+
+	// Suppression
+	pFiltre->SetPourSupprimer(true);
+	if(!pFiltre->Supprimer())
+		return false;
+
+	// Supression dans la grille
+	m_pStructureMgr->RemoveTreeRow(pRow);
+
+	return true;
+}
+
+void CTreeGrille::OnRenommer()
+{
+	// Récupère l'item sélectionné
+	CSItemStructure* pSItem = GetSelectedItem();
+	if(pSItem == nullptr) return;
+
+	// Test de cohérence
+	if(!IsRenommerAllowed(pSItem)) return;
+
+	// La grille ne doit plus être en Readonly
+	// pour accepter la saisie dans la grille
+	SetReadOnly(FALSE);
+
+	// Edition
+	CBCGPGridRow* pSel = pSItem->GetLigne();
+	EnsureVisible(pSel);
+	SetBeginEditReason(BeginEdit_F2);
+	if(EditItem(pSel))
+		DoInplaceEditSetSel(OnInplaceEditSetSel(GetCurSelItem(pSel), BeginEdit_Return));
+
+	// Après avoir renommé la grille redevient Readonly
+	// pour refuser la saisie dans la grille
+	SetReadOnly(TRUE);
+	SetWholeRowSel(TRUE);
+}
+
+bool CTreeGrille::OnRenommerProjet(CSItemStructure* pSItem)
+{
+	// Récupère le texte de la grille
+	CString sVal = pSItem->GetLigne()->GetItem(0)->GetLabel();
+
+	//
+	GDSObject::CProjet projet(((CSItemProjet*)pSItem)->GetId());
+	projet.SetLibelle(ToStdString(sVal));
+	if(!projet.Sauver())
+	{
+		m_pStructureMgr->UpdateTreeItem(pSItem);
+		return false;
+	}
+
+	// Le document porte le même nom que le projet
+	m_pStructureMgr->UpdateTitle(sVal);
+
+	return true;
+}
+
+bool CTreeGrille::OnRenommerFiltre(CSItemStructure* pSItem)
+{
+	// Récupère le texte de la grille
+	CString sVal = pSItem->GetLigne()->GetItem(0)->GetLabel();
+
+	//
+	GDSObject::CFiltre filtre(((CSItemFiltre*)pSItem)->GetId());
+	filtre.SetLibelle(ToStdString(sVal));
+	if(!filtre.Sauver())
+	{
+		m_pStructureMgr->UpdateTreeItem(pSItem);
+		return false;
+	}
+	return true;
+}
+
+void CTreeGrille::OnModifier()
+{
+	// Récupère l'item sélectionné
+	CSItemStructure* pSItem = GetSelectedItem();
+	if (pSItem == nullptr) return;
+
+	switch (pSItem->GetTypeItem())
+	{
+		case SItemType::Projet :
+			OnModifierProjet(pSItem);
+			break;
+
+		case SItemType::Filtre :
+			OnModifierFilte(pSItem);
+			break;
+
+		default :
+			break;
+	}
+}
+
+bool CTreeGrille::OnModifierProjet(CSItemStructure* pSItem)
+{
+	// Test de cohérence
+	if(!IsModifierAllowed(pSItem)) return false;
+
+	//
+	GDSObject::CProjet projet(((CSItemProjet*)pSItem)->GetId());
+
+	//
+	CProjetDlg dlg(&projet,this);
+	BOOL bRet = (dlg.DoModal()==IDOK)?TRUE:FALSE;;
+
+ 	// Mise à jour de l'item
+ 	if(bRet==TRUE)
+  		m_pStructureMgr->UpdateTreeItem(pSItem);
+
+	return bRet ? true : false;
+}
+
+bool CTreeGrille::OnModifierFilte(CSItemStructure* pSItem)
+{
+	// Test de cohérence
+	if(!IsModifierAllowed(pSItem)) false;
+
 	return false;
 }
+
 
 
 

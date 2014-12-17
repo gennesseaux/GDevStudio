@@ -156,7 +156,7 @@ void CSQLiteSource::CreateTablePROJET()
 
 	// Création de la table
 	std::ostringstream osTable;
-	osTable << "create table PROJET (							";
+	osTable << "create table PROJET (						";
 	osTable << "PRJ_IDENT			INTEGER		NOT NULL	PRIMARY KEY AUTOINCREMENT,	";
 	osTable << "PRJ_LIBELLE			TEXT		NOT NULL	UNIQUE,	";
 	osTable << "PRJ_DESCRIPTION		TEXT		NULL,		";
@@ -177,7 +177,7 @@ void CSQLiteSource::CreateTableFILTRE()
 
 	// Création de la table
 	std::ostringstream osTable;
-	osTable << "create table FILTRE (							";
+	osTable << "create table FILTRE (						";
 	osTable << "FTR_IDENT			INTEGER		NOT NULL	PRIMARY KEY AUTOINCREMENT,	";
 	osTable << "FTR_LIBELLE			TEXT		NOT NULL,	";
 	osTable << "FTR_TYPE			INTEGER		NULL,		";

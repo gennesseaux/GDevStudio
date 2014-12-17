@@ -35,7 +35,9 @@ CGDevStudioView::CGDevStudioView()
 
 CGDevStudioView::~CGDevStudioView()
 {
-	delete m_pStructureMgr;
+	delete m_pStructureMgr; m_pStructureMgr = nullptr;
+
+	m_pTreeGrille = nullptr;
 }
 
 // CGDevStudioView drawing
@@ -162,9 +164,9 @@ void CGDevStudioView::OnContextMenu(CWnd*, CPoint point)
 
 void CGDevStudioView::OnInitialUpdate()
 {
-	// Initialisation de la grille
-	if(m_pStructureMgr==nullptr)
-		m_pStructureMgr = new CStructureMgr(m_pTreeGrille);
-	m_pStructureMgr->Initialiser(GetDocument()->Projet()->GetId());
+  	// Initialisation de la grille
+  	if(m_pStructureMgr==nullptr)
+  		m_pStructureMgr = new CStructureMgr(GetDocument(),m_pTreeGrille);
+  	m_pStructureMgr->Initialiser(GetDocument()->Projet()->GetId());
 }
 

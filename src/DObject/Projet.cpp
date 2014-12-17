@@ -132,6 +132,7 @@ namespace GDSObject
 		// pas être vérifiés lors de la création.
 		if (!EstNouveau())
 		{
+			if (m_pFiltreListe && (!m_pFiltreListe->Verifier(sMsg))) return false;
 		}
 
 		if (!Initialiser())				{ if (sMsg) sMsg->assign("Erreur lors de l'initialisation."); return false; }

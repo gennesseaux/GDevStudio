@@ -20,13 +20,15 @@ CSItemStructure::CSItemStructure(SItemType sitemType, CStructureMgr* pStructureM
 
 	m_SItemType = sitemType;
 
-	pStructureMgr->AddToMap(sitemType, this);
+	//pStructureMgr->AddToMap(sitemType, this);
 }
 
 // Destructeur
 CSItemStructure::~CSItemStructure()
 {
 	m_pStructureMgr = nullptr;
+	m_pTreeGrille = nullptr;
+	m_pRow = nullptr;
 }
 
 // Libellé

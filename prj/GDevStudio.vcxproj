@@ -28,8 +28,8 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -162,6 +162,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClInclude Include="..\src\DObject\Filtre.h" />
     <ClInclude Include="..\src\DObject\Projet.h" />
     <ClInclude Include="..\src\GDevStudio.h" />
+    <ClInclude Include="..\src\GDevStudioDialogBase.h" />
     <ClInclude Include="..\src\GDevStudioDoc.h" />
     <ClInclude Include="..\src\GDevStudioView.h" />
     <ClInclude Include="..\src\MainFrm.h" />
@@ -182,6 +183,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClCompile Include="..\src\DObject\Filtre.cpp" />
     <ClCompile Include="..\src\DObject\Projet.cpp" />
     <ClCompile Include="..\src\GDevStudio.cpp" />
+    <ClCompile Include="..\src\GDevStudioDialogBase.cpp" />
     <ClCompile Include="..\src\GDevStudioDoc.cpp" />
     <ClCompile Include="..\src\GDevStudioView.cpp" />
     <ClCompile Include="..\src\MainFrm.cpp" />

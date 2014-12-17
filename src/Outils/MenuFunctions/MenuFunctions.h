@@ -14,8 +14,8 @@ namespace MenuFunctions
 	bool AddMenuItem(HMENU hTargetMenu, const CString& itemText, UINT itemID, int* pInsertPositions);
 	bool AddSeparator(HMENU hTargetMenu);
 	
-	UINT EnableMenuItem(HMENU hTargetMenu, UINT nIDEnableItem, UINT nEnable);
-	UINT CheckMenuItem(HMENU hTargetMenu, UINT nIDCheckItem, UINT nCheck);
+	UINT EnableMenuItem(HMENU hTargetMenu, UINT nIDEnableItem, BOOL bEnable);
+	UINT CheckMenuItem(HMENU hTargetMenu, UINT nIDCheckItem, BOOL bCheck);
 
 
 	int  CalculateMenuHeight(HMENU hMenu);

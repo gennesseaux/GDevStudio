@@ -49,6 +49,9 @@
     <ClCompile Include="..\src\Outils\MenuFunctions\MenuFunctions.cpp">
       <Filter>Outils\MenuFunctions</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\GDevStudioDialogBase.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\GDevStudio.h">
@@ -104,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Outils\MenuFunctions\MenuFunctions.h">
       <Filter>Outils\MenuFunctions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GDevStudioDialogBase.h">
+      <Filter>Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

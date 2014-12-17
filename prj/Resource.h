@@ -18,7 +18,7 @@
 #define IDB_FILTRE_SQLITE               171
 #define IDR_TOOLBAR_IMAGES              172
 #define IDB_TOOLBAR_IMAGES_16           173
-#define IDB_TOOLBAR_IMAGES_D16           174
+#define IDB_TOOLBAR_IMAGES_D16          174
 #define IDC_COMPANY_URL                 1041
 #define IDC_STATUS_BAR_PROGRESS         1060
 #define IDC_PROJET_CODE                 1061
@@ -36,16 +36,20 @@
 #define ID_STATUSBAR_PANE1              32854
 #define ID_STATUSBAR_PANE2              32855
 #define IDMS__NOUVEAU_FILTRE            32864
-#define IDMS__MODIFIER                  32865
+#define IDMS__COUPER                    32869
+#define IDMS__COPIER                    32870
+#define IDMS__COLLER                    32871
 #define IDMS__SUPPRIMER                 32866
+#define IDMS__RENOMMER                  32872
+#define IDMS__MODIFIER                  32865
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        176
-#define _APS_NEXT_COMMAND_VALUE         32869
-#define _APS_NEXT_CONTROL_VALUE         1072
+#define _APS_NEXT_COMMAND_VALUE         32873
+#define _APS_NEXT_CONTROL_VALUE         1075
 #define _APS_NEXT_SYMED_VALUE           117
 #endif
 #endif

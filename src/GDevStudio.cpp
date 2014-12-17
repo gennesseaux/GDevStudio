@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <vld.h>
 #include "GDevStudio.h"
 #include "MainFrm.h"
 
@@ -216,4 +217,6 @@ void CGDevStudioApp::Test()
 	pFiltreProjet->Add(pFiltre1);
 	pFiltreProjet->Add(pFiltre2);
 	pProjet->Sauver();
+
+	delete pProjet;
 }

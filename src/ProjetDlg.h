@@ -2,28 +2,51 @@
 #pragma once
 
 // Inclusions
+#include "GDevStudioDialogBase.h"
+
+// Inclusions
+#include "DObject/Projet.h"
 
 
-class CProjetDlg : public CBCGPDialog
+class CProjetDlg : public CGDevStudioDialogBase
 {
 	DECLARE_DYNAMIC(CProjetDlg)
 
 public:
-	//
-	CProjetDlg(CWnd* pParent = NULL);
-	//
+	// Constructeur
+	CProjetDlg(GDSObject::CProjet* pProjet ,CWnd* pParent = NULL);
+	// Destructeur
 	virtual ~CProjetDlg();
 
 	// Données de boîte de dialogue
 	enum { IDD = IDD_PROJET };
 
 protected:
+	// Prise en charge de DDX/DDV
 	virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge de DDX/DDV
 
 	DECLARE_MESSAGE_MAP()
 
 protected:
+	// Initialisation de la boîte de dialogue et de ses contrôles.
 	virtual BOOL OnInitDialog();
+
+	// Initialise les objets métiers.
+	virtual void InitialiseObjetsMetiers();
+
+	// Initialisation de l'interface utilisateur.
+	virtual void InitialiseInterfaceUtilisateur();
+
+	// Initialisation.
+	virtual void Initialiser();
+
+	// Mise à jour des contraintes.
+	virtual void UpdateConstraints();
+
+protected:
+	afx_msg void OnChange();
+	afx_msg void OnOk();
+
 
 protected:
 	// Contrôles
@@ -39,5 +62,9 @@ protected:
 	CBCGPStatic m_lblFichierH;
 	CBCGPStatic m_lblFichierCpp;
 
-	CFont m_font;
+	CBCGPButton	m_btnOk;
+
+
+private:
+	GDSObject::CProjet* m_pProjet = nullptr;
 };

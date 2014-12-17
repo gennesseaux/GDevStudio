@@ -32,5 +32,6 @@ public:
 	// Image 
 	void SetImage(FiltreType filtreType);
 
-protected:
+public:
+	void UpdateTreeItem();
 };

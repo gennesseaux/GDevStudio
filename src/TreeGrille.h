@@ -3,10 +3,15 @@
 
 // Inclusions
 class CTreeIconMgr;
+class CStructureMgr;
 class CSItemStructure;
 
 // Inclusions
-#include "DObject/Projet.h"
+namespace GDSObject {
+	class CProjet;
+	class CFiltre;
+}
+
 
 class CTreeGrille : public CBCGPGridCtrl
 {
@@ -26,9 +31,14 @@ public:
 	void Initialiser(GDSObject::CProjet* pProjet);
 	// Manageur d'icones
 	CTreeIconMgr* GetTreeImageMgr() const;
+	//! Manager des structures
+	CStructureMgr* GetStructureMgr() const { return m_pStructureMgr; }
+	//! Manager des structures
+	void SetStructureMgr(CStructureMgr* pSMgr) { m_pStructureMgr = pSMgr; }
 
 
 protected:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	DECLARE_MESSAGE_MAP()
 
@@ -40,24 +50,47 @@ protected:
 	
 // Accesseurs
 protected:
+	//
 	CSItemStructure* GetSelectedItem();
+	// Début de l'édition dans la grille
+	virtual void OnAfterInplaceEditCreated(CBCGPGridItem* pItem, CWnd* pInplaceEdit);
+	// Fin de l'édition dans la grille
+	virtual void OnEndInplaceEdit(CBCGPGridItem* pItem);
+
+
 
 // Gestion des menus
 protected:
 	void OnContextMenu(CWnd* pWnd, CPoint point);
+	void OnUpdateMenu(CCmdUI* pCmdUI);
 
 	bool IsFiltreAllowed(CSItemStructure* pSItem);
-	bool IsModifierAllowed(CSItemStructure* pSItem);
+
+	bool IsCouperAllowed(CSItemStructure* pSItem);
+	bool IsCopierAllowed(CSItemStructure* pSItem);
+	bool IsCollerAllowed(CSItemStructure* pSItem);
 	bool IsSupprimerAllowed(CSItemStructure* pSItem);
+	bool IsRenommerAllowed(CSItemStructure* pSItem);
+
+	bool IsModifierAllowed(CSItemStructure* pSItem);
 
 	
 	//! Commandes des menus
 	void OnNouveauFilte();
-	void OnModifier();
-		void OnModifierProjet(CSItemStructure* pSItem);
-		void OnModifierFilte(CSItemStructure* pSItem);
+	void OnCouper();
+		void OnCouper(CSItemStructure* pSItem);
+	void OnCopier();
+		void OnCopier(CSItemStructure* pSItem);
+	void OnColler();
+		void OnColler(CSItemStructure* pSItem);
 	void OnSupprimer();
 		bool OnSupprimerFilte(CSItemStructure* pSItem);
+	void OnRenommer();
+		bool OnRenommerProjet(CSItemStructure* pSItem);
+		bool OnRenommerFiltre(CSItemStructure* pSItem);
+	void OnModifier();
+		bool OnModifierProjet(CSItemStructure* pSItem);
+		bool OnModifierFilte(CSItemStructure* pSItem);
 
 protected:
 	virtual void SetRowHeight();
@@ -65,7 +98,7 @@ protected:
 
 
 protected:
-	CTreeIconMgr* m_pTreeImageMgr = nullptr;
+	CTreeIconMgr*	m_pTreeImageMgr = nullptr;		//! Manager d'icones
+	CStructureMgr*	m_pStructureMgr = nullptr;		//! Manager des structures
 };
-
 

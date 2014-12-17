@@ -69,3 +69,13 @@ void CSItemFiltre::SetImage(FiltreType filtreType)
 		case FiltreType::Ressource:		CSItemStructure::SetImage(TreeImage::FiltreRessource);	break;
 	}
 }
+
+void CSItemFiltre::UpdateTreeItem()
+{
+	// Force l'objet à croire qu'il n'est pas initialisé
+	SetInitaliser(false);
+	SetAcquis(false);
+
+	// Mise à jour du libelle dans la grille
+	CSItemStructure::SetLibelle(CFiltre::GetLibelle().c_str());
+}

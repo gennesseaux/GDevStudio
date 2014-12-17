@@ -30,10 +30,6 @@ protected:
 
 
 public:
-	CStructureMgr* GetStructureMgr() const { return m_pStructureMgr; }
-
-
-public:
 	// Libellé
 	void SetLibelle(const char* sLibelle);
 	// Image 
@@ -46,6 +42,9 @@ public:
 	CBCGPGridRow* GetLigne();
 	//
 	SItemType GetTypeItem() const { return m_SItemType; }
+
+public:
+	virtual void UpdateTreeItem() = 0;
 
 protected:
 	CStructureMgr*	m_pStructureMgr = nullptr;

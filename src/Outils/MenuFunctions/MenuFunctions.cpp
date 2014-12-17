@@ -251,17 +251,17 @@ bool MenuFunctions::AddSeparator(HMENU hTargetMenu)
 	return AddMenuItem(hTargetMenu, _T("SEPARATOR"), 0);
 }
 
-UINT MenuFunctions::EnableMenuItem(HMENU hTargetMenu, UINT nIDEnableItem, UINT nEnable)
+UINT MenuFunctions::EnableMenuItem(HMENU hTargetMenu, UINT nIDEnableItem, BOOL bEnable)
 {
 	ASSERT(::IsMenu(hTargetMenu));
-	UINT ret = ::EnableMenuItem(hTargetMenu, nIDEnableItem, nEnable ? MF_BYCOMMAND | MF_ENABLED  : MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+	UINT ret = ::EnableMenuItem(hTargetMenu, nIDEnableItem, bEnable ? MF_BYCOMMAND | MF_ENABLED  : MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 	return ret;
 }
 
-UINT MenuFunctions::CheckMenuItem(HMENU hTargetMenu, UINT nIDCheckItem, UINT nCheck)
+UINT MenuFunctions::CheckMenuItem(HMENU hTargetMenu, UINT nIDCheckItem, BOOL bCheck)
 {
 	ASSERT(::IsMenu(hTargetMenu));
-	return ::CheckMenuItem(hTargetMenu, nIDCheckItem, nCheck ? MF_BYCOMMAND | MF_CHECKED : MF_UNCHECKED);
+	return ::CheckMenuItem(hTargetMenu, nIDCheckItem, bCheck ? MF_BYCOMMAND | MF_CHECKED : MF_UNCHECKED);
 }
 
 bool MenuFunctions::EmptyMenu(HMENU hMenu)

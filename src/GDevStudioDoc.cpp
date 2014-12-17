@@ -32,52 +32,53 @@ CGDevStudioDoc::CGDevStudioDoc()
 
 CGDevStudioDoc::~CGDevStudioDoc()
 {
-	delete m_pProjet;
 }
 
 BOOL CGDevStudioDoc::OnNewDocument()
 {
-	// Création d'une base de données par défaut
-	CSQLiteSource::instance().New();
+ 	// Création d'une base de données par défaut
+ 	CSQLiteSource::instance().New();
+ 
+ 	// Création du projet par défault
+ 	delete m_pProjet;
+ 	m_pProjet = new GDSObject::CProjet();
+ 	m_pProjet->SetLibelle("Nouveau projet");
+ 
+ 	GDSObject::CFiltre* pFiltreSql = new GDSObject::CFiltre();
+ 	pFiltreSql->SetLibelle("SQL");
+ 	pFiltreSql->SetType(GDSObject::FiltreType::SQL);
+ 
+ 	#ifdef _DEBUG
+ 		GDSObject::CFiltre* pFiltre01 = new GDSObject::CFiltre();
+ 		pFiltre01->SetLibelle("Filtre 01");
+ 		pFiltre01->SetType(GDSObject::FiltreType::Filtre);
+ 		pFiltreSql->GetFiltreListe(false)->Add(pFiltre01);
+ 
+ 		GDSObject::CFiltre* pFiltre02 = new GDSObject::CFiltre();
+ 		pFiltre02->SetLibelle("Filtre 02");
+ 		pFiltre02->SetType(GDSObject::FiltreType::Filtre);
+ 		pFiltreSql->GetFiltreListe(false)->Add(pFiltre02);
+ 
+ 		GDSObject::CFiltre* pFiltre03 = new GDSObject::CFiltre();
+ 		pFiltre03->SetLibelle("Filtre 03");
+ 		pFiltre03->SetType(GDSObject::FiltreType::Filtre);
+ 		pFiltreSql->GetFiltreListe(false)->Add(pFiltre03);
+ 	#endif
+ 
+ 	GDSObject::CFiltre* pFiltreSqlite = new GDSObject::CFiltre();
+ 	pFiltreSqlite->SetLibelle("SQLite");
+ 	pFiltreSqlite->SetType(GDSObject::FiltreType::SQLite);
+ 
+ 	GDSObject::CFiltre* pFiltreRessource = new GDSObject::CFiltre();
+ 	pFiltreRessource->SetLibelle("Ressources");
+ 	pFiltreRessource->SetType(GDSObject::FiltreType::Ressource);
+ 
+ 	m_pProjet->GetFiltreListe(false)->Add(pFiltreSql);
+ 	m_pProjet->GetFiltreListe(false)->Add(pFiltreSqlite);
+ 	m_pProjet->GetFiltreListe(false)->Add(pFiltreRessource);
+ 	m_pProjet->Sauver();
 
-	// Création du projet par défault
-	delete m_pProjet;
-	m_pProjet = new GDSObject::CProjet();
-	m_pProjet->SetLibelle("Nouveau projet");
-
-	GDSObject::CFiltre* pFiltreSql = new GDSObject::CFiltre();
-	pFiltreSql->SetLibelle("SQL");
-	pFiltreSql->SetType(GDSObject::FiltreType::SQL);
-
-	#ifdef _DEBUG
-		GDSObject::CFiltre* pFiltre01 = new GDSObject::CFiltre();
-		pFiltre01->SetLibelle("Filtre 01");
-		pFiltre01->SetType(GDSObject::FiltreType::Filtre);
-		pFiltreSql->GetFiltreListe(false)->Add(pFiltre01);
-
-		GDSObject::CFiltre* pFiltre02 = new GDSObject::CFiltre();
-		pFiltre02->SetLibelle("Filtre 02");
-		pFiltre02->SetType(GDSObject::FiltreType::Filtre);
-		pFiltreSql->GetFiltreListe(false)->Add(pFiltre02);
-
-		GDSObject::CFiltre* pFiltre03 = new GDSObject::CFiltre();
-		pFiltre03->SetLibelle("Filtre 03");
-		pFiltre03->SetType(GDSObject::FiltreType::Filtre);
-		pFiltreSql->GetFiltreListe(false)->Add(pFiltre03);
-	#endif
-
-	GDSObject::CFiltre* pFiltreSqlite = new GDSObject::CFiltre();
-	pFiltreSqlite->SetLibelle("SQLite");
-	pFiltreSqlite->SetType(GDSObject::FiltreType::SQLite);
-
-	GDSObject::CFiltre* pFiltreRessource = new GDSObject::CFiltre();
-	pFiltreRessource->SetLibelle("Ressources");
-	pFiltreRessource->SetType(GDSObject::FiltreType::Ressource);
-
-	m_pProjet->GetFiltreListe(false)->Add(pFiltreSql);
-	m_pProjet->GetFiltreListe(false)->Add(pFiltreSqlite);
-	m_pProjet->GetFiltreListe(false)->Add(pFiltreRessource);
-	m_pProjet->Sauver();
+	SetTitle(ToString(m_pProjet->GetLibelle()));
 
 	return TRUE;
 }
@@ -108,9 +109,10 @@ void CGDevStudioDoc::OnCloseDocument()
 	// Destruction du projet par défaut
 	delete m_pProjet;
 	m_pProjet = nullptr;
+
+	// Fermeture du document
+	CDocument::OnCloseDocument();
 }
-
-
 
 // CGDevStudioDoc serialization
 void CGDevStudioDoc::Serialize(CArchive& ar)

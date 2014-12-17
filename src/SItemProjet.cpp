@@ -36,3 +36,13 @@ CSItemProjet::CSItemProjet(CStructureMgr* pStructureMgr, unsigned long ulIdProje
 CSItemProjet::~CSItemProjet()
 {
 }
+
+void CSItemProjet::UpdateTreeItem()
+{
+	// Force l'objet à croire qu'il n'est pas initialisé
+	SetInitaliser(false);
+	SetAcquis(false);
+
+	// Mise à jour du libelle dans la grille
+	CSItemStructure::SetLibelle(CProjet::GetLibelle().c_str());
+}
