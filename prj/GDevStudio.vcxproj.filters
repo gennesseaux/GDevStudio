@@ -52,6 +52,22 @@
     <ClCompile Include="..\src\GDevStudioDialogBase.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\DObject\Ressource.cpp">
+      <Filter>DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DObject\Controle.cpp">
+      <Filter>DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SItemRessource.cpp">
+      <Filter>Structure\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SItemControle.cpp">
+      <Filter>Structure\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RessourceDlg.cpp">
+      <Filter>Structure\Création/Modification</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ProprieterViewBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\GDevStudio.h">
@@ -111,6 +127,22 @@
     <ClInclude Include="..\src\GDevStudioDialogBase.h">
       <Filter>Application</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\DObject\Ressource.h">
+      <Filter>DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DObject\Controle.h">
+      <Filter>DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SItemRessource.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SItemControle.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RessourceDlg.h">
+      <Filter>Structure\Création/Modification</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ProprieterViewBar.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Png\projet.png">
@@ -160,6 +192,12 @@
     </Image>
     <Image Include="res\BCGSoft_ribbon\ribbon_bar.png">
       <Filter>Ressources\PngRibbon</Filter>
+    </Image>
+    <Image Include="res\Png\ressource.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\controle.png">
+      <Filter>Ressources\Png</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

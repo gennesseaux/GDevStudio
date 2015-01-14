@@ -37,6 +37,7 @@ public:
 	// Pointeur sur la grille utilisé comme Tree
 	CTreeGrille* GetTreeGrille() const;
 	// Modifie le titre du document
+	void UpdateTitle();
 	void UpdateTitle(CString sTitle);
 
 	// Mise à jour d'un item dans la grille

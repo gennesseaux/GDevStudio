@@ -1,6 +1,6 @@
 
 // Inclusions
-#include "stdafx.h"
+#include "Stdafx.h"
 #include "GDevStudio.h"
 #include "ProjetDlg.h"
 
@@ -85,8 +85,8 @@ void CProjetDlg::InitialiseInterfaceUtilisateur()
 	//
 	SetFontBoldUnderline(&m_lblInfo);
 	SetFontBoldUnderline(&m_lblRepertoires);
-	m_edtEmplacementFichierH.EnableFolderBrowseButton(L"Emplacement dse fichiers *.h", BIF_USENEWUI);
-	m_edtEmplacementFichierCpp.EnableFolderBrowseButton(L"Emplacement dse fichiers *.cpp", BIF_USENEWUI);
+	m_edtEmplacementFichierH.EnableFolderBrowseButton(L"Emplacement des fichiers *.h", BIF_USENEWUI);
+	m_edtEmplacementFichierCpp.EnableFolderBrowseButton(L"Emplacement des fichiers *.cpp", BIF_USENEWUI);
 }
 
 // Initialisation.

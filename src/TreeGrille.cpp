@@ -1,6 +1,6 @@
 
 // Inclusions
-#include "stdafx.h"
+#include "Stdafx.h"
 #include "GDevStudio.h"
 #include "TreeGrille.h"
 
@@ -13,9 +13,12 @@
 #include "SItemStructure.h"
 #include "SItemProjet.h"
 #include "SItemFiltre.h"
+#include "SItemRessource.h"
+#include "SItemControle.h"
 
 // Inclusions
 #include "ProjetDlg.h"
+#include "RessourceDlg.h"
 
 // Macros
 #define NbColumns 1
@@ -29,7 +32,8 @@ BEGIN_MESSAGE_MAP(CTreeGrille, CBCGPGridCtrl)
 	// --------------------------------------------------
 	//			-~  COMMANDES LIEES AU MENU ~-
 	// --------------------------------------------------
-	ON_COMMAND(IDMS__NOUVEAU_FILTRE,		&CTreeGrille::OnNouveauFilte)
+	ON_COMMAND(IDMS__NOUVEAU_FILTRE,		&CTreeGrille::OnNouveauFiltre)
+	ON_COMMAND(IDMS__NOUVEAU_RESSOURCE,		&CTreeGrille::OnNouveauRessource)
 	ON_COMMAND(IDMS__COUPER,				&CTreeGrille::OnCouper)
 	ON_COMMAND(IDMS__COPIER,				&CTreeGrille::OnCopier)
 	ON_COMMAND(IDMS__COLLER,				&CTreeGrille::OnColler)
@@ -201,6 +205,16 @@ CTreeIconMgr* CTreeGrille::GetTreeImageMgr() const
 	return m_pTreeImageMgr;
 }
 
+GDSObject::CProjet* CTreeGrille::GetPointer(CSItemProjet* pSItemProjet)
+{
+	return (GDSObject::CProjet*)pSItemProjet;
+}
+
+GDSObject::CFiltre* CTreeGrille::GetPointer(CSItemFiltre* pSItemFiltre)
+{
+	return (GDSObject::CFiltre*)pSItemFiltre;
+}
+
 //
 CSItemStructure* CTreeGrille::GetSelectedItem()
 {
@@ -235,9 +249,11 @@ void CTreeGrille::OnContextMenu(CWnd* pWnd, CPoint point)
 	// ------------------------
 	
 	// -> Nouveau 
-	bool bFiltre =	IsFiltreAllowed(pSItem);
+	bool bFiltre	=	IsFiltreAllowed(pSItem);
+	bool bRessource =	IsRessourceAllowed(pSItem);
 	if(bFiltre)		MenuFunctions::AddMenuItem(hMenu, _T("Filtre"),		IDMS__NOUVEAU_FILTRE);
- 	if(bFiltre)
+	if(bRessource)	MenuFunctions::AddMenuItem(hMenu, _T("Ressource"),	IDMS__NOUVEAU_RESSOURCE);
+ 	if(bFiltre || bRessource)
  		MenuFunctions::AddMenuItem(hMenu, _T("Séparateur"), 0);
 
 	
@@ -307,7 +323,6 @@ void CTreeGrille::OnEndInplaceEdit(CBCGPGridItem* pItem)
  	}
 }
 
-
 // Filtre
 bool CTreeGrille::IsFiltreAllowed(CSItemStructure* pSItem)
 {
@@ -316,6 +331,32 @@ bool CTreeGrille::IsFiltreAllowed(CSItemStructure* pSItem)
 
 	return false;
 }
+
+// Ressource
+bool CTreeGrille::IsRessourceAllowed(CSItemStructure* pSItem)
+{
+	if(pSItem == nullptr)								return false;
+
+	// Les ressource ne peuvent être ajouter qu'a un filtre
+	// de type ressource ou un de ses déscendant
+	if(pSItem->GetTypeItem() == SItemType::Filtre)
+	{
+		// Filtre de type ressource
+		GDSObject::CFiltre* pFiltre = GetPointer((CSItemFiltre*)pSItem);
+		if(pFiltre->GetType()==FiltreType::Ressource)	return true;
+
+		// Parent de type ressource
+		GDSObject::CFiltre* pFiltreParent = pFiltre->GetParent<GDSObject::CFiltre*>();
+		while(pFiltreParent)
+		{
+			if(pFiltreParent->GetType()==FiltreType::Ressource)	return true;
+			pFiltreParent = pFiltreParent->GetParent<GDSObject::CFiltre*>();
+		}
+	}
+
+	return false;
+}
+
 
 bool CTreeGrille::IsCouperAllowed(CSItemStructure* pSItem)
 {
@@ -335,7 +376,10 @@ bool CTreeGrille::IsCollerAllowed(CSItemStructure* pSItem)
 bool CTreeGrille::IsSupprimerAllowed(CSItemStructure* pSItem)
 {
 	if(pSItem == nullptr)								return false;
+	if(pSItem->GetTypeItem() == SItemType::Projet)		return false;
 	if(pSItem->GetTypeItem() == SItemType::Filtre)		return true;
+	if(pSItem->GetTypeItem() == SItemType::Ressource)	return true;
+	if(pSItem->GetTypeItem() == SItemType::Controle)	return false;
 
 	return false;
 }
@@ -345,6 +389,8 @@ bool CTreeGrille::IsRenommerAllowed(CSItemStructure* pSItem)
 	if(pSItem == nullptr)								return false;
 	if(pSItem->GetTypeItem() == SItemType::Projet)		return true;
 	if(pSItem->GetTypeItem() == SItemType::Filtre)		return true;
+	if(pSItem->GetTypeItem() == SItemType::Ressource)	return false;
+	if(pSItem->GetTypeItem() == SItemType::Controle)	return false;
 
 	return false;
 }
@@ -358,10 +404,91 @@ bool CTreeGrille::IsModifierAllowed(CSItemStructure* pSItem)
 	return false;
 }
 
-void CTreeGrille::OnNouveauFilte()
+void CTreeGrille::OnNouveauFiltre()
 {
+	// Récupère l'item sélectionné
+	CSItemStructure* pSItem = GetSelectedItem();
+	if (pSItem == nullptr) return;
 
+	switch (pSItem->GetTypeItem())
+	{
+		case SItemType::Filtre :
+			OnNouveauFiltre((CSItemFiltre*)pSItem);
+			break;
+
+		default :
+			break;
+	}
 }
+
+bool CTreeGrille::OnNouveauFiltre(CSItemFiltre* pSItem)
+{
+	// Test de cohérence
+	if(!IsFiltreAllowed(pSItem)) return false;
+
+	// Filtre
+	GDSObject::CFiltre* pFiltreParent = GetPointer(pSItem);
+
+	// Ajout du Filtre
+	GDSObject::CFiltre* pFiltre = new CFiltre();
+	pFiltre->SetLibelle("Nouveau Filtre");
+	CFiltreListe* pFiltreListe = pFiltreParent->GetFiltreListe(false);
+	pFiltreListe->Add(pFiltre);
+	if(!pFiltreParent->Sauver())
+		return false;
+
+	// Ajout du filtre dans la grille
+	int iIndexListe = pFiltreListe->GetCount()-1;
+	CSItemFiltre* pSItemFiltre = new CSItemFiltre(m_pStructureMgr,*pFiltre, pSItem);
+	pFiltreListe->RemoveAt(iIndexListe);
+	pFiltreListe->Add(pSItemFiltre);
+
+	return true;
+}
+
+void CTreeGrille::OnNouveauRessource()
+{
+	// Récupère l'item sélectionné
+	CSItemStructure* pSItem = GetSelectedItem();
+	if (pSItem == nullptr) return;
+
+	switch (pSItem->GetTypeItem())
+	{
+		case SItemType::Filtre :
+			OnNouveauRessource((CSItemFiltre*)pSItem);
+			break;
+
+		default :
+			break;
+	}
+}
+
+bool CTreeGrille::OnNouveauRessource(CSItemFiltre* pSItemFiltre)
+{
+	// Test de cohérence
+	if(!IsRessourceAllowed(pSItemFiltre)) return false;
+
+	// Filtre
+	GDSObject::CFiltre* pFiltreParent = GetPointer(pSItemFiltre);
+
+	// Ressource
+	GDSObject::CRessource ressource;
+	ressource.SetFtrIdent(pFiltreParent->GetId());
+
+	//
+	CRessourceDlg dlg(&ressource,this);
+	BOOL bRet = (dlg.DoModal()==IDOK)?TRUE:FALSE;;
+
+	// Ajout du filtre dans la grille
+	if(bRet)
+	{
+		CSItemRessource* pSItemRessource = new CSItemRessource(m_pStructureMgr, ressource, pSItemFiltre);
+		pFiltreParent->GetRessourceListe()->Add(pSItemRessource);
+	}
+
+	return bRet ? true : false;
+}
+
 
 void CTreeGrille::OnCouper()
 {
@@ -428,11 +555,10 @@ bool CTreeGrille::OnSupprimerFilte(CSItemStructure* pSItem)
 	if(!IsSupprimerAllowed(pSItem)) return false;
 
 	//
-	CSItemFiltre* pSFiltre = (CSItemFiltre*)pSItem;
-	GDSObject::CFiltre* pFiltre = (GDSObject::CFiltre*)pSFiltre;
+	GDSObject::CFiltre* pFiltre = GetPointer((CSItemFiltre*)pSItem);
 
 	// Ligne de la grille
-	CBCGPGridRow* pRow = pSItem->GetLigne();
+	CBCGPGridRow* pRow = pSItem->GetGridRow();
 
 	// Suppression
 	pFiltre->SetPourSupprimer(true);
@@ -459,7 +585,7 @@ void CTreeGrille::OnRenommer()
 	SetReadOnly(FALSE);
 
 	// Edition
-	CBCGPGridRow* pSel = pSItem->GetLigne();
+	CBCGPGridRow* pSel = pSItem->GetGridRow();
 	EnsureVisible(pSel);
 	SetBeginEditReason(BeginEdit_F2);
 	if(EditItem(pSel))
@@ -474,7 +600,7 @@ void CTreeGrille::OnRenommer()
 bool CTreeGrille::OnRenommerProjet(CSItemStructure* pSItem)
 {
 	// Récupère le texte de la grille
-	CString sVal = pSItem->GetLigne()->GetItem(0)->GetLabel();
+	CString sVal = pSItem->GetGridRow()->GetItem(0)->GetLabel();
 
 	//
 	GDSObject::CProjet projet(((CSItemProjet*)pSItem)->GetId());
@@ -494,7 +620,7 @@ bool CTreeGrille::OnRenommerProjet(CSItemStructure* pSItem)
 bool CTreeGrille::OnRenommerFiltre(CSItemStructure* pSItem)
 {
 	// Récupère le texte de la grille
-	CString sVal = pSItem->GetLigne()->GetItem(0)->GetLabel();
+	CString sVal = pSItem->GetGridRow()->GetItem(0)->GetLabel();
 
 	//
 	GDSObject::CFiltre filtre(((CSItemFiltre*)pSItem)->GetId());

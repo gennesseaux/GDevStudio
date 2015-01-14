@@ -1,7 +1,7 @@
 // MainFrm.cpp : implementation of the CMainFrame class
 //
 
-#include "stdafx.h"
+#include "Stdafx.h"
 #include "GDevStudio.h"
 
 #include "MainFrm.h"
@@ -37,14 +37,28 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CBCGPFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 	
-
-	if (!CreateRibbonBar ())
+	//--------------------------------
+	// Création du rubban
+	//--------------------------------
+	if (!CreateRibbonBar())
 	{
 		TRACE0("Failed to create ribbon bar\n");
 		return -1;      // fail to create
 	}
+	
+	//--------------------------------
+	// Création des barres ancrables
+	//--------------------------------
+	if (!CreateDockingBars())
+	{
+		TRACE0("Failed to create docking bars\n");
+		return -1;      // fail to create
+	}
 
-
+	
+	//--------------------------------
+	// Création ed la barre de status
+	//--------------------------------
 	if (!m_wndStatusBar.Create(this))
 	{
 		TRACE0("Failed to create status bar\n");
@@ -67,7 +81,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//m_wndStatusBar.AddExtendedElement (new CBCGPRibbonStatusBarPane (
 	//	ID_STATUSBAR_PANE2, _T("Pane 2"), TRUE), _T("Pane 2"));
 
+	// Ancrage
+	m_wndPropertiesBar.EnableDocking(CBRS_ALIGN_ANY);
+
 	EnableDocking(CBRS_ALIGN_ANY);
+	EnableAutoHideBars(CBRS_ALIGN_ANY);
+
+	DockControlBar(&m_wndPropertiesBar);
+
 	return 0;
 }
 
@@ -120,6 +141,24 @@ BOOL CMainFrame::CreateRibbonBar ()
 
 	return TRUE;
 }
+
+BOOL CMainFrame::CreateDockingBars()
+{
+	//-----------------------
+	// Propriétés
+	//-----------------------
+	if (!m_wndPropertiesBar.Create(_T("Propriétés"), this, CRect (0, 0, 300, 200),
+		TRUE, 
+		ID_VIEW_PROPRIETES,
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
+	{
+		TRACE0("Failed to create Properties Bar\n");
+		return FALSE;		// fail to create
+	}
+
+	return TRUE;
+}
+
 
 LRESULT CMainFrame::OnRibbonCustomize (WPARAM wp, LPARAM /*lp*/)
 {
@@ -181,7 +220,7 @@ void CMainFrame::ShowOptions (int nPage)
 		return;
 	}
 }
- // WORKSPACEBAR
+// WORKSPACEBAR
  // OUTPUTBAR
  // PROPERTYBAR
  // UI_TYPE_RIBBON

@@ -13,8 +13,10 @@
 
 class CGDevStudioDoc : public CDocument
 {
-protected: // create from serialization only
+protected:
+	// Constructeur
 	CGDevStudioDoc();
+
 	DECLARE_DYNCREATE(CGDevStudioDoc)
 
 // Attributes
@@ -30,6 +32,7 @@ public:
 	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
 	virtual void OnCloseDocument();
 	virtual void Serialize(CArchive& ar);
+	virtual void OnUpdateAllViews();
 
 	// Implementation
 public:
@@ -46,10 +49,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	GDSObject::CProjet* Projet() const { return m_pProjet; }
+	unsigned long GetProjetId() const { return m_ulProjetId; }
 
 protected:
-	GDSObject::CProjet*	m_pProjet = nullptr;
+	unsigned long m_ulProjetId = DefULong;
 };
 
 

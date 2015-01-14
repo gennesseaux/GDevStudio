@@ -2,7 +2,9 @@
 // Inclusions
 #include "Stdafx.h"
 #include "SQLiteSource.h"
+#include "Poco/Foundation.h"
 #include "Poco/File.h"
+#include "Poco/TemporaryFile.h"
 #include "Poco/Util/Application.h"
 
 
@@ -43,6 +45,9 @@ SQLite::Database* CSQLiteSource::New()
 		delete m_pDatabase;		m_pDatabase = nullptr;
 	}
 
+	// Suppression automatique du fichier à la sortie de l'application
+	Poco::TemporaryFile::registerForDeletion(m_sDefaultDatabase);
+	
 	// Suppression de la base par défaut si elle existe
 	if (fDefaultDatabase.exists())
 		fDefaultDatabase.remove();
@@ -147,6 +152,14 @@ bool CSQLiteSource::Init()
 	if (!m_pDatabase->tableExists("FILTRE"))
 		CreateTableFILTRE();
 
+	// Table RESSOURCE
+	if (!m_pDatabase->tableExists("RESSOURCE"))
+		CreateTableRESSOURCE();
+
+	// Table CONTROLE
+	if (!m_pDatabase->tableExists("CONTROLE"))
+		CreateTableCONTROLE();
+
 	return true;
 }
 
@@ -195,6 +208,48 @@ void CSQLiteSource::CreateTableFILTRE()
 	// Création de l'index
 	std::ostringstream osIndex;
 	osIndex << "Create Index IX_FILTRE on FILTRE(FTR_IDENT);";
+	m_pDatabase->exec(osIndex.str());
+}
+
+void CSQLiteSource::CreateTableRESSOURCE()
+{
+	assert(m_pDatabase);
+
+	// Création de la table
+	std::ostringstream osTable;
+	osTable << "create table RESSOURCE (						";
+	osTable << "RES_IDENT			INTEGER		NOT NULL	PRIMARY KEY AUTOINCREMENT,	";
+	osTable << "RES_LIBELLE			TEXT		NOT NULL,	";
+	osTable << "RES_FILE			TEXT		NOT NULL,	";
+	osTable << "RES_FTR_IDENT		INTEGER		NOT NULL,	";
+	osTable << "CONSTRAINT FK_RESSOURCE_FILTRE		FOREIGN KEY(RES_FTR_IDENT) REFERENCES FILTRE(FTR_IDENT)";
+	osTable << ");";
+	m_pDatabase->exec(osTable.str());
+
+	// Création de l'index
+	std::ostringstream osIndex;
+	osIndex << "Create Index IX_RESSOURCE on RESSOURCE(RES_IDENT);";
+	m_pDatabase->exec(osIndex.str());
+}
+
+void CSQLiteSource::CreateTableCONTROLE()
+{
+	assert(m_pDatabase);
+
+	// Création de la table
+	std::ostringstream osTable;
+	osTable << "create table CONTROLE (						";
+	osTable << "CTR_IDENT			INTEGER		NOT NULL	PRIMARY KEY AUTOINCREMENT,	";
+	osTable << "CTR_LIBELLE			TEXT		NOT NULL,	";
+	osTable << "CTR_TYPE			TEXT		NOT NULL,	";
+	osTable << "CTR_RES_IDENT		INTEGER		NOT NULL,	";
+	osTable << "CONSTRAINT FK_CONTROLE_RESSOURCE		FOREIGN KEY(CTR_RES_IDENT) REFERENCES RESSOURCE(RES_IDENT)";
+	osTable << ");";
+	m_pDatabase->exec(osTable.str());
+
+	// Création de l'index
+	std::ostringstream osIndex;
+	osIndex << "Create Index IX_CONTROLE on CONTROLE(CTR_IDENT);";
 	m_pDatabase->exec(osIndex.str());
 }
 

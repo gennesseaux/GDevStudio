@@ -5,6 +5,8 @@
 class CTreeIconMgr;
 class CStructureMgr;
 class CSItemStructure;
+class CSItemProjet;
+class CSItemFiltre;
 
 // Inclusions
 namespace GDSObject {
@@ -51,6 +53,9 @@ protected:
 // Accesseurs
 protected:
 	//
+	GDSObject::CProjet* GetPointer(CSItemProjet* pSItemProjet);
+	GDSObject::CFiltre* GetPointer(CSItemFiltre* pSItemFiltre);
+	//
 	CSItemStructure* GetSelectedItem();
 	// Début de l'édition dans la grille
 	virtual void OnAfterInplaceEditCreated(CBCGPGridItem* pItem, CWnd* pInplaceEdit);
@@ -65,6 +70,7 @@ protected:
 	void OnUpdateMenu(CCmdUI* pCmdUI);
 
 	bool IsFiltreAllowed(CSItemStructure* pSItem);
+	bool IsRessourceAllowed(CSItemStructure* pSItem);
 
 	bool IsCouperAllowed(CSItemStructure* pSItem);
 	bool IsCopierAllowed(CSItemStructure* pSItem);
@@ -76,7 +82,10 @@ protected:
 
 	
 	//! Commandes des menus
-	void OnNouveauFilte();
+	void OnNouveauFiltre();
+		bool OnNouveauFiltre(CSItemFiltre* pSItem);
+	void OnNouveauRessource();
+		bool OnNouveauRessource(CSItemFiltre* pSItem);
 	void OnCouper();
 		void OnCouper(CSItemStructure* pSItem);
 	void OnCopier();

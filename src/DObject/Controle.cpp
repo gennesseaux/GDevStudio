@@ -2,7 +2,7 @@
 //
 //	-----------------------------------------------------------------------
 //
-//	 Fichier		: 	Projet.cpp
+//	 Fichier		: 	Controle.cpp
 //
 //	 Auteur			:	GENNESSEAUX Jocelyn
 //
@@ -14,8 +14,8 @@
 //*/
 
 // Inclusions
-#include "StdAfx.h"
-#include "Projet.h"
+#include "Stdafx.h"
+#include "Controle.h"
 
 // Inclusions
 #include <SQLite/SQLiteSource.h>
@@ -25,7 +25,7 @@
 namespace GDSObject
 {
 	//! Constructeur
-	CProjet::CProjet(unsigned long ulId) : CDObjBase(ulId)
+	CControle::CControle(unsigned long ulId) : CDObjBase(ulId)
 	{
 		/* Initialisation des pointeurs. */
 
@@ -34,14 +34,17 @@ namespace GDSObject
 	}
 
 	//! Destructeur
-	CProjet::~CProjet(void)
+	CControle::~CControle(void)
 	{
+		//
+		RemoveEnfants();
+
 		/* Initialisation des données. */
 		InitialiserDonnees();
 	}
 
 	//! Constructeur par copie.
-	CProjet::CProjet(const CProjet &source)
+	CControle::CControle(const CControle &source)
 	{
 		/* Initialisation des pointeurs. */
 
@@ -53,7 +56,7 @@ namespace GDSObject
 	}
 
 	//! Opérateur =
-	CProjet & CProjet::operator=(const CProjet &source)
+	CControle & CControle::operator=(const CControle &source)
 	{
 		/* Clonage des données. */
 		ClonnerDonnees(source);
@@ -62,7 +65,7 @@ namespace GDSObject
 	}
 
 	//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-	void CProjet::ClonnerDonnees(const CProjet &source)
+	void CControle::ClonnerDonnees(const CControle &source)
 	{
 		CDObjBase::ClonnerDonnees(source);
 
@@ -71,24 +74,20 @@ namespace GDSObject
 
 		/* Copie des variables membres de l'objet. */
 		m_sLibelle = source.m_sLibelle;
-		m_sDescription = source.m_sDescription;
-		m_ptHFolder = source.m_ptHFolder;
-		m_ptCppFolder = source.m_ptCppFolder;
-
-		/* Copie des pointeurs membres de l'objet. */
+		m_sType = source.m_sType;
+		m_ulResdent = source.m_ulResdent;
 	}
 
 	//! Initialisation des données membres de la classe
-	void CProjet::InitialiserDonnees()
+	void CControle::InitialiserDonnees()
 	{
 		m_sLibelle = std::string();
-		m_sDescription = std::string();
-		m_ptHFolder.clear();
-		m_ptCppFolder.clear();
+		m_sType = std::string();
+		m_ulResdent = DefULong;
 	}
 
 	//! Initialisation de l'objet
-	bool CProjet::Initialiser()
+	bool CControle::Initialiser()
 	{
 		if (DoitEtreInitialiser() == false) return true;
 
@@ -96,15 +95,14 @@ namespace GDSObject
 		if (!EstAcquis() && m_ulId!=DefULong)
 		{
 			std::ostringstream osQuery;
-			osQuery << "select PRJ_LIBELLE, PRJ_DESCRIPTION, PRJ_H_FOLDER, PRJ_CPP_FOLDER from PROJET where PRJ_IDENT = " << Poco::NumberFormatter::format(m_ulId);
+			osQuery << "select CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT from CONTROLE where RES_IDENT = " << ToQuery(m_ulId);
 			
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			if (query.executeStep())
 			{
-				m_sLibelle = query.getColumn(0);
-				m_sDescription = query.getColumn(1);
-				//m_ptHFolder = query.getColumn(3).getInt();
-				//m_ptCppFolder = query.getColumn(3).getInt();
+				m_sLibelle		= query.getColumn(0).getText();
+				m_sType			= query.getColumn(1).getText();
+				m_ulResdent		= query.getColumn(2).getInt();
 
 				// L'objet est acquis
 				SetAcquis();
@@ -117,7 +115,7 @@ namespace GDSObject
 		return true;
 	}
 
-	bool CProjet::Verifier(std::string* sMsg)
+	bool CControle::Verifier(std::string* sMsg)
 	{
 		// Les objets qui dépendent de cette objet ne doivent
 		// pas être vérifiés lors de la création.
@@ -126,12 +124,14 @@ namespace GDSObject
 		}
 
 		if (!Initialiser())				{ if (sMsg) sMsg->assign("Erreur lors de l'initialisation."); return false; }
-		if (m_sLibelle.empty())			{ if (sMsg) sMsg->assign("Erreur : m_sName est vide."); return false; }
+		if (m_sLibelle.empty())			{ if (sMsg) sMsg->assign("Erreur : m_sLibelle est vide."); return false; }
+		if (m_sType.empty())			{ if (sMsg) sMsg->assign("Erreur : m_sType est vide."); return false; }
+		if (m_ulResdent==DefULong)		{ if (sMsg) sMsg->assign("Erreur : m_ulResdent est vide."); return false; }
 
 		return true;
 	}
 
-	bool CProjet::Sauver()
+	bool CControle::Sauver()
 	{
 		if (!(DoitEtreSauver() || DoitEtreSupprimer())) return true;
 		if (!(PeutEtreSauver() || PeutEtreSupprimer())) return false;
@@ -159,30 +159,28 @@ namespace GDSObject
 				if (EstNouveau())
 				{
 					std::ostringstream osQuery;
-					osQuery << "insert into PROJET (PRJ_IDENT, PRJ_LIBELLE, PRJ_DESCRIPTION, PRJ_H_FOLDER, PRJ_CPP_FOLDER)";
+					osQuery << "insert into CONTROLE (CTR_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT)";
 					osQuery << " values (";
-					osQuery << "	null,";
+					osQuery << "	" << ToQuery(DefULong) << ",";
 					osQuery << "	" << ToQuery(m_sLibelle) << ",";
-					osQuery << "	" << ToQuery(m_sDescription) << ",";
-					osQuery << "	" << ToQuery(m_ptHFolder.toString()) << ",";
-					osQuery << "	" << ToQuery(m_ptCppFolder.toString()) << "";
+					osQuery << "	" << ToQuery(m_sType) << ",";
+					osQuery << "	" << ToQuery(m_ulResdent) << "";
 					osQuery << ");";
 
 					CSQLiteSource::database()->exec(osQuery.str());
 
-					m_ulId = CSQLiteSource::database()->getLastInsertRowid();
+					m_ulId = static_cast<unsigned long>(CSQLiteSource::database()->getLastInsertRowid());
 				}
 
 				else if (EstModifier())
 				{
 					std::ostringstream osQuery;
-					osQuery << "update PROJET set";
-					osQuery << "	PRJ_LIBELLE = "		<< ToQuery(m_sLibelle) << ",";
-					osQuery << "	PRJ_DESCRIPTION = "	<< ToQuery(m_sDescription) << ",";
-					osQuery << "	PRJ_H_FOLDER = "	<< ToQuery(m_ptHFolder.toString()) << ",";
-					osQuery << "	PRJ_CPP_FOLDER = "	<< ToQuery(m_ptCppFolder.toString()) << " ";
+					osQuery << "update CONTROLE set";
+					osQuery << "	CTR_LIBELLE = "		<< ToQuery(m_sLibelle) << ",";
+					osQuery << "	CTR_TYPE = "		<< ToQuery(m_sType) << ",";
+					osQuery << "	CTR_RES_IDENT = "	<< ToQuery(m_ulResdent) << ",";
 					osQuery << "where";
-					osQuery << "	PRJ_IDENT = "		<< ToQuery(m_ulId) << ";";
+					osQuery << "	CTR_IDENT = "		<< ToQuery(m_ulId) << ";";
 
 					CSQLiteSource::database()->exec(osQuery.str());
 				}
@@ -201,13 +199,21 @@ namespace GDSObject
 			}
 		}
 
+		//
+		if (!SontEnfantsModifier())
+		{
+			// Fin de la transaction automatique
+			__TRANSACTION_AUTO_VALIDE__;
+			return true;
+		}
+
 		// Fin de la transaction automatique
 		__TRANSACTION_AUTO_VALIDE__;
 
 		return true;
 	}
 
-	bool CProjet::Supprimer()
+	bool CControle::Supprimer()
 	{
 		if (DoitEtreSupprimer() == false) { SetSupprimer(true);  return true; }
 		if (PeutEtreSupprimer() == false) { SetSupprimer(false); return false; }
@@ -221,7 +227,7 @@ namespace GDSObject
 		try
 		{
 			std::ostringstream osQuery;
-			osQuery << "delete from PROJET where PRJ_IDENT = " << ToQuery(m_ulId);
+			osQuery << "delete from CONTROLE where CTR_IDENT = " << ToQuery(m_ulId);
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			query.exec();
@@ -245,7 +251,7 @@ namespace GDSObject
 		return true;
 	}
 
-	std::string CProjet::GetLibelle()
+	std::string CControle::GetLibelle()
 	{
 		// L'objet doit être initialisé
 		if (!Initialiser()) return std::string();
@@ -253,7 +259,7 @@ namespace GDSObject
 		return m_sLibelle;
 	}
 
-	bool CProjet::SetLibelle(std::string sName)
+	bool CControle::SetLibelle(std::string sName)
 	{
 		// L'objet doit être initialisé
 		if (!Initialiser()) return false;
@@ -272,24 +278,51 @@ namespace GDSObject
 		return true;
 	}
 
-	std::string CProjet::GetDesciption()
+	std::string CControle::GetType()
 	{
 		// L'objet doit être initialisé
 		if (!Initialiser()) return std::string();
 
-		return m_sDescription;
+		return m_sType;
 	}
 
-	bool CProjet::SetDesciption(std::string sDesciption)
+	bool CControle::SetType(std::string sType)
 	{
 		// L'objet doit être initialisé
 		if (!Initialiser()) return false;
 
 		// Le champ est modifié uniquement si sa valeur change.
-		if (m_sDescription != sDesciption)
+		if (m_sType != sType)
 		{
 			// Affectation de la nouvelle valeur.
-			m_sDescription = sDesciption;
+			m_sType = sType;
+
+			// Marquer l'objet comme modifié.
+			SetModifier();
+		}
+
+		// Le changement de valeur a réussi.
+		return true;
+	}
+
+	unsigned long CControle::GetResIdent()
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return DefULong;
+
+		return m_ulResdent;
+	}
+
+	bool CControle::SetResIdent(unsigned long ulResIdent)
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return false;
+
+		// Le champ est modifié uniquement si sa valeur change.
+		if (m_ulResdent != ulResIdent)
+		{
+			// Affectation de la nouvelle valeur.
+			m_ulResdent = ulResIdent;
 
 			// Marquer l'objet comme modifié.
 			SetModifier();
@@ -308,9 +341,8 @@ namespace GDSObject
 
 
 
-
 	//! Constructeur
-	CProjetListe::CProjetListe()
+	CControleListe::CControleListe()
 	{
 		/* Initialisation des pointeurs. */
 
@@ -319,14 +351,14 @@ namespace GDSObject
 	}
 
 	//! Destructeur
-	CProjetListe::~CProjetListe(void)
+	CControleListe::~CControleListe(void)
 	{
 		/* Initialisation des données. */
 		InitialiserDonnees();
 	}
 
 	//! Constructeur par copie.
-	CProjetListe::CProjetListe(const CProjetListe &source)
+	CControleListe::CControleListe(const CControleListe &source)
 	{
 		/* Initialisation des pointeurs. */
 
@@ -338,7 +370,7 @@ namespace GDSObject
 	}
 
 	//! Opérateur =
-	CProjetListe & CProjetListe::operator=(const CProjetListe &source)
+	CControleListe & CControleListe::operator=(const CControleListe &source)
 	{
 		/* Clonage des données. */
 		ClonnerDonnees(source);
@@ -347,43 +379,47 @@ namespace GDSObject
 	}
 
 	//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-	void CProjetListe::ClonnerDonnees(const CProjetListe &source)
+	void CControleListe::ClonnerDonnees(const CControleListe &source)
 	{
 		/* Initialisation des données. */
 		InitialiserDonnees();
 
 		/* Copie des variables membres de l'objet. */
+		m_ulResIdent = source.m_ulResIdent;
 
 		/* Copie des pointeurs membres de l'objet. */
 	}
 
 	//! Initialisation des données membres de la classe
-	void CProjetListe::InitialiserDonnees()
+	void CControleListe::InitialiserDonnees()
 	{
+		m_ulResIdent = DefULong;
 	}
 
 	//! Initialisation de la liste d'objet
-	bool CProjetListe::Initialiser()
+	bool CControleListe::Initialiser()
 	{
 		if (DoitEtreInitialiser() == false) return true;
 		if (PeutEtreInitialiser() == false) return false;
-
 
 		// Initialisation depuis la base
 		if (!EstAcquis())
 		{
 			std::ostringstream osQuery;
-			osQuery << "select PRJ_IDENT, PRJ_LIBELLE, PRJ_DESCRIPTION, PRJ_H_FOLDER, PRJ_CPP_FOLDER from PROJET";
+			osQuery << "select CTR_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT from CONTROLE";
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			while (query.executeStep())
 			{
-				CProjet* pProjet = new CProjet(query.getColumn(0).getInt());
-				pProjet->SetInitaliser(true);
-				pProjet->SetLibelle(query.getColumn(1).getText());
-				pProjet->SetDesciption(query.getColumn(2).getText());
+				CControle* pControle		= new CControle(query.getColumn(0).getInt());
+				pControle->m_sLibelle		= query.getColumn(1).getText();
+				pControle->m_sType			= query.getColumn(2).getText();
+				pControle->m_ulResdent		= query.getColumn(3).getInt();
 
-				Add(pProjet);
+				// L'objet est acquis
+				pControle->SetAcquis();
+
+				Add(pControle);
 			}
 
 			// L'objet est acquis
@@ -397,14 +433,14 @@ namespace GDSObject
 	}
 
 	//! Verification
-	bool CProjetListe::Verifier(std::string* sMsg)
+	bool CControleListe::Verifier(std::string* sMsg)
 	{
 		// Vérifications de base
 		return CDObjListe::Verifier(sMsg);
 	}
 
 	//! Sauvegarde
-	bool CProjetListe::Sauver()
+	bool CControleListe::Sauver()
 	{
 		if (!(DoitEtreSauver() || DoitEtreSupprimer())) return true;
 		if (!(PeutEtreSauver() || PeutEtreSupprimer())) return false;
@@ -430,7 +466,7 @@ namespace GDSObject
 	}
 
 	//! Suppression
-	bool CProjetListe::Supprimer()
+	bool CControleListe::Supprimer()
 	{
 		if (DoitEtreSupprimer() == false) return true;
 		if (PeutEtreSupprimer() == false) return false;
@@ -452,6 +488,73 @@ namespace GDSObject
 
 		// Les objets sont supprimés
 		SetSupprimer();
+
+		return true;
+	}
+
+	bool CControleListe::InitialiserAPartirDeResIdent(unsigned long ulResIdent)
+	{
+		if (DoitEtreInitialiser() == false) return true;
+		if (PeutEtreInitialiser() == false) return false;
+
+		//! Initialisation des données membres de la classe
+		InitialiserDonnees();
+		
+		m_ulResIdent = ulResIdent;
+
+		// Initialisation depuis la base
+		if (!EstAcquis())
+		{
+			std::ostringstream osQuery;
+			osQuery << "select CTR_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT from CONTROLE where CTR_RES_IDENT = " << ToQuery(ulResIdent);
+
+			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
+			while (query.executeStep())
+			{
+				CControle* pControle		= new CControle(query.getColumn(0).getInt());
+				pControle->m_sLibelle		= query.getColumn(1).getText();
+				pControle->m_sType			= query.getColumn(2).getText();
+				pControle->m_ulResdent		= query.getColumn(3).getInt();
+
+				// L'objet est acquis
+				pControle->SetAcquis();
+
+				Add(pControle);
+			}
+
+			// L'objet est acquis
+			if (GetSize()) SetAcquis();
+		}
+
+		// L'objet est initialisé
+		SetInitaliser();
+
+		return true;
+	}
+
+	unsigned long CControleListe::GetResIdent()
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return DefULong;
+
+		return m_ulResIdent;
+	}
+
+	bool CControleListe::SetResIdent(unsigned long ulResIdent)
+	{
+		if (!Initialiser()) return false;
+
+		// Mise à jour de la variable
+		if (m_ulResIdent != ulResIdent)
+		{
+			m_ulResIdent = ulResIdent;
+			SetModifier();
+		}
+
+		// Mise à jour de la liste
+		for (int i = 0; i < GetSize(); i++)
+			if (GetAt(i)->SetResIdent(ulResIdent) == false)
+				return false;
 
 		return true;
 	}

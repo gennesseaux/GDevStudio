@@ -4,6 +4,11 @@
 
 #pragma once
 
+
+// Inclusions
+#include "ProprieterViewBar.h"
+
+
 class CMainFrame : public CBCGPFrameWnd
 {
 	
@@ -34,6 +39,9 @@ protected:  // control bar embedded members
 	CBCGPRibbonBar			m_wndRibbonBar;
 	CBCGPMenuBar			m_wndMenuBar;
 	CBCGPToolBar			m_wndToolBar;
+
+	CProprieterViewBar		m_wndPropertiesBar;
+
 // Generated message map functions
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -41,6 +49,7 @@ protected:
 	afx_msg void OnToolsOptions();
 	DECLARE_MESSAGE_MAP()
 
-	BOOL CreateRibbonBar ();
+	BOOL CreateRibbonBar();
+	BOOL CreateDockingBars();
 	void ShowOptions (int nPage);
 };

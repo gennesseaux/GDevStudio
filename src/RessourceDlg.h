@@ -1,25 +1,26 @@
-
 #pragma once
 
 // Inclusions
 #include "GDevStudioDialogBase.h"
 
 // Inclusions
-#include "DObject/Projet.h"
+#include "DObject/Ressource.h"
+#include "DObject/Controle.h"
+#include "RcReader/RcReader.h"
 
 
-class CProjetDlg : public CGDevStudioDialogBase
+class CRessourceDlg : public CGDevStudioDialogBase
 {
-	DECLARE_DYNAMIC(CProjetDlg)
+	DECLARE_DYNAMIC(CRessourceDlg)
 
 public:
 	// Constructeur
-	CProjetDlg(GDSObject::CProjet* pProjet, CWnd* pParent = NULL);
+	CRessourceDlg(GDSObject::CRessource* pRessource, CWnd* pParent = NULL);
 	// Destructeur
-	virtual ~CProjetDlg();
+	virtual ~CRessourceDlg();
 
 	// Données de boîte de dialogue
-	enum { IDD = IDD_PROJET };
+	enum { IDD = IDD_RESSOURCE };
 
 protected:
 	// Prise en charge de DDX/DDV
@@ -42,29 +43,21 @@ protected:
 
 	// Mise à jour des contraintes.
 	virtual void UpdateConstraints();
+	
+protected:
+	afx_msg void OnEmplacementChange();
+	afx_msg void OnRessourceChange();
+	afx_msg void OnAjouter();
 
 protected:
-	afx_msg void OnChange();
-	afx_msg void OnOk();
-
-
-protected:
-	// Contrôles
-	CBCGPEdit m_edtCode;
-	CBCGPEdit m_edtDescription;
-	CBCGPEdit m_edtEmplacementFichierH;
-	CBCGPEdit m_edtEmplacementFichierCpp;
-
-	CBCGPStatic m_lblInfo;
-	CBCGPStatic m_lblCode;
-	CBCGPStatic m_lblDescription;
-	CBCGPStatic m_lblRepertoires;
-	CBCGPStatic m_lblFichierH;
-	CBCGPStatic m_lblFichierCpp;
-
-	CBCGPButton	m_btnOk;
-
+	CBCGPEdit		m_edtEmplacement;
+	CBCGPComboBox	m_cbxRessource;
+	CBCGPButton		m_btnAjouter;
+	CBCGPButton		m_btnAnnuler;
 
 private:
-	GDSObject::CProjet* m_pProjet = nullptr;
+	GDSObject::CRessource*	m_pRessource = nullptr;
+
+	RcReader::CRcReader*	m_pRcReader = nullptr;
+	RcReader::CRcResourceDialog* m_pRcDialog = nullptr;
 };

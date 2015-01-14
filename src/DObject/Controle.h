@@ -2,7 +2,7 @@
 //
 //	-----------------------------------------------------------------------
 //
-//	 Fichier		: 	Projet.h
+//	 Fichier		: 	Controle.h
 //
 //	 Auteur			:	GENNESSEAUX Jocelyn
 //
@@ -11,9 +11,6 @@
 //	-----------------------------------------------------------------------
 //	 Révisions		:	16/7/2014 : 
 //	-----------------------------------------------------------------------
-//
-//	http://census.soe.com/s:H41PS2SL/get/ps2/Projet?c:lang=fr&c:limit=100
-//
 //*/
 
 #pragma once
@@ -21,30 +18,32 @@
 // Inclusions
 #include <DObject/DObjBase.h>
 #include <DObject/DObjListe.h>
-#include <DObject/DObjCacheData.h>
-#include <Poco/Path.h>
+
+// Inclusions Poco
+#include <Poco/File.h>
 
 namespace GDSObject
 {
-	class CProjetListe;
+	class CControleListe;
 
 	// Classe CDObjTest
-	class CProjet : public DObject::CDObjBase
+	class CControle : public DObject::CDObjBase
 	{
+		friend class CControleListe;
+
 	public:
 		//! Constructeur
-		CProjet(unsigned long ulId = DefULong);
+		CControle(unsigned long ulId = DefULong);
+		//! Destructeur
+		~CControle(void);
 
 		//! Constructeur par copie.
-		CProjet(const CProjet &source);
+		CControle(const CControle &source);
 		//! Opérateur =
-		CProjet &operator=(const CProjet &source);
-		//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-		void ClonnerDonnees(const CProjet &source);
+		CControle &operator=(const CControle &source);
 
-	protected:
-		//! Destructeur
-		~CProjet(void);
+		//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
+		void ClonnerDonnees(const CControle &source);
 
 	public:
 		//! Initialisation des données membres de la classe
@@ -63,34 +62,38 @@ namespace GDSObject
 		std::string GetLibelle();
 		bool SetLibelle(std::string sName);
 
-		std::string GetDesciption();
-		bool SetDesciption(std::string sDesciption);
+		std::string GetType();
+		bool SetType(std::string sType);
 
-	private:
+		unsigned long GetResIdent();
+		bool SetResIdent(unsigned long ulResIdent);
+		
+		//CControleListe* GetControleListe(bool bInit = true);
+
+	protected:
 		// Données membres
 		std::string		m_sLibelle;
-		std::string		m_sDescription;
-		Poco::Path		m_ptHFolder;
-		Poco::Path		m_ptCppFolder;
+		std::string		m_sType;
+		unsigned long	m_ulResdent;				// Identifiant du filtre parent
 	};
 
 
 
 	// Classe CDObjTestListe
-	class CProjetListe : public DObject::CDObjListe<CProjet>
+	class CControleListe : public DObject::CDObjListe<CControle>
 	{
 	public:
 		//! Constructeur
-		CProjetListe();
+		CControleListe();
 		//! Destructeur
-		~CProjetListe(void);
+		~CControleListe(void);
 
 		//! Constructeur par copie.
-		CProjetListe(const CProjetListe &source);
+		CControleListe(const CControleListe &source);
 		//! Opérateur =
-		CProjetListe &operator=(const CProjetListe &source);
+		CControleListe &operator=(const CControleListe &source);
 		//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-		void ClonnerDonnees(const CProjetListe &source);
+		void ClonnerDonnees(const CControleListe &source);
 
 	public:
 		//! Initialisation des données membres de la classe
@@ -103,6 +106,20 @@ namespace GDSObject
 		virtual bool Sauver();
 		//! Suppression
 		virtual bool Supprimer();
+
+	public:
+		//
+		bool InitialiserAPartirDeResIdent(unsigned long ulResIdent);
+
+
+	public:
+		unsigned long GetResIdent();
+		bool SetResIdent(unsigned long ulResIdent);
+
+
+	protected:
+		// Données membres
+		unsigned long	m_ulResIdent;		// Identifiant du filtre parent
 	};
 
 }

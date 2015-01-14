@@ -59,6 +59,8 @@ protected:
 	// Création des tables
 	void CreateTablePROJET();
 	void CreateTableFILTRE();
+	void CreateTableRESSOURCE();
+	void CreateTableCONTROLE();
 
 private:
 	static std::string		m_sDefaultDatabase;

@@ -1,7 +1,7 @@
 // GDevStudio.cpp : Defines the class behaviors for the application.
 //
 
-#include "stdafx.h"
+#include "Stdafx.h"
 #include <vld.h>
 #include "GDevStudio.h"
 #include "MainFrm.h"

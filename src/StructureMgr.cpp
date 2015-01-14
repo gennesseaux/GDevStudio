@@ -43,6 +43,10 @@ CTreeGrille* CStructureMgr::GetTreeGrille() const
 }
 
 // Modifie le titre du document
+void CStructureMgr::UpdateTitle()
+{
+	UpdateTitle(ToString(m_pSItemProjet->GetLibelle()));
+}
 void CStructureMgr::UpdateTitle(CString sTitle)
 {
 	m_pDoc->SetTitle(sTitle);

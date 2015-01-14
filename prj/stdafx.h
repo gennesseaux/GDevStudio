@@ -55,7 +55,6 @@
 // BCGPro Control Bar
 #define _BCGCBPRO_STATIC_
 #include <BCGCBProInc.h>
-#include "BCGPDialog.h"
 #include <afxcontrolbars.h>
 
 //

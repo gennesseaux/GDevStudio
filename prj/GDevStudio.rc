@@ -102,6 +102,7 @@ BEGIN
             MENUITEM "",                            ID_VIEW_TOOLBARS
         END
         MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "Propriétés",                  ID_VIEW_PROPRIETES
     END
     POPUP "&Help"
     BEGIN
@@ -180,6 +181,19 @@ BEGIN
     PUSHBUTTON      "Annuler",IDCANCEL,254,160,50,14
 END
 
+IDD_RESSOURCE DIALOGEX 0, 0, 309, 72
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Ajout d'une ressource"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Ajouter",IDOK,192,52,52,16
+    PUSHBUTTON      "Annuler",IDCANCEL,252,52,52,16
+    LTEXT           "Emplacement :",IDC_STATIC,4,7,48,8
+    CONTROL         "",IDC_MFCEDITBROWSE1,"MfcEditBrowse",WS_BORDER | WS_TABSTOP | 0x80,56,4,248,14,WS_EX_ACCEPTFILES
+    LTEXT           "Ressource :",IDC_STATIC,4,26,39,8
+    COMBOBOX        IDC_COMBO1,56,24,160,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -243,6 +257,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 173
     END
+
+    IDD_RESSOURCE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 65
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -257,6 +279,8 @@ IDB_FILTRE              PNG                     "res\\Png\\filtre.png"
 IDB_FILTRE_RESSOURCE    PNG                     "res\\Png\\filtreRessource.png"
 IDB_FILTRE_SQL          PNG                     "res\\Png\\filtreSQL.png"
 IDB_FILTRE_SQLITE       PNG                     "res\\Png\\filtreSQLite.png"
+IDB_CONTROLE            PNG                     "res\\Png\\controle.png"
+IDB_RESSOURCE           PNG                     "res\\Png\\ressource.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -266,6 +290,7 @@ IDB_FILTRE_SQLITE       PNG                     "res\\Png\\filtreSQLite.png"
 IDR_TOOLBAR_IMAGES TOOLBAR 16, 16
 BEGIN
     BUTTON      IDMS__NOUVEAU_FILTRE
+    BUTTON      IDMS__NOUVEAU_RESSOURCE
     SEPARATOR
     BUTTON      IDMS__COUPER
     BUTTON      IDMS__COPIER
@@ -285,6 +310,21 @@ END
 IDR_TOOLBAR_IMAGES      BITMAP                  "res\\Toolbar\\ToolbarImages.bmp"
 IDB_TOOLBAR_IMAGES_16   BITMAP                  "res\\Toolbar\\ToolbarImages16.bmp"
 IDB_TOOLBAR_IMAGES_D16  BITMAP                  "res\\Toolbar\\ToolbarImagesD16.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_RESSOURCE DLGINIT
+BEGIN
+    IDC_MFCEDITBROWSE1, 0x37c, 42, 0
+0x4d3c, 0x4346, 0x6445, 0x7469, 0x7242, 0x776f, 0x6573, 0x4d5f, 0x646f, 
+0x3e65, 0x3c31, 0x4d2f, 0x4346, 0x6445, 0x7469, 0x7242, 0x776f, 0x6573, 
+0x4d5f, 0x646f, 0x3e65, 
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

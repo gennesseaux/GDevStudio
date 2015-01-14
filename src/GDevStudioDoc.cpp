@@ -1,9 +1,10 @@
 // GDevStudioDoc.cpp : implementation of the CGDevStudioDoc class
 //
 
-#include "stdafx.h"
-#include "GDevStudio.h"
 
+// Inclusions
+#include "Stdafx.h"
+#include "GDevStudio.h"
 #include "GDevStudioDoc.h"
 
 // Inclusions
@@ -40,9 +41,8 @@ BOOL CGDevStudioDoc::OnNewDocument()
  	CSQLiteSource::instance().New();
  
  	// Création du projet par défault
- 	delete m_pProjet;
- 	m_pProjet = new GDSObject::CProjet();
- 	m_pProjet->SetLibelle("Nouveau projet");
+ 	GDSObject::CProjet projet;
+ 	projet.SetLibelle("Nouveau projet");
  
  	GDSObject::CFiltre* pFiltreSql = new GDSObject::CFiltre();
  	pFiltreSql->SetLibelle("SQL");
@@ -53,16 +53,19 @@ BOOL CGDevStudioDoc::OnNewDocument()
  		pFiltre01->SetLibelle("Filtre 01");
  		pFiltre01->SetType(GDSObject::FiltreType::Filtre);
  		pFiltreSql->GetFiltreListe(false)->Add(pFiltre01);
+		pFiltre01->AddParent(pFiltreSql);
  
  		GDSObject::CFiltre* pFiltre02 = new GDSObject::CFiltre();
  		pFiltre02->SetLibelle("Filtre 02");
  		pFiltre02->SetType(GDSObject::FiltreType::Filtre);
  		pFiltreSql->GetFiltreListe(false)->Add(pFiltre02);
+		pFiltre02->AddParent(pFiltreSql);
  
  		GDSObject::CFiltre* pFiltre03 = new GDSObject::CFiltre();
  		pFiltre03->SetLibelle("Filtre 03");
  		pFiltre03->SetType(GDSObject::FiltreType::Filtre);
  		pFiltreSql->GetFiltreListe(false)->Add(pFiltre03);
+		pFiltre03->AddParent(pFiltreSql);
  	#endif
  
  	GDSObject::CFiltre* pFiltreSqlite = new GDSObject::CFiltre();
@@ -73,12 +76,14 @@ BOOL CGDevStudioDoc::OnNewDocument()
  	pFiltreRessource->SetLibelle("Ressources");
  	pFiltreRessource->SetType(GDSObject::FiltreType::Ressource);
  
- 	m_pProjet->GetFiltreListe(false)->Add(pFiltreSql);
- 	m_pProjet->GetFiltreListe(false)->Add(pFiltreSqlite);
- 	m_pProjet->GetFiltreListe(false)->Add(pFiltreRessource);
- 	m_pProjet->Sauver();
+ 	projet.GetFiltreListe(false)->Add(pFiltreSql);
+ 	projet.GetFiltreListe(false)->Add(pFiltreSqlite);
+ 	projet.GetFiltreListe(false)->Add(pFiltreRessource);
+ 	projet.Sauver();
 
-	SetTitle(ToString(m_pProjet->GetLibelle()));
+	//
+	m_ulProjetId = projet.GetId();
+	OnUpdateAllViews();
 
 	return TRUE;
 }
@@ -89,8 +94,9 @@ BOOL CGDevStudioDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	std::string sFile = CT2A(lpszPathName);
 	CSQLiteSource::instance().Open(sFile);
 
-// 	// Initilialisation de la structure
-// 	m_pStructureMgr->Initialiser(m_pProjet);
+ 	// Initilialisation de la structure
+ 	m_ulProjetId = 1;
+	OnUpdateAllViews();
 
 	return TRUE;
 }
@@ -106,13 +112,18 @@ BOOL CGDevStudioDoc::OnSaveDocument(LPCTSTR lpszPathName)
 
 void CGDevStudioDoc::OnCloseDocument()
 {
-	// Destruction du projet par défaut
-	delete m_pProjet;
-	m_pProjet = nullptr;
+	//
+	m_ulProjetId = DefULong;
 
 	// Fermeture du document
 	CDocument::OnCloseDocument();
 }
+
+void CGDevStudioDoc::OnUpdateAllViews()
+{
+	UpdateAllViews(NULL);
+}
+
 
 // CGDevStudioDoc serialization
 void CGDevStudioDoc::Serialize(CArchive& ar)

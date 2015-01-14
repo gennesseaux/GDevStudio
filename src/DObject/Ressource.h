@@ -2,7 +2,7 @@
 //
 //	-----------------------------------------------------------------------
 //
-//	 Fichier		: 	Projet.h
+//	 Fichier		: 	Ressource.h
 //
 //	 Auteur			:	GENNESSEAUX Jocelyn
 //
@@ -11,9 +11,6 @@
 //	-----------------------------------------------------------------------
 //	 Révisions		:	16/7/2014 : 
 //	-----------------------------------------------------------------------
-//
-//	http://census.soe.com/s:H41PS2SL/get/ps2/Projet?c:lang=fr&c:limit=100
-//
 //*/
 
 #pragma once
@@ -21,30 +18,33 @@
 // Inclusions
 #include <DObject/DObjBase.h>
 #include <DObject/DObjListe.h>
-#include <Poco/Path.h>
+
+// Inclusions Poco
+#include <Poco/File.h>
 
 namespace GDSObject
 {
-	class CProjetListe;
-	class CFiltreListe;
+	class CRessourceListe;
+	class CControleListe;
 
 	// Classe CDObjTest
-	class CProjet : public DObject::CDObjBase
+	class CRessource : public DObject::CDObjBase
 	{
+		friend class CRessourceListe;
+
 	public:
 		//! Constructeur
-		CProjet(unsigned long ulId = DefULong);
+		CRessource(unsigned long ulId = DefULong);
+		//! Destructeur
+		~CRessource(void);
 
 		//! Constructeur par copie.
-		CProjet(const CProjet &source);
+		CRessource(const CRessource &source);
 		//! Opérateur =
-		CProjet &operator=(const CProjet &source);
-		//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-		void ClonnerDonnees(const CProjet &source);
+		CRessource &operator=(const CRessource &source);
 
-	protected:
-		//! Destructeur
-		~CProjet(void);
+		//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
+		void ClonnerDonnees(const CRessource &source);
 
 	public:
 		//! Initialisation des données membres de la classe
@@ -63,44 +63,40 @@ namespace GDSObject
 		std::string GetLibelle();
 		bool SetLibelle(std::string sName);
 
-		std::string GetDesciption();
-		bool SetDesciption(std::string sDesciption);
+		Poco::File GetFile();
+		bool SetFile(Poco::File file);
 
-		Poco::Path GetHFolder();
-		bool SetHFolder(Poco::Path ptHFolder);
-
-		Poco::Path GetCppFolder();
-		bool SetCppFolder(Poco::Path ptCppFolder);
-
-		CFiltreListe* GetFiltreListe(bool bInit = true);
+		unsigned long GetFtrIdent();
+		bool SetFtrIdent(unsigned long ulFtrIdent);
+		
+		CControleListe* GetControleListe(bool bInit = true);
 
 	protected:
 		// Données membres
 		std::string		m_sLibelle;
-		std::string		m_sDescription;
-		Poco::Path		m_ptHFolder;
-		Poco::Path		m_ptCppFolder;
+		Poco::File		m_file;
+		unsigned long	m_ulFtrIdent;			// Identifiant du filtre parent
 		// Pointeurs
-		CFiltreListe*	m_pFiltreListe;		// Liste des diltre directement associés au projet
+		CControleListe*	m_pControleListe;		// Liste des contrôles de la ressource
 	};
 
 
 
 	// Classe CDObjTestListe
-	class CProjetListe : public DObject::CDObjListe<CProjet>
+	class CRessourceListe : public DObject::CDObjListe<CRessource>
 	{
 	public:
 		//! Constructeur
-		CProjetListe();
+		CRessourceListe();
 		//! Destructeur
-		~CProjetListe(void);
+		~CRessourceListe(void);
 
 		//! Constructeur par copie.
-		CProjetListe(const CProjetListe &source);
+		CRessourceListe(const CRessourceListe &source);
 		//! Opérateur =
-		CProjetListe &operator=(const CProjetListe &source);
+		CRessourceListe &operator=(const CRessourceListe &source);
 		//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-		void ClonnerDonnees(const CProjetListe &source);
+		void ClonnerDonnees(const CRessourceListe &source);
 
 	public:
 		//! Initialisation des données membres de la classe
@@ -113,6 +109,20 @@ namespace GDSObject
 		virtual bool Sauver();
 		//! Suppression
 		virtual bool Supprimer();
+
+	public:
+		//
+		bool InitialiserAPartirDeFtrIdent(unsigned long ulFtrIdent);
+
+
+	public:
+		unsigned long GetFtrIdent();
+		bool SetFtrIdent(unsigned long ulFtrIdent);
+
+
+	protected:
+		// Données membres
+		unsigned long	m_ulFtrIdent;		// Identifiant du filtre parent
 	};
 
 }

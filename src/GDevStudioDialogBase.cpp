@@ -1,6 +1,6 @@
 
 // Inclusions
-#include "stdafx.h"
+#include "Stdafx.h"
 #include "GDevStudio.h"
 #include "GDevStudioDialogBase.h"
 

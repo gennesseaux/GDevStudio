@@ -12,6 +12,8 @@ enum class TreeImage
 	FiltreSQLite,
 	FiltreRessource,
 	Filtre,
+	Ressource,
+	Controle,
 
 	Count
 };

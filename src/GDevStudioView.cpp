@@ -1,7 +1,7 @@
 
 
 // Inclusions
-#include "stdafx.h"
+#include "Stdafx.h"
 #include "GDevStudio.h"
 
 // Inclusions
@@ -164,9 +164,15 @@ void CGDevStudioView::OnContextMenu(CWnd*, CPoint point)
 
 void CGDevStudioView::OnInitialUpdate()
 {
+}
+
+
+void CGDevStudioView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
+{
   	// Initialisation de la grille
   	if(m_pStructureMgr==nullptr)
   		m_pStructureMgr = new CStructureMgr(GetDocument(),m_pTreeGrille);
-  	m_pStructureMgr->Initialiser(GetDocument()->Projet()->GetId());
-}
 
+	m_pStructureMgr->Initialiser(GetDocument()->GetProjetId());
+	m_pStructureMgr->UpdateTitle();
+}

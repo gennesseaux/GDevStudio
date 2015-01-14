@@ -1,7 +1,7 @@
 
 
 // Inclusions
-#include "StdAfx.h"
+#include "Stdafx.h"
 #include "GDevStudio.h"
 #include "TreeIconMgr.h"
 
@@ -22,6 +22,8 @@ CTreeIconMgr::CTreeIconMgr(CTreeGrille* pTree)
 	m_mapImageIndex[TreeImage::FiltreSQLite]	= AddPng(IDB_FILTRE_SQLITE, &m_ImagesList);
 	m_mapImageIndex[TreeImage::FiltreRessource]	= AddPng(IDB_FILTRE_RESSOURCE, &m_ImagesList);
 	m_mapImageIndex[TreeImage::Filtre]			= AddPng(IDB_FILTRE, &m_ImagesList);
+	m_mapImageIndex[TreeImage::Ressource]		= AddPng(IDB_RESSOURCE, &m_ImagesList);
+	m_mapImageIndex[TreeImage::Controle]		= AddPng(IDB_CONTROLE, &m_ImagesList);
 
 	// Affectation de la liste des images
 	pTree->SetImageList(&m_ImagesList);

@@ -18,11 +18,14 @@
 // Inclusions
 #include <DObject/DObjBase.h>
 #include <DObject/DObjListe.h>
+
+// Inclusions Poco
 #include <Poco/Path.h>
 
 namespace GDSObject
 {
 	class CFiltreListe;
+	class CRessourceListe;
 
 	enum class FiltreType
 	{
@@ -84,17 +87,19 @@ namespace GDSObject
 		bool SetCppFolder(Poco::Path ptCppFolder);
 		
 		CFiltreListe* GetFiltreListe(bool bInit = true);
+		CRessourceListe* GetRessourceListe(bool bInit = true);
 
 	protected:
 		// Données membres
-		std::string		m_sLibelle;
-		FiltreType		m_iType;
-		unsigned long	m_ulPrjIdent;		// Identifiant du projet parent
-		unsigned long	m_ulFtrIdent;		// Identifiant du filtre parent
-		Poco::Path		m_ptHFolder;
-		Poco::Path		m_ptCppFolder;
+		std::string			m_sLibelle;
+		FiltreType			m_iType;
+		unsigned long		m_ulPrjIdent;		// Identifiant du projet parent
+		unsigned long		m_ulFtrIdent;		// Identifiant du filtre parent
+		Poco::Path			m_ptHFolder;
+		Poco::Path			m_ptCppFolder;
 		// Pointeurs
-		CFiltreListe*	m_pFiltreListe;		// Liste des diltre directement associés au projet
+		CFiltreListe*		m_pFiltreListe = nullptr;		// Liste des filtres
+		CRessourceListe*	m_pRessourceListe = nullptr;	// Liste des ressouurces
 	};
 
 
@@ -129,9 +134,9 @@ namespace GDSObject
 
 	public:
 		//
-		bool InitialiserAPartirDePrjIdent(unsigned long PrjIdent);
+		bool InitialiserAPartirDePrjIdent(unsigned long ulPrjIdent);
 		//
-		bool InitialiserAPartirDeFtrIdent(unsigned long FtrIdent);
+		bool InitialiserAPartirDeFtrIdent(unsigned long ulFtrIdent);
 
 
 	public:

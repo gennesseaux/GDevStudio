@@ -14,7 +14,7 @@
 //*/
 
 // Inclusions
-#include "StdAfx.h"
+#include "Stdafx.h"
 #include "Projet.h"
 
 // Inclusions
@@ -40,6 +40,9 @@ namespace GDSObject
 	//! Destructeur
 	CProjet::~CProjet(void)
 	{
+		//
+		RemoveEnfants();
+
 		/* Initialisation des données. */
 		InitialiserDonnees();
 	}

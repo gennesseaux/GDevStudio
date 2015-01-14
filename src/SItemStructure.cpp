@@ -50,10 +50,25 @@ void CSItemStructure::AjouterLigneGrille()
 
 void CSItemStructure::AjouterLigneGrille(CSItemStructure* pParent)
 {
-	pParent->GetLigne()->AddSubItem(m_pRow);
+	pParent->GetGridRow()->AddSubItem(m_pRow);
 }
 
-CBCGPGridRow* CSItemStructure::GetLigne()
+CBCGPGridRow* CSItemStructure::GetGridRow()
 {
 	return m_pRow;
+}
+
+CBCGPGridItem* CSItemStructure::GetGridItem()
+{
+	return m_pRow->GetItem(0);
+}
+
+CBCGPGridItemID CSItemStructure::GetGridItemID()
+{
+	return GetGridItem()->GetGridItemID();
+}
+
+void CSItemStructure::Expand(BOOL bExpand /*= TRUE*/)
+{
+	GetGridRow()->Expand(bExpand);
 }

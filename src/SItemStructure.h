@@ -39,9 +39,17 @@ public:
 	// Ajout de la ligne à la grille
 	void AjouterLigneGrille(CSItemStructure* pParent);
 	//
-	CBCGPGridRow* GetLigne();
+	CBCGPGridRow* GetGridRow();
+	//
+	CBCGPGridItem* GetGridItem();
+	//
+	CBCGPGridItemID GetGridItemID();
 	//
 	SItemType GetTypeItem() const { return m_SItemType; }
+
+	//
+	void Expand(BOOL bExpand = TRUE);
+
 
 public:
 	virtual void UpdateTreeItem() = 0;

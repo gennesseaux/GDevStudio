@@ -4,6 +4,7 @@
 #include "Stdafx.h"
 #include "SItemFiltre.h"
 #include "SItemProjet.h"
+#include "SItemRessource.h"
 
 
 // Constructeur
@@ -20,6 +21,9 @@ CSItemFiltre::CSItemFiltre(CStructureMgr* pStructureMgr, const CFiltre &source, 
 	// Ajout du Filtre dans la grille
 	CSItemStructure::AjouterLigneGrille(pSItemProjet);
 
+	// Parent
+	this->AddParent(pSItemProjet);
+
 	// Ajout des filtres du filtre
 	CFiltreListe* pFiltreListe = GetFiltreListe();
 	for (int i = 0; i < pFiltreListe->GetCount() ; i++)
@@ -32,6 +36,22 @@ CSItemFiltre::CSItemFiltre(CStructureMgr* pStructureMgr, const CFiltre &source, 
 		pFiltreListe->RemoveAt(i);
 		pFiltreListe->InsertAt(i,pSItemFiltre);
 	}
+
+	// Ajout des ressources du filtre
+	CRessourceListe* pRessourceListe = GetRessourceListe();
+	for (int i = 0; i < pRessourceListe->GetCount() ; i++)
+	{
+		CRessource* pRessource = pRessourceListe->GetAt(i);
+		pRessource->Initialiser();
+
+		CSItemRessource* pSItemRessource = new CSItemRessource(pStructureMgr,*pRessource, this);
+
+		pRessourceListe->RemoveAt(i);
+		pRessourceListe->InsertAt(i,pSItemRessource);
+	}
+
+	//
+	this->Expand(FALSE);
 }
 
 // Constructeur
@@ -39,6 +59,9 @@ CSItemFiltre::CSItemFiltre(CStructureMgr* pStructureMgr, const CFiltre &source, 
 {
 	// Ajout du Filtre dans la grille
 	CSItemStructure::AjouterLigneGrille(pSItemFiltre);
+
+	// Parent
+	this->AddParent(pSItemFiltre);
 
 	// Ajout des filtres du filtre
 	CFiltreListe* pFiltreListe = GetFiltreListe();

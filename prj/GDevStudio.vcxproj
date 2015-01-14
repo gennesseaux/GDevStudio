@@ -59,13 +59,13 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\src;..\..\Commun\DObject\include;..\..\Commun\Outils\\include;..\..\Commun\SQLite\\include;..\..\..\Poco\Crypto\include;..\..\Poco\Foundation\include;..\..\Poco\JSON\include;..\..\Poco\Net\include;..\..\Poco\NetSSL_OpenSSL\include;..\..\Poco\Util\include;..\..\Poco\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\src;..\..\Commun\DObject\include;..\..\Commun\Outils\\include;..\..\Commun\RcReader\include;..\..\Commun\SQLite\include;..\..\Poco\Crypto\include;..\..\Poco\Foundation\include;..\..\Poco\JSON\include;..\..\Poco\Net\include;..\..\Poco\NetSSL_OpenSSL\include;..\..\Poco\Util\include;..\..\Poco\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\Commun\bin\$(Configuration)\;..\..\Poco\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DObject.lib;SQLite.lib</AdditionalDependencies>
+      <AdditionalDependencies>DObject.lib;SQLite.lib;RcReader.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -113,7 +113,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
       <MinimalRebuild>false</MinimalRebuild>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\src;..\..\Commun\DObject\include;..\..\Commun\Outils\\include;..\..\Commun\SQLite\\include;..\..\..\Poco\Crypto\include;..\..\Poco\Foundation\include;..\..\Poco\JSON\include;..\..\Poco\Net\include;..\..\Poco\NetSSL_OpenSSL\include;..\..\Poco\Util\include;..\..\Poco\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\src;..\..\Commun\DObject\include;..\..\Commun\Outils\\include;..\..\Commun\RcReader\include;..\..\Commun\SQLite\include;..\..\Poco\Crypto\include;..\..\Poco\Foundation\include;..\..\Poco\JSON\include;..\..\Poco\Net\include;..\..\Poco\NetSSL_OpenSSL\include;..\..\Poco\Util\include;..\..\Poco\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,7 +121,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\..\Commun\bin\$(Configuration)\;..\..\Poco\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DObject.lib;SQLite.lib</AdditionalDependencies>
+      <AdditionalDependencies>DObject.lib;SQLite.lib;RcReader.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -159,8 +159,10 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\DObject\Controle.h" />
     <ClInclude Include="..\src\DObject\Filtre.h" />
     <ClInclude Include="..\src\DObject\Projet.h" />
+    <ClInclude Include="..\src\DObject\Ressource.h" />
     <ClInclude Include="..\src\GDevStudio.h" />
     <ClInclude Include="..\src\GDevStudioDialogBase.h" />
     <ClInclude Include="..\src\GDevStudioDoc.h" />
@@ -168,9 +170,13 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClInclude Include="..\src\MainFrm.h" />
     <ClInclude Include="..\src\Outils\MenuFunctions\MenuFunctions.h" />
     <ClInclude Include="..\src\ProjetDlg.h" />
+    <ClInclude Include="..\src\ProprieterViewBar.h" />
+    <ClInclude Include="..\src\RessourceDlg.h" />
+    <ClInclude Include="..\src\SItemControle.h" />
     <ClInclude Include="..\src\SItemDef.h" />
     <ClInclude Include="..\src\SItemFiltre.h" />
     <ClInclude Include="..\src\SItemProjet.h" />
+    <ClInclude Include="..\src\SItemRessource.h" />
     <ClInclude Include="..\src\SItemStructure.h" />
     <ClInclude Include="..\src\StructureMgr.h" />
     <ClInclude Include="..\src\TreeIconMgr.h" />
@@ -180,8 +186,10 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\DObject\Controle.cpp" />
     <ClCompile Include="..\src\DObject\Filtre.cpp" />
     <ClCompile Include="..\src\DObject\Projet.cpp" />
+    <ClCompile Include="..\src\DObject\Ressource.cpp" />
     <ClCompile Include="..\src\GDevStudio.cpp" />
     <ClCompile Include="..\src\GDevStudioDialogBase.cpp" />
     <ClCompile Include="..\src\GDevStudioDoc.cpp" />
@@ -189,8 +197,12 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClCompile Include="..\src\MainFrm.cpp" />
     <ClCompile Include="..\src\Outils\MenuFunctions\MenuFunctions.cpp" />
     <ClCompile Include="..\src\ProjetDlg.cpp" />
+    <ClCompile Include="..\src\ProprieterViewBar.cpp" />
+    <ClCompile Include="..\src\RessourceDlg.cpp" />
+    <ClCompile Include="..\src\SItemControle.cpp" />
     <ClCompile Include="..\src\SItemFiltre.cpp" />
     <ClCompile Include="..\src\SItemProjet.cpp" />
+    <ClCompile Include="..\src\SItemRessource.cpp" />
     <ClCompile Include="..\src\SItemStructure.cpp" />
     <ClCompile Include="..\src\StructureMgr.cpp" />
     <ClCompile Include="..\src\TreeIconMgr.cpp" />
@@ -218,11 +230,13 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <Image Include="res\BCGSoft_ribbon\ribbon_bar.png" />
     <Image Include="res\GDevStudio.ico" />
     <Image Include="res\GDevStudioDoc.ico" />
+    <Image Include="res\Png\controle.png" />
     <Image Include="res\Png\filtre.png" />
     <Image Include="res\Png\filtreRessource.png" />
     <Image Include="res\Png\filtreSQL.png" />
     <Image Include="res\Png\filtreSQLite.png" />
     <Image Include="res\Png\projet.png" />
+    <Image Include="res\Png\ressource.png" />
     <Image Include="res\Toolbar\ToolbarImages.bmp" />
     <Image Include="res\Toolbar\ToolbarImages16.bmp" />
     <Image Include="res\Toolbar\ToolbarImagesD16.bmp" />

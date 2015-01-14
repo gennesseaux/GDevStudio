@@ -5,5 +5,7 @@
 enum class SItemType
 {
 	Projet,
-	Filtre
+	Filtre,
+	Ressource,
+	Controle
 };

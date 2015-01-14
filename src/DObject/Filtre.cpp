@@ -14,8 +14,9 @@
 //*/
 
 // Inclusions
-#include "StdAfx.h"
+#include "Stdafx.h"
 #include "Filtre.h"
+#include "Ressource.h"
 
 // Inclusions
 #include <SQLite/SQLiteSource.h>
@@ -29,6 +30,7 @@ namespace GDSObject
 	{
 		/* Initialisation des pointeurs. */
 		m_pFiltreListe = nullptr;
+		m_pRessourceListe = nullptr;
 
 		/* Initialisation des données. */
 		InitialiserDonnees();
@@ -37,6 +39,9 @@ namespace GDSObject
 	//! Destructeur
 	CFiltre::~CFiltre(void)
 	{
+		//
+		RemoveEnfants();
+
 		/* Initialisation des données. */
 		InitialiserDonnees();
 	}
@@ -46,6 +51,7 @@ namespace GDSObject
 	{
 		/* Initialisation des pointeurs. */
 		m_pFiltreListe = nullptr;
+		m_pRessourceListe = nullptr;
 
 		/* Initialisation des données. */
 		InitialiserDonnees();
@@ -82,6 +88,8 @@ namespace GDSObject
 		/* Copie des pointeurs membres de l'objet. */
 		if (source.m_pFiltreListe)
 			m_pFiltreListe = new CFiltreListe(*source.m_pFiltreListe);
+		if (source.m_pRessourceListe)
+			m_pRessourceListe = new CRessourceListe(*source.m_pRessourceListe);
 	}
 
 	//! Initialisation des données membres de la classe
@@ -95,6 +103,7 @@ namespace GDSObject
 		m_ptCppFolder.clear();
 
 		delete m_pFiltreListe; m_pFiltreListe = nullptr;
+		delete m_pRessourceListe; m_pRessourceListe = nullptr;
 	}
 
 	//! Initialisation de l'objet
@@ -236,6 +245,16 @@ namespace GDSObject
 			return false;
 		}
 
+		//
+		if (m_pRessourceListe && (!((m_pRessourceListe->SetFtrIdent(m_ulId)) && (m_pRessourceListe->Sauver()))))
+		{
+			// Restauration de l'état précédent
+			state.Restore();
+			// Fin de la transaction automatique
+			__TRANSACTION_AUTO_ANNULE__;
+			return false;
+		}
+
 		// Fin de la transaction automatique
 		__TRANSACTION_AUTO_VALIDE__;
 
@@ -252,6 +271,30 @@ namespace GDSObject
 
 		// Gestion automatique des transactions
 		__TRANSACTION_AUTO_DEBUT__;
+
+		if(m_pFiltreListe)
+		{
+			m_pFiltreListe->SetPourSupprimer(true,true);
+
+			if(!m_pFiltreListe->Supprimer())
+			{
+				// Fin de la transaction automatique
+				__TRANSACTION_AUTO_ANNULE__;
+				return false;
+			}
+		}
+
+		if(m_pRessourceListe)
+		{
+			m_pRessourceListe->SetPourSupprimer(true,true);
+
+			if(!m_pRessourceListe->Supprimer())
+			{
+				// Fin de la transaction automatique
+				__TRANSACTION_AUTO_ANNULE__;
+				return false;
+			}
+		}
 
 		try
 		{
@@ -465,6 +508,28 @@ namespace GDSObject
 		return m_pFiltreListe;
 	}
 
+	CRessourceListe* CFiltre::GetRessourceListe(bool bInit)
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return nullptr;
+
+		// Si la liste n'existe pas, alosr on la crée. 
+		if (m_pRessourceListe == nullptr)
+		{
+			m_pRessourceListe = new CRessourceListe();
+			m_pRessourceListe->AddParent(this);
+			if (bInit) m_pRessourceListe->InitialiserAPartirDeFtrIdent(m_ulId);
+		}
+		// 
+		else if (m_pRessourceListe && m_pRessourceListe->GetFtrIdent() != m_ulId)
+		{
+			delete m_pRessourceListe; m_pRessourceListe = nullptr;
+			return GetRessourceListe(bInit);
+		}
+
+		return m_pRessourceListe;
+	}
+
 
 
 
@@ -630,16 +695,21 @@ namespace GDSObject
 		return true;
 	}
 
-	bool CFiltreListe::InitialiserAPartirDePrjIdent(unsigned long PrjIdent)
+	bool CFiltreListe::InitialiserAPartirDePrjIdent(unsigned long ulPrjIdent)
 	{
 		if (DoitEtreInitialiser() == false) return true;
 		if (PeutEtreInitialiser() == false) return false;
+
+		//! Initialisation des données membres de la classe
+		InitialiserDonnees();
+		
+		m_ulPrjIdent = ulPrjIdent;
 
 		// Initialisation depuis la base
 		if (!EstAcquis())
 		{
 			std::ostringstream osQuery;
-			osQuery << "select FTR_IDENT, FTR_LIBELLE, FTR_TYPE, FTR_PRJ_IDENT, FTR_FTR_IDENT, FTR_H_FOLDER, FTR_CPP_FOLDER from FILTRE where FTR_PRJ_IDENT = " << ToQuery(PrjIdent);
+			osQuery << "select FTR_IDENT, FTR_LIBELLE, FTR_TYPE, FTR_PRJ_IDENT, FTR_FTR_IDENT, FTR_H_FOLDER, FTR_CPP_FOLDER from FILTRE where FTR_PRJ_IDENT = " << ToQuery(ulPrjIdent);
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			while (query.executeStep())
@@ -668,16 +738,21 @@ namespace GDSObject
 		return true;
 	}
 
-	bool CFiltreListe::InitialiserAPartirDeFtrIdent(unsigned long FtrIdent)
+	bool CFiltreListe::InitialiserAPartirDeFtrIdent(unsigned long ulFtrIdent)
 	{
 		if (DoitEtreInitialiser() == false) return true;
 		if (PeutEtreInitialiser() == false) return false;
+
+		//! Initialisation des données membres de la classe
+		InitialiserDonnees();
+		
+		m_ulFtrIdent = ulFtrIdent;
 
 		// Initialisation depuis la base
 		if (!EstAcquis())
 		{
 			std::ostringstream osQuery;
-			osQuery << "select FTR_IDENT, FTR_LIBELLE, FTR_TYPE, FTR_PRJ_IDENT, FTR_FTR_IDENT, FTR_H_FOLDER, FTR_CPP_FOLDER from FILTRE where FTR_FTR_IDENT = " << ToQuery(FtrIdent);
+			osQuery << "select FTR_IDENT, FTR_LIBELLE, FTR_TYPE, FTR_PRJ_IDENT, FTR_FTR_IDENT, FTR_H_FOLDER, FTR_CPP_FOLDER from FILTRE where FTR_FTR_IDENT = " << ToQuery(ulFtrIdent);
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			while (query.executeStep())
@@ -761,6 +836,5 @@ namespace GDSObject
 
 		return true;
 	}
-
 
 }
