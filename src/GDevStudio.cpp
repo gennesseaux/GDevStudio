@@ -20,7 +20,7 @@
 // CGDevStudioApp
 
 BEGIN_MESSAGE_MAP(CGDevStudioApp, CBCGPWinApp)
-	ON_COMMAND(ID_APP_ABOUT, &CGDevStudioApp::OnAppAbout)
+	ON_COMMAND(ID_APP_ABOUT,		&CGDevStudioApp::OnAppAbout)
 	// Standard file based document commands
 	ON_COMMAND(ID_FILE_NEW,			&CGDevStudioApp::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN,		&CGDevStudioApp::OnFileOpen)
@@ -31,7 +31,10 @@ END_MESSAGE_MAP()
 
 CGDevStudioApp::CGDevStudioApp()
 {
-	SetVisualTheme(BCGP_VISUAL_THEME_OFFICE_2013_WHITE);
+	CBCGPVisualManagerVS2013::SetAccentColor(CBCGPVisualManagerVS2012::VS2012_Blue);
+	SetVisualTheme(CBCGPWinApp::BCGP_VISUAL_THEME_OFFICE_2013_GRAY);
+
+	globalData.m_bUseVisualManagerInBuiltInDialogs = TRUE;
 }
 
 
@@ -64,6 +67,8 @@ BOOL CGDevStudioApp::InitInstance()
 		return FALSE;
 	}
 
+	AfxEnableControlContainer();
+
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size
 	// of your final executable, you should remove from the following
@@ -76,9 +81,6 @@ BOOL CGDevStudioApp::InitInstance()
 
 	SetRegistryBase(_T("Settings"));
 
-// 	// Tests
-// 	Test();
-
 	// Initialize all Managers for usage. They are automatically constructed
 	// if not yet present
 	// Register the application's document templates.  Document templates
@@ -87,12 +89,11 @@ BOOL CGDevStudioApp::InitInstance()
 	pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
 		RUNTIME_CLASS(CGDevStudioDoc),
-		RUNTIME_CLASS(CMainFrame),       // main SDI frame window
+		RUNTIME_CLASS(CMainFrame),
 		RUNTIME_CLASS(CGDevStudioView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
-
 
 	// Enable DDE Execute open
 	EnableShellOpen();
@@ -115,6 +116,9 @@ BOOL CGDevStudioApp::InitInstance()
 
 	// The one and only window has been initialized, so show and update it
 	m_pMainWnd->ShowWindow(SW_SHOW);
+ 	CRect rect;
+ 	m_pMainWnd->GetWindowRect (rect);
+ 	m_pMainWnd->SetWindowPos (NULL, -1, -1, rect.Width (), rect.Height (), SWP_NOZORDER | SWP_NOMOVE | SWP_NOACTIVATE);
 	m_pMainWnd->UpdateWindow();
 
 	// call DragAcceptFiles only if there's a suffix
