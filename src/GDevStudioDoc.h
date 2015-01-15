@@ -16,16 +16,12 @@ class CGDevStudioDoc : public CDocument
 protected:
 	// Constructeur
 	CGDevStudioDoc();
+	virtual ~CGDevStudioDoc();
+
+protected:
 
 	DECLARE_DYNCREATE(CGDevStudioDoc)
 
-// Attributes
-public:
-
-// Operations
-public:
-
-// Overrides
 public:
 	virtual BOOL OnNewDocument();
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
@@ -34,18 +30,14 @@ public:
 	virtual void Serialize(CArchive& ar);
 	virtual void OnUpdateAllViews();
 
-	// Implementation
 public:
-	virtual ~CGDevStudioDoc();
-#ifdef _DEBUG
+	#ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
-#endif
+	#endif
 
 protected:
 
-// Generated message map functions
-protected:
 	DECLARE_MESSAGE_MAP()
 
 public:

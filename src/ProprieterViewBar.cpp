@@ -51,12 +51,9 @@ void CProprieterViewBar::AdjustLayout ()
 	int x = rectClient.left;
 	int y = rectClient.top;
 	int cx = rectClient.Width();
+	int cy= rectClient.Height()-2;
 
-	m_wndPropList.SetWindowPos (NULL, x, 
-									  y,
-									  cx,
-									  rectClient.Height(),
-									  SWP_NOACTIVATE | SWP_NOZORDER);
+	m_wndPropList.SetWindowPos (NULL, x, y, cx, cy, SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
 int CProprieterViewBar::OnCreate(LPCREATESTRUCT lpCreateStruct) 
@@ -67,7 +64,7 @@ int CProprieterViewBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CRect rectDummy;
 	rectDummy.SetRectEmpty ();
 
-	if (!m_wndPropList.Create (WS_VISIBLE | WS_CHILD, rectDummy, this, 2))
+	if (!m_wndPropList.Create(WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP, rectDummy, this, 2))
 	{
 		TRACE0("Failed to create Properties Grid \n");
 		return -1;      // fail to create

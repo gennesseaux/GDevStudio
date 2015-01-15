@@ -14,8 +14,8 @@
 CStructureMgr::CStructureMgr(CGDevStudioDoc* pDoc, CTreeGrille* pTreeGrille)
 {
 	m_pDoc = pDoc;
-	m_pTreeGrille = pTreeGrille;
-	m_pTreeGrille->SetStructureMgr(this);
+ 	m_pTreeGrille = pTreeGrille;
+ 	m_pTreeGrille->SetStructureMgr(this);
 }
 
 // Destructeur
@@ -33,6 +33,7 @@ void CStructureMgr::Initialiser(unsigned long ulIdProjet)
 	GetTreeGrille()->RemoveAll();
 
 	// Projet
+	delete m_pSItemProjet;
 	m_pSItemProjet = new CSItemProjet(this,ulIdProjet);
 }
 

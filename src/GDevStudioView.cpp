@@ -19,12 +19,14 @@
 
 // CGDevStudioView
 
-IMPLEMENT_DYNCREATE(CGDevStudioView, CBCGPGridView)
+IMPLEMENT_DYNCREATE(CGDevStudioView, CView)
 
-BEGIN_MESSAGE_MAP(CGDevStudioView, CBCGPGridView)
+BEGIN_MESSAGE_MAP(CGDevStudioView, CView)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
-	ON_REGISTERED_MESSAGE(BCGM_CHANGEVISUALMANAGER, &CGDevStudioView::OnChangeVisualManager)
+	ON_WM_ERASEBKGND()
+	ON_WM_SETFOCUS()
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CGDevStudioView construction/destruction
@@ -35,21 +37,23 @@ CGDevStudioView::CGDevStudioView()
 
 CGDevStudioView::~CGDevStudioView()
 {
-	delete m_pStructureMgr; m_pStructureMgr = nullptr;
-
-	m_pTreeGrille = nullptr;
 }
 
 // CGDevStudioView drawing
-void CGDevStudioView::OnDraw(CDC* /*pDC*/)
+void CGDevStudioView::OnDraw(CDC* pDC)
 {
 	CGDevStudioDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
+
+	CRect rectClient;
+	GetClientRect(rectClient);
+
+	pDC->FillRect(rectClient, &globalData.brWindow);
 }
 
 BOOL CGDevStudioView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	return CBCGPGridView::PreCreateWindow(cs);
+	return CView::PreCreateWindow(cs);
 }
 
 
@@ -57,11 +61,11 @@ BOOL CGDevStudioView::PreCreateWindow(CREATESTRUCT& cs)
 #ifdef _DEBUG
 void CGDevStudioView::AssertValid() const
 {
-	CBCGPGridView::AssertValid();
+	CView::AssertValid();
 }
 void CGDevStudioView::Dump(CDumpContext& dc) const
 {
-	CBCGPGridView::Dump(dc);
+	CView::Dump(dc);
 }
 CGDevStudioDoc* CGDevStudioView::GetDocument() const // non-debug version is inline
 {
@@ -71,49 +75,70 @@ CGDevStudioDoc* CGDevStudioView::GetDocument() const // non-debug version is inl
 #endif //_DEBUG
 
 
+CTreeGrille* CGDevStudioView::GetGrille()
+{
+	if(m_pTreeGrille==nullptr)
+	{
+		m_pTreeGrille = new CTreeGrille();
+		if(!m_pTreeGrille->Create(this))
+			delete m_pTreeGrille;
+	}
+	return m_pTreeGrille;
+}
+
 int CGDevStudioView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
 	// Création de la grille
-	m_pTreeGrille = new CTreeGrille();
-	if (!m_pTreeGrille->Create(this))
+	if(!GetGrille())
 		return -1;
 
-	m_pWndGridCtrl = m_pTreeGrille;
-
-	AdjustLayout();
-	m_pWndGridCtrl->SetFocus();
-
 	return 0;
-}
-
-BOOL CGDevStudioView::OnEraseBkgnd(CDC* pDC)
-{
-	return TRUE;
 }
 
 void CGDevStudioView::OnSize(UINT nType, int cx, int cy)
 {
 	CView::OnSize(nType, cx, cy);
+
 	AdjustLayout();
 }
 
 void CGDevStudioView::AdjustLayout()
 {
-	if (m_pTreeGrille->GetSafeHwnd() == NULL)
-		return;
+	if(GetGrille() && GetGrille()->GetSafeHwnd () != NULL)
+	{
+		CRect rectClient;
+		GetClientRect(rectClient);
 
-	CRect rectClient;
-	GetClientRect(rectClient);
+		int x = rectClient.left;
+		int y = rectClient.top + 10;
+		int cx = rectClient.Width();
+		int cy = rectClient.Height();
 
-	m_pTreeGrille->SetWindowPos(NULL, 0, 0, rectClient.Width(), rectClient.Height(), SWP_NOACTIVATE | SWP_NOZORDER);
+		m_pTreeGrille->SetWindowPos(NULL, x, y, cx, cy, SWP_NOZORDER | /*SWP_NOMOVE |*/ SWP_NOACTIVATE);
+	}
+
+	if(m_bInitialUpdate)
+	{
+		// Suppression des bords de la vue
+		ModifyStyle(0, WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
+		ModifyStyleEx(WS_EX_CLIENTEDGE, 0);
+
+		// Force la vue à ce redessiner
+		this->SetWindowPos(NULL, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+	}
+}
+
+BOOL CGDevStudioView::OnEraseBkgnd(CDC* /*pDC*/) 
+{
+	return TRUE;
 }
 
 void CGDevStudioView::OnSetFocus(CWnd* pOldWnd)
 {
-	CBCGPGridView::OnSetFocus(pOldWnd);
+	CView::OnSetFocus(pOldWnd);
 
 	if (m_pTreeGrille->GetSafeHwnd() != NULL)
 		m_pTreeGrille->SetFocus();
@@ -121,14 +146,15 @@ void CGDevStudioView::OnSetFocus(CWnd* pOldWnd)
 
 void CGDevStudioView::OnDestroy()
 {
+	delete m_pStructureMgr; m_pStructureMgr = nullptr;
+
 	if (m_pTreeGrille->GetSafeHwnd() != NULL)
 	{
 		m_pTreeGrille->DestroyWindow();
-		delete m_pTreeGrille;
-		m_pTreeGrille = nullptr;
+		delete m_pTreeGrille; m_pTreeGrille = nullptr;
 	}
 
-	CBCGPGridView::OnDestroy();
+	CView::OnDestroy();
 }
 
 void CGDevStudioView::OnContextMenu(CWnd*, CPoint point)
@@ -164,6 +190,9 @@ void CGDevStudioView::OnContextMenu(CWnd*, CPoint point)
 
 void CGDevStudioView::OnInitialUpdate()
 {
+	// Suppression des bords de la vue
+	m_bInitialUpdate = true;
+	AdjustLayout();
 }
 
 

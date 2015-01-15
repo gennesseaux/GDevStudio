@@ -72,7 +72,7 @@ BOOL CTreeGrille::Create(CView* pView)
 	pView->GetClientRect(rectClient);
 
 	// Création de la grillle
-	if (!CBCGPGridCtrl::Create(WS_CHILD, rectClient, pView, 1))
+	if (!CBCGPGridCtrl::Create(WS_CHILD | WS_VISIBLE, rectClient, pView, 1))
 	{
 		ASSERT(FALSE);
 		return FALSE;
@@ -80,7 +80,6 @@ BOOL CTreeGrille::Create(CView* pView)
 
 	// Affichage de la grille
 	SetScrollBarsStyle(CBCGPScrollBar::BCGP_SBSTYLE_VISUAL_MANAGER);
-	ShowWindow(SW_SHOW);
 
 	return TRUE;
 }
@@ -176,9 +175,14 @@ void CTreeGrille::InitialiserProprites()
 	// Couleur de la grille
 	CBCGPGridColors theme;
 	CBCGPVisualManager::GetInstance ()->OnSetGridColorTheme(this, theme);
+	theme.m_clrBackground						= globalData.clrWindow;
 	theme.m_clrText								= globalData.clrWindowText;
-	theme.m_LeftOffsetColors.m_clrBackground	= theme.m_clrBackground;
-	theme.m_LeftOffsetColors.m_clrText			= theme.m_clrText;
+	theme.m_LeftOffsetColors.m_clrBackground	= globalData.clrWindow;
+	theme.m_LeftOffsetColors.m_clrText			= globalData.clrWindowText;
+ 	theme.m_EvenColors.m_clrBackground			= globalData.clrWindow;
+ 	theme.m_EvenColors.m_clrText				= globalData.clrWindowText;
+	theme.m_OddColors.m_clrBackground			= globalData.clrWindow;
+	theme.m_OddColors.m_clrText					= globalData.clrWindowText;
 	theme.m_SelColors.m_clrBackground			= RGB(43,87,154);
 	theme.m_SelColors.m_clrText					= globalData.clrTextHilite;
 	theme.m_GroupSelColors.m_clrBackground		= RGB(43,87,154);
