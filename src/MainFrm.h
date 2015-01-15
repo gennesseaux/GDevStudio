@@ -11,28 +11,25 @@
 
 class CMainFrame : public CBCGPFrameWnd
 {
-	
-protected: // create from serialization only
-	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 
-// Attributes
+protected:
+	// Constructeur
+	CMainFrame();
 public:
+	// Destructeur
+	virtual ~CMainFrame();
 
-// Operations
-public:
 
-// Overrides
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
 // Implementation
 public:
-	virtual ~CMainFrame();
-#ifdef _DEBUG
+	#ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
-#endif
+	#endif
 
 protected:  // control bar embedded members
 	CBCGPRibbonStatusBar	m_wndStatusBar;
@@ -44,10 +41,12 @@ protected:  // control bar embedded members
 
 // Generated message map functions
 protected:
+
+	DECLARE_MESSAGE_MAP()
+
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg LRESULT OnRibbonCustomize (WPARAM wp, LPARAM lp);
 	afx_msg void OnToolsOptions();
-	DECLARE_MESSAGE_MAP()
 
 	BOOL CreateRibbonBar();
 	BOOL CreateDockingBars();

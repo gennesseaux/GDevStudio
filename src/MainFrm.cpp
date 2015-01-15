@@ -1,9 +1,10 @@
 // MainFrm.cpp : implementation of the CMainFrame class
 //
 
+
+// Inclusions
 #include "Stdafx.h"
 #include "GDevStudio.h"
-
 #include "MainFrm.h"
 
 #ifdef _DEBUG
@@ -37,6 +38,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CBCGPFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 	
+	CBCGPToolbarComboBoxButton::SetFlatMode ();
+	CBCGPToolBar::EnableQuickCustomization ();
+
 	//--------------------------------
 	// Création du rubban
 	//--------------------------------
@@ -57,7 +61,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	
 	//--------------------------------
-	// Création ed la barre de status
+	// Création de la barre de status
 	//--------------------------------
 	if (!m_wndStatusBar.Create(this))
 	{
@@ -73,13 +77,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 												, IDB_TOOLBAR_IMAGES_16		// Menu
 												, IDB_TOOLBAR_IMAGES_D16	// Disable
 												, IDB_TOOLBAR_IMAGES_D16);	// Menu Disable
-
-
-	//// TODO: add your status bar panes here:
-	//m_wndStatusBar.AddElement (new CBCGPRibbonStatusBarPane (
-	//	ID_STATUSBAR_PANE1, _T("Pane 1"), TRUE), _T("Pane 1"));
-	//m_wndStatusBar.AddExtendedElement (new CBCGPRibbonStatusBarPane (
-	//	ID_STATUSBAR_PANE2, _T("Pane 2"), TRUE), _T("Pane 2"));
 
 	// Ancrage
 	m_wndPropertiesBar.EnableDocking(CBRS_ALIGN_ANY);
@@ -97,30 +94,34 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	if( !CBCGPFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
 
+
+	WNDCLASS wndcls;
+
+	if (GetClassInfo (AfxGetInstanceHandle (), cs.lpszClass, &wndcls))
+	{
+		HINSTANCE hInst = AfxFindResourceHandle(MAKEINTRESOURCE(IDR_MAINFRAME), RT_GROUP_ICON);
+		HICON hIcon = ::LoadIcon(hInst, MAKEINTRESOURCE(IDR_MAINFRAME));
+
+		// register a very similar WNDCLASS but without CS_HREDRAW and CS_VREDRAW styles:
+		cs.lpszClass = AfxRegisterWndClass (CS_DBLCLKS, wndcls.hCursor, wndcls.hbrBackground, hIcon);
+	}
+
+	cs.style |= WS_CLIPCHILDREN;
+
 	return TRUE;
 }
 
-
 // CMainFrame diagnostics
-
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
 {
 	CBCGPFrameWnd::AssertValid();
 }
-
 void CMainFrame::Dump(CDumpContext& dc) const
 {
 	CBCGPFrameWnd::Dump(dc);
 }
-
 #endif //_DEBUG
-
-
-// CMainFrame message handlers
-
-
-
 
 BOOL CMainFrame::CreateRibbonBar ()
 {
@@ -159,7 +160,6 @@ BOOL CMainFrame::CreateDockingBars()
 	return TRUE;
 }
 
-
 LRESULT CMainFrame::OnRibbonCustomize (WPARAM wp, LPARAM /*lp*/)
 {
 	ShowOptions (wp == 0 ? 1 : 0);
@@ -173,16 +173,10 @@ void CMainFrame::OnToolsOptions()
 
 void CMainFrame::ShowOptions (int nPage)
 {
-	// Create custom categories:
-	
 	// "Popular" items:
-	
 	CList<UINT, UINT> lstPopular;
-	
 	lstPopular.AddTail (ID_FILE_NEW);
 	lstPopular.AddTail (ID_FILE_OPEN);
-	lstPopular.AddTail (ID_FILE_SAVE);
-	lstPopular.AddTail (ID_EDIT_UNDO);
 	
 	// Hidden commands:
 	CList<UINT,UINT> lstHidden;
@@ -194,10 +188,10 @@ void CMainFrame::ShowOptions (int nPage)
 
 	// Create "Customize QAT" page:
 	CBCGPRibbonCustomizeQATPage pageCustomizeQAT(&m_wndRibbonBar);
-	
-	pageCustomizeQAT.AddCustomCategory (_T("Popular Commands"), lstPopular);
-	pageCustomizeQAT.AddCustomCategory (_T("Commands not in the Ribbon"), lstHidden);
-	pageCustomizeQAT.AddCustomCategory (_T("All Commands"), lstAll);
+
+	pageCustomizeQAT.AddCustomCategory (_T("Commandes populaires"), lstPopular);
+	pageCustomizeQAT.AddCustomCategory (_T("Commandes qui ne sont pas dans le ruban"), lstHidden);
+	pageCustomizeQAT.AddCustomCategory (_T("Toutes les commandes"), lstAll);
 	
 	// Create property sheet:
 	CBCGPPropertySheet propSheet (_T("Options"), this, nPage);
@@ -220,8 +214,3 @@ void CMainFrame::ShowOptions (int nPage)
 		return;
 	}
 }
-// WORKSPACEBAR
- // OUTPUTBAR
- // PROPERTYBAR
- // UI_TYPE_RIBBON
-
