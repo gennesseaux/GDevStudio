@@ -66,8 +66,6 @@ protected:
 protected:
 	CTreeGrille*	m_pTreeGrille = nullptr;
 	CStructureMgr*	m_pStructureMgr = nullptr;
-
-	bool m_bInitialUpdate = false;
 };
 
 #ifndef _DEBUG  // debug version in GDevStudioView.cpp

@@ -88,7 +88,7 @@ inline void SetFontBoldUnderline(CWnd* pWnd)
 }
 
 // Transforme un CString en std::string
-inline std::string ToStdString(__in CString cString)
+inline std::string ToStdString(__in CString &cString)
 {
 #ifdef UNICODE
      std::wstring w;
@@ -99,7 +99,7 @@ inline std::string ToStdString(__in CString cString)
 #endif
 }
 // Transforme un std::string en CString
-inline CString ToString(__in std::string string)
+inline CString ToString(__in std::string &string)
 {
 	return CString(string.c_str());
 }

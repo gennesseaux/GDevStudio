@@ -25,6 +25,52 @@
 namespace GDSObject
 {
 	class CControleListe;
+	
+	enum class ControleType
+	{
+		Boutton,
+		CheckBox,
+		Edit,
+		ComboBox,
+		ListBox,
+		GroupBox,
+		RadioButton,
+		StaticText,
+		Image,
+		ScrollBarHorizontal,
+		ScrollBarVertical,
+		Slider,
+		Spin,
+		Progress,
+		HotKey,
+		List,
+		Tree,
+		Tab,
+		Animation,
+		RichEdit,
+		DateTimePicker,
+		MontCalendar,
+		IpAdress,
+		ExtendedComboBox,
+		Custom,
+		Syslink,
+		SplitButton,
+		NetworkAdress,
+		CommandButton,
+		MfcButton,
+		MfcColorButton,
+		MfcEditBrowse,
+		MfcVsListBox,
+		MfcFontComboBox,
+		MfcMaskedEdit,
+		MfcMenuButton,
+		MfcPropertyGrid,
+		MfcShellList,
+		MfcLink,
+
+		// Compteur et type inconnu
+		Count, Inconnu
+	};
 
 	// Classe CDObjTest
 	class CControle : public DObject::CDObjBase
@@ -68,13 +114,15 @@ namespace GDSObject
 		unsigned long GetResIdent();
 		bool SetResIdent(unsigned long ulResIdent);
 		
-		//CControleListe* GetControleListe(bool bInit = true);
+		ControleType GetControleType();
 
 	protected:
 		// Données membres
 		std::string		m_sLibelle;
 		std::string		m_sType;
 		unsigned long	m_ulResdent;				// Identifiant du filtre parent
+
+		ControleType	m_controlType = ControleType::Inconnu;
 	};
 
 

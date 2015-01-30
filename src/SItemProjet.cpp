@@ -37,6 +37,7 @@ CSItemProjet::~CSItemProjet()
 {
 }
 
+// Mise à jour de l'item
 void CSItemProjet::UpdateTreeItem()
 {
 	// Force l'objet à croire qu'il n'est pas initialisé
@@ -45,4 +46,16 @@ void CSItemProjet::UpdateTreeItem()
 
 	// Mise à jour du libelle dans la grille
 	CSItemStructure::SetLibelle(CProjet::GetLibelle().c_str());
+}
+
+// Interface pour la mise à jour du property grid
+void CSItemProjet::UpdatePropertyGrid(CBCGPPropList* pPropList)
+{
+	pPropList->RemoveAll();
+	pPropList->Invalidate();
+}
+
+LRESULT CSItemProjet::OnPropertyChanged(CBCGPProp* pProp)
+{
+	return 0;
 }

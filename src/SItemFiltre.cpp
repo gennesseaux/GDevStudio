@@ -6,6 +6,13 @@
 #include "SItemProjet.h"
 #include "SItemRessource.h"
 
+enum PropID
+{
+	Nom,
+	CheminH,
+	CheminCpp,
+};
+
 
 // Constructeur
 CSItemFiltre::CSItemFiltre(CStructureMgr* pStructureMgr, const CFiltre &source) : CSItemStructure(SItemType::Filtre,pStructureMgr), CFiltre(source)
@@ -49,9 +56,6 @@ CSItemFiltre::CSItemFiltre(CStructureMgr* pStructureMgr, const CFiltre &source, 
 		pRessourceListe->RemoveAt(i);
 		pRessourceListe->InsertAt(i,pSItemRessource);
 	}
-
-	//
-	this->Expand(FALSE);
 }
 
 // Constructeur
@@ -59,6 +63,9 @@ CSItemFiltre::CSItemFiltre(CStructureMgr* pStructureMgr, const CFiltre &source, 
 {
 	// Ajout du Filtre dans la grille
 	CSItemStructure::AjouterLigneGrille(pSItemFiltre);
+
+	//
+	pSItemFiltre->Expand(FALSE);
 
 	// Parent
 	this->AddParent(pSItemFiltre);
@@ -93,6 +100,7 @@ void CSItemFiltre::SetImage(FiltreType filtreType)
 	}
 }
 
+// Mise à jour de l'item
 void CSItemFiltre::UpdateTreeItem()
 {
 	// Force l'objet à croire qu'il n'est pas initialisé
@@ -101,4 +109,57 @@ void CSItemFiltre::UpdateTreeItem()
 
 	// Mise à jour du libelle dans la grille
 	CSItemStructure::SetLibelle(CFiltre::GetLibelle().c_str());
+}
+
+// Interface pour la mise à jour du property grid
+void CSItemFiltre::UpdatePropertyGrid(CBCGPPropList* pPropList)
+{
+	CSItemStructure::UpdatePropertyGrid(pPropList);
+
+	// Ajout des propriétés
+	CBCGPProp* pGroupDivers = new CBCGPProp(_T("Divers"));
+	CBCGPProp* pNom		= new CBCGPProp(_T("Nom"),						(UINT)Nom,			(_variant_t)ToString(this->GetLibelle()),			_T(""));
+	CBCGPProp* pChH		= new CBCGPProp(_T("Chemin des fichiers .h"),	(UINT)CheminH,		(_variant_t)ToString(GetHFolder().toString()),		_T(""));
+	CBCGPProp* pChCpp	= new CBCGPProp(_T("Chemin des fichiers .cpp"),	(UINT)CheminCpp,	(_variant_t)ToString(GetCppFolder().toString()),	_T(""));
+
+	pGroupDivers->AddSubItem(pNom);
+	pGroupDivers->AddSubItem(pChH);
+	pGroupDivers->AddSubItem(pChCpp);
+
+	pPropList->AddProperty (pGroupDivers);
+
+	// Mise à jour de l'affichage
+	pPropList->Invalidate();
+}
+
+LRESULT CSItemFiltre::OnPropertyChanged(CBCGPProp* pProp)
+{
+	PropID id = (PropID)pProp->GetID();
+
+	switch(id)
+	{
+		case Nom:
+			{
+				//
+				CString sLibelle = (LPCTSTR)(_bstr_t)pProp->GetValue();
+
+				//
+				GDSObject::CFiltre filtre(this->GetId());
+ 				filtre.SetLibelle(ToStdString(sLibelle));
+ 				filtre.Sauver();
+
+				//
+				UpdateTreeItem();
+
+				break;
+			}
+
+		case CheminH:
+			break;
+
+		case CheminCpp:
+			break;
+	}
+
+	return 0;
 }

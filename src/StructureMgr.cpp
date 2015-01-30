@@ -3,6 +3,7 @@
 // Inclusions
 #include "Stdafx.h"
 #include "StructureMgr.h"
+#include "MainFrm.h"
 
 // Inclusions
 #include "GDevStudioDoc.h"
@@ -53,11 +54,6 @@ void CStructureMgr::UpdateTitle(CString sTitle)
 	m_pDoc->SetTitle(sTitle);
 }
 
-//void CStructureMgr::AddToMap(SItemType sitemType, CSItemStructure* pSItemStructure)
-//{
-////	m_mapSItemStructure[m_mapSItemStructure];
-//}
-
 // Mise à jour d'un item dans la grille
 void CStructureMgr::UpdateTreeItem(CSItemStructure* pSItem)
 {
@@ -69,4 +65,12 @@ void CStructureMgr::RemoveTreeRow(CBCGPGridRow* pRow)
 {
 	int nPos = pRow->GetRowId();
 	m_pTreeGrille->RemoveRow(nPos,TRUE);
+}
+
+// Mise à jour du propertygrid
+void CStructureMgr::UpdatePropertyGrid(CSItemStructure* pSItem)
+{
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	ASSERT(pMainFrame);
+	pSItem->UpdatePropertyGrid(pMainFrame->GetPropertyGridCtrl());
 }

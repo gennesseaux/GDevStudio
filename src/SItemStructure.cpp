@@ -6,6 +6,10 @@
 
 // Inclusions
 #include "StructureMgr.h"
+#include "ProprieterViewBar.h"
+
+
+namespace PropertyGridCallbackItem { CSItemStructure* pSItem = nullptr; };
 
 
 // Constructeur
@@ -19,8 +23,6 @@ CSItemStructure::CSItemStructure(SItemType sitemType, CStructureMgr* pStructureM
 	m_pRow->SetData((DWORD_PTR)this);
 
 	m_SItemType = sitemType;
-
-	//pStructureMgr->AddToMap(sitemType, this);
 }
 
 // Destructeur
@@ -71,4 +73,18 @@ CBCGPGridItemID CSItemStructure::GetGridItemID()
 void CSItemStructure::Expand(BOOL bExpand /*= TRUE*/)
 {
 	GetGridRow()->Expand(bExpand);
+}
+
+void CSItemStructure::UpdatePropertyGrid(CBCGPPropList* pPropList)
+{
+	PropertyGridCallbackItem::pSItem = this;
+	pPropList->RemoveAll();
+	((CProprieterViewBar*)pPropList->GetOwner())->SetItemChangedCallback(OnPropertyChangedCallback);
+}
+
+LRESULT CALLBACK CSItemStructure::OnPropertyChangedCallback(CBCGPProp* pProp)
+{
+	if(PropertyGridCallbackItem::pSItem)
+		return PropertyGridCallbackItem::pSItem->OnPropertyChanged(pProp);
+	return 0;
 }

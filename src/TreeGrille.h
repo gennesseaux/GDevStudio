@@ -7,11 +7,16 @@ class CStructureMgr;
 class CSItemStructure;
 class CSItemProjet;
 class CSItemFiltre;
+class CSItemRessource;
+class CSItemControle;
 
 // Inclusions
-namespace GDSObject {
+namespace GDSObject
+{
 	class CProjet;
 	class CFiltre;
+	class CRessource;
+	class CControle;
 }
 
 
@@ -53,8 +58,9 @@ protected:
 // Accesseurs
 protected:
 	//
-	GDSObject::CProjet* GetPointer(CSItemProjet* pSItemProjet);
-	GDSObject::CFiltre* GetPointer(CSItemFiltre* pSItemFiltre);
+	GDSObject::CProjet*		GetPointer(CSItemProjet* pSItemProjet);
+	GDSObject::CFiltre*		GetPointer(CSItemFiltre* pSItemFiltre);
+	GDSObject::CRessource*	GetPointer(CSItemRessource* pSItemRessource);
 	//
 	CSItemStructure* GetSelectedItem();
 	// Début de l'édition dans la grille
@@ -62,6 +68,10 @@ protected:
 	// Fin de l'édition dans la grille
 	virtual void OnEndInplaceEdit(CBCGPGridItem* pItem);
 
+
+// Surcharges de la grille
+protected:
+	virtual void OnSelChanged (const CBCGPGridRange &range, BOOL bSelect);
 
 
 // Gestion des menus
@@ -94,6 +104,7 @@ protected:
 		void OnColler(CSItemStructure* pSItem);
 	void OnSupprimer();
 		bool OnSupprimerFilte(CSItemStructure* pSItem);
+		bool OnSupprimerRessource(CSItemStructure* pSItem);
 	void OnRenommer();
 		bool OnRenommerProjet(CSItemStructure* pSItem);
 		bool OnRenommerFiltre(CSItemStructure* pSItem);

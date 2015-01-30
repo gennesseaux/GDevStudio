@@ -16,11 +16,11 @@ CSItemRessource::CSItemRessource(CStructureMgr* pStructureMgr, const CRessource 
 {
 	// Ajout du Ressource dans la grille
 	CSItemStructure::SetLibelle(CRessource::GetLibelle().c_str());
-	CSItemStructure::SetImage(TreeImage::Ressource);
+	CSItemStructure::SetImage(TreeImage::ResDialog);
 	CSItemStructure::AjouterLigneGrille(pSItemFiltre);
 	
-	// Parent
-	this->AddParent(pSItemFiltre);
+	//
+	pSItemFiltre->Expand(FALSE);
 
  	// Ajout des controles de la Ressource
  	CControleListe* pControleListe = GetControleListe();
@@ -44,6 +44,7 @@ CSItemRessource::~CSItemRessource()
 {
 }
 
+// Mise à jour de l'item
 void CSItemRessource::UpdateTreeItem()
 {
 	// Force l'objet à croire qu'il n'est pas initialisé
@@ -52,4 +53,16 @@ void CSItemRessource::UpdateTreeItem()
 
 	// Mise à jour du libelle dans la grille
 	CSItemStructure::SetLibelle(CRessource::GetLibelle().c_str());
+}
+
+// Interface pour la mise à jour du property grid
+void CSItemRessource::UpdatePropertyGrid(CBCGPPropList* pPropList)
+{
+	pPropList->RemoveAll();
+	pPropList->Invalidate();
+}
+
+LRESULT CSItemRessource::OnPropertyChanged(CBCGPProp* pProp)
+{
+	return 0;
 }

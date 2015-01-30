@@ -2,7 +2,7 @@
 //
 //	-----------------------------------------------------------------------
 //
-//	 Fichier		: 	Controle.cpp
+//	 Fichier		: 	Ressource.cpp
 //
 //	 Auteur			:	GENNESSEAUX Jocelyn
 //
@@ -15,27 +15,28 @@
 
 // Inclusions
 #include "Stdafx.h"
+#include "Ressource.h"
 #include "Controle.h"
 
 // Inclusions
 #include <SQLite/SQLiteSource.h>
 #include <Poco/NumberFormatter.h>
-#include <RcReader/RcReader.h>
 
 
 namespace GDSObject
 {
 	//! Constructeur
-	CControle::CControle(unsigned long ulId) : CDObjBase(ulId)
+	CRessource::CRessource(unsigned long ulId) : CDObjBase(ulId)
 	{
 		/* Initialisation des pointeurs. */
+		m_pControleListe = nullptr;
 
 		/* Initialisation des données. */
 		InitialiserDonnees();
 	}
 
 	//! Destructeur
-	CControle::~CControle(void)
+	CRessource::~CRessource(void)
 	{
 		//
 		RemoveEnfants();
@@ -45,9 +46,10 @@ namespace GDSObject
 	}
 
 	//! Constructeur par copie.
-	CControle::CControle(const CControle &source)
+	CRessource::CRessource(const CRessource &source)
 	{
 		/* Initialisation des pointeurs. */
+		m_pControleListe = nullptr;
 
 		/* Initialisation des données. */
 		InitialiserDonnees();
@@ -57,9 +59,10 @@ namespace GDSObject
 	}
 
 	//! Opérateur =
-	CControle & CControle::operator=(const CControle &source)
+	CRessource & CRessource::operator=(const CRessource &source)
 	{
 		/* Initialisation des pointeurs. */
+		m_pControleListe = nullptr;
 
 		/* Initialisation des données. */
 		InitialiserDonnees();
@@ -71,7 +74,7 @@ namespace GDSObject
 	}
 
 	//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-	void CControle::ClonnerDonnees(const CControle &source)
+	void CRessource::ClonnerDonnees(const CRessource &source)
 	{
 		CDObjBase::ClonnerDonnees(source);
 
@@ -80,20 +83,26 @@ namespace GDSObject
 
 		/* Copie des variables membres de l'objet. */
 		m_sLibelle = source.m_sLibelle;
-		m_sType = source.m_sType;
-		m_ulResdent = source.m_ulResdent;
+		m_file = source.m_file;
+		m_ulFtrIdent = source.m_ulFtrIdent;
+
+		/* Copie des pointeurs membres de l'objet. */
+ 		if (source.m_pControleListe)
+ 			m_pControleListe = new CControleListe(*source.m_pControleListe);
 	}
 
 	//! Initialisation des données membres de la classe
-	void CControle::InitialiserDonnees()
+	void CRessource::InitialiserDonnees()
 	{
 		m_sLibelle = std::string();
-		m_sType = std::string();
-		m_ulResdent = DefULong;
+		m_file = Poco::File();
+		m_ulFtrIdent = DefULong;
+
+		delete m_pControleListe; m_pControleListe = nullptr;
 	}
 
 	//! Initialisation de l'objet
-	bool CControle::Initialiser()
+	bool CRessource::Initialiser()
 	{
 		if (DoitEtreInitialiser() == false) return true;
 
@@ -101,14 +110,14 @@ namespace GDSObject
 		if (!EstAcquis() && m_ulId!=DefULong)
 		{
 			std::ostringstream osQuery;
-			osQuery << "select CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT from CONTROLE where RES_IDENT = " << ToQuery(m_ulId);
+			osQuery << "select RES_LIBELLE, RES_FILE, RES_FTR_IDENT from RESSOURCE where RES_IDENT = " << ToQuery(m_ulId);
 			
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			if (query.executeStep())
 			{
 				m_sLibelle		= query.getColumn(0).getText();
-				m_sType			= query.getColumn(1).getText();
-				m_ulResdent		= query.getColumn(2).getInt();
+				m_file			= query.getColumn(1).getText();
+				m_ulFtrIdent	= query.getColumn(2).getInt();
 
 				// L'objet est acquis
 				SetAcquis();
@@ -121,7 +130,7 @@ namespace GDSObject
 		return true;
 	}
 
-	bool CControle::Verifier(std::string* sMsg)
+	bool CRessource::Verifier(std::string* sMsg)
 	{
 		// Les objets qui dépendent de cette objet ne doivent
 		// pas être vérifiés lors de la création.
@@ -131,13 +140,12 @@ namespace GDSObject
 
 		if (!Initialiser())				{ if (sMsg) sMsg->assign("Erreur lors de l'initialisation."); return false; }
 		if (m_sLibelle.empty())			{ if (sMsg) sMsg->assign("Erreur : m_sLibelle est vide."); return false; }
-		if (m_sType.empty())			{ if (sMsg) sMsg->assign("Erreur : m_sType est vide."); return false; }
-		if (m_ulResdent==DefULong)		{ if (sMsg) sMsg->assign("Erreur : m_ulResdent est vide."); return false; }
+		if (m_ulFtrIdent==DefULong)		{ if (sMsg) sMsg->assign("Erreur : m_ulFtrIdent est vide."); return false; }
 
 		return true;
 	}
 
-	bool CControle::Sauver()
+	bool CRessource::Sauver()
 	{
 		if (!(DoitEtreSauver() || DoitEtreSupprimer())) return true;
 		if (!(PeutEtreSauver() || PeutEtreSupprimer())) return false;
@@ -165,12 +173,12 @@ namespace GDSObject
 				if (EstNouveau())
 				{
 					std::ostringstream osQuery;
-					osQuery << "insert into CONTROLE (CTR_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT)";
+					osQuery << "insert into RESSOURCE (RES_IDENT, RES_LIBELLE, RES_FILE, RES_FTR_IDENT)";
 					osQuery << " values (";
 					osQuery << "	" << ToQuery(DefULong) << ",";
 					osQuery << "	" << ToQuery(m_sLibelle) << ",";
-					osQuery << "	" << ToQuery(m_sType) << ",";
-					osQuery << "	" << ToQuery(m_ulResdent) << "";
+					osQuery << "	" << ToQuery(m_file.path()) << ",";
+					osQuery << "	" << ToQuery(m_ulFtrIdent) << "";
 					osQuery << ");";
 
 					CSQLiteSource::database()->exec(osQuery.str());
@@ -181,12 +189,12 @@ namespace GDSObject
 				else if (EstModifier())
 				{
 					std::ostringstream osQuery;
-					osQuery << "update CONTROLE set";
-					osQuery << "	CTR_LIBELLE = "		<< ToQuery(m_sLibelle) << ",";
-					osQuery << "	CTR_TYPE = "		<< ToQuery(m_sType) << ",";
-					osQuery << "	CTR_RES_IDENT = "	<< ToQuery(m_ulResdent) << ",";
+					osQuery << "update Ressource set";
+					osQuery << "	RES_LIBELLE = "		<< ToQuery(m_sLibelle) << ",";
+					osQuery << "	RES_FILE = "		<< ToQuery(m_file.path()) << ",";
+					osQuery << "	RES_FTR_IDENT = "	<< ToQuery(m_ulFtrIdent) << ",";
 					osQuery << "where";
-					osQuery << "	CTR_IDENT = "		<< ToQuery(m_ulId) << ";";
+					osQuery << "	RES_IDENT = "		<< ToQuery(m_ulId) << ";";
 
 					CSQLiteSource::database()->exec(osQuery.str());
 				}
@@ -213,13 +221,23 @@ namespace GDSObject
 			return true;
 		}
 
+		//
+		if (m_pControleListe && (!((m_pControleListe->SetResIdent(m_ulId)) && (m_pControleListe->Sauver()))))
+		{
+			// Restauration de l'état précédent
+			state.Restore();
+			// Fin de la transaction automatique
+			__TRANSACTION_AUTO_ANNULE__;
+			return false;
+		}
+
 		// Fin de la transaction automatique
 		__TRANSACTION_AUTO_VALIDE__;
 
 		return true;
 	}
 
-	bool CControle::Supprimer()
+	bool CRessource::Supprimer()
 	{
 		if (DoitEtreSupprimer() == false) { SetSupprimer(true);  return true; }
 		if (PeutEtreSupprimer() == false) { SetSupprimer(false); return false; }
@@ -230,10 +248,22 @@ namespace GDSObject
 		// Gestion automatique des transactions
 		__TRANSACTION_AUTO_DEBUT__;
 
+		if(m_pControleListe)
+		{
+			m_pControleListe->SetPourSupprimer(true,true);
+
+			if(!m_pControleListe->Supprimer())
+			{
+				// Fin de la transaction automatique
+				__TRANSACTION_AUTO_ANNULE__;
+				return false;
+			}
+		}
+
 		try
 		{
 			std::ostringstream osQuery;
-			osQuery << "delete from CONTROLE where CTR_IDENT = " << ToQuery(m_ulId);
+			osQuery << "delete from RESSOURCE where RES_IDENT = " << ToQuery(m_ulId);
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			query.exec();
@@ -257,7 +287,7 @@ namespace GDSObject
 		return true;
 	}
 
-	std::string CControle::GetLibelle()
+	std::string CRessource::GetLibelle()
 	{
 		// L'objet doit être initialisé
 		if (!Initialiser()) return std::string();
@@ -265,7 +295,7 @@ namespace GDSObject
 		return m_sLibelle;
 	}
 
-	bool CControle::SetLibelle(std::string sName)
+	bool CRessource::SetLibelle(std::string sName)
 	{
 		// L'objet doit être initialisé
 		if (!Initialiser()) return false;
@@ -284,24 +314,24 @@ namespace GDSObject
 		return true;
 	}
 
-	std::string CControle::GetType()
+	Poco::File CRessource::GetFile()
 	{
 		// L'objet doit être initialisé
-		if (!Initialiser()) return std::string();
+		if (!Initialiser()) return Poco::File();
 
-		return m_sType;
+		return m_file;
 	}
 
-	bool CControle::SetType(std::string sType)
+	bool CRessource::SetFile(Poco::File file)
 	{
 		// L'objet doit être initialisé
 		if (!Initialiser()) return false;
 
 		// Le champ est modifié uniquement si sa valeur change.
-		if (m_sType != sType)
+		if (m_file.path() != file.path())
 		{
 			// Affectation de la nouvelle valeur.
-			m_sType = sType;
+			m_file = file;
 
 			// Marquer l'objet comme modifié.
 			SetModifier();
@@ -311,24 +341,24 @@ namespace GDSObject
 		return true;
 	}
 
-	unsigned long CControle::GetResIdent()
+	unsigned long CRessource::GetFtrIdent()
 	{
 		// L'objet doit être initialisé
 		if (!Initialiser()) return DefULong;
 
-		return m_ulResdent;
+		return m_ulFtrIdent;
 	}
 
-	bool CControle::SetResIdent(unsigned long ulResIdent)
+	bool CRessource::SetFtrIdent(unsigned long ulFtrIdent)
 	{
 		// L'objet doit être initialisé
 		if (!Initialiser()) return false;
 
 		// Le champ est modifié uniquement si sa valeur change.
-		if (m_ulResdent != ulResIdent)
+		if (m_ulFtrIdent != ulFtrIdent)
 		{
 			// Affectation de la nouvelle valeur.
-			m_ulResdent = ulResIdent;
+			m_ulFtrIdent = ulFtrIdent;
 
 			// Marquer l'objet comme modifié.
 			SetModifier();
@@ -338,91 +368,27 @@ namespace GDSObject
 		return true;
 	}
 
-	GDSObject::ControleType CControle::GetControleType()
-	{
-		// L'objet doit être initialisé
-		if (!Initialiser()) return ControleType::Inconnu;
-
-		//
-		if(m_controlType != ControleType::Inconnu)
-			return m_controlType;
-
-		// Détermine le type de controle
-		RcReader::RcControlType rcControleType = RcReader::CRcControle::ToRcControlType(m_sType);
-		switch(rcControleType)
-		{
-			// Generic Control (recensés à ce jour 08/01/2015)
-			case RcReader::RcControlType::Button :				m_controlType = ControleType::Boutton;					break;
-			case RcReader::RcControlType::MfcButton :			m_controlType = ControleType::MfcButton;				break;
-			case RcReader::RcControlType::MfcColorButton :		m_controlType = ControleType::MfcColorButton;			break;
-			case RcReader::RcControlType::MfcEditBrowse :		m_controlType = ControleType::MfcEditBrowse;			break;
-			case RcReader::RcControlType::MfcFontComboBox :		m_controlType = ControleType::MfcFontComboBox;			break;
-			case RcReader::RcControlType::MfcLink :				m_controlType = ControleType::MfcLink;					break;
-			case RcReader::RcControlType::MfcMaskedEdit :		m_controlType = ControleType::MfcMaskedEdit;			break;
-			case RcReader::RcControlType::MfcMenuButton :		m_controlType = ControleType::MfcMenuButton;			break;
-			case RcReader::RcControlType::MfcPropertyGrid :		m_controlType = ControleType::MfcPropertyGrid;			break;
-			case RcReader::RcControlType::MfcShellList :		m_controlType = ControleType::MfcShellList;				break;
-			case RcReader::RcControlType::MfcVSListBox :		m_controlType = ControleType::MfcVsListBox;				break;
-			case RcReader::RcControlType::msctls_netaddress :	m_controlType = ControleType::NetworkAdress;			break;
-			case RcReader::RcControlType::msctls_progress32 :	m_controlType = ControleType::Progress;					break;
-			case RcReader::RcControlType::msctls_trackbar32 :	m_controlType = ControleType::Slider;					break;
-			case RcReader::RcControlType::RichEdit20W :			m_controlType = ControleType::RichEdit;					break;
-			case RcReader::RcControlType::Static :				m_controlType = ControleType::StaticText;				break;
-			case RcReader::RcControlType::SysAnimate32 :		m_controlType = ControleType::Animation;				break;
-			case RcReader::RcControlType::SysDateTimePick32 :	m_controlType = ControleType::DateTimePicker;			break;
-			case RcReader::RcControlType::SysIPAddress32 :		m_controlType = ControleType::IpAdress;					break;
-			case RcReader::RcControlType::SysLink :				m_controlType = ControleType::Syslink;					break;
-			case RcReader::RcControlType::SysListView32 :		m_controlType = ControleType::List;						break;
-			case RcReader::RcControlType::SysMonthCal32 :		m_controlType = ControleType::MontCalendar;				break;
-			case RcReader::RcControlType::SysTabControl32 :		m_controlType = ControleType::Tab;						break;
-			case RcReader::RcControlType::SysTreeView32 :		m_controlType = ControleType::Tree;						break;
-
-			// Static Control
- 			case RcReader::RcControlType::LTEXT:				m_controlType = ControleType::StaticText;				break;
- 			case RcReader::RcControlType::RTEXT :				m_controlType = ControleType::StaticText;				break;
- 			case RcReader::RcControlType::CTEXT :				m_controlType = ControleType::StaticText;				break;
-
-			// Button Control
- 			case RcReader::RcControlType::AUTO3STATE :			m_controlType = ControleType::CheckBox;					break;
- 			case RcReader::RcControlType::AUTOCHECKBOX :		m_controlType = ControleType::CheckBox;					break;
- 			case RcReader::RcControlType::AUTORADIOBUTTON :		m_controlType = ControleType::RadioButton;				break;
- 			case RcReader::RcControlType::CHECKBOX :			m_controlType = ControleType::CheckBox;					break;
- 			case RcReader::RcControlType::PUSHBOX :				m_controlType = ControleType::Boutton;					break;
- 			case RcReader::RcControlType::PUSHBUTTON :			m_controlType = ControleType::Boutton;					break;
- 			case RcReader::RcControlType::DEFPUSHBUTTON :		m_controlType = ControleType::Boutton;					break;
- 			case RcReader::RcControlType::RADIOBUTTON :			m_controlType = ControleType::RadioButton;				break;
- 			case RcReader::RcControlType::STATE3 :				m_controlType = ControleType::CheckBox;					break;
- 			case RcReader::RcControlType::USERBUTTON :			m_controlType = ControleType::Boutton;					break;
- 			case RcReader::RcControlType::SPLITBUTTON :			m_controlType = ControleType::SplitButton;				break;
- 			case RcReader::RcControlType::COMMANDLINK :			m_controlType = ControleType::CommandButton;			break;
-
-			// Edit Control
- 			case RcReader::RcControlType::EDITTEXT:				m_controlType = ControleType::Edit;						break;
- 			case RcReader::RcControlType::BEDIT :				m_controlType = ControleType::Edit;						break;
- 			case RcReader::RcControlType::HEDIT :				m_controlType = ControleType::Edit;						break;
- 			case RcReader::RcControlType::IEDIT :				m_controlType = ControleType::Edit;						break;
-
-			// Combo Control
- 			case RcReader::RcControlType::COMBOBOX:				m_controlType = ControleType::ComboBox;					break;
-
-			// GroupBox Control
- 			case RcReader::RcControlType::GROUPBOX:				m_controlType = ControleType::GroupBox;					break;
-
-			// ListBox Control
- 			case RcReader::RcControlType::LISTBOX:				m_controlType = ControleType::ListBox;					break;
-
-			// Icon Control
- 			case RcReader::RcControlType::ICON:					m_controlType = ControleType::Image;					break;
-
-
-			// Icon Control
- 			case RcReader::RcControlType::SCROLLBAR:			m_controlType = ControleType::ScrollBarHorizontal;		break;
-
-			default:											m_controlType = ControleType::Inconnu;					break;
-		}
-
-		return m_controlType;
-	}
+ 	CControleListe* CRessource::GetControleListe(bool bInit)
+ 	{
+ 		// L'objet doit être initialisé
+ 		if (!Initialiser()) return nullptr;
+ 
+ 		// Si la liste n'existe pas, alosr on la crée. 
+ 		if (m_pControleListe == nullptr)
+ 		{
+ 			m_pControleListe = new CControleListe();
+ 			m_pControleListe->AddParent(this);
+ 			if (bInit) m_pControleListe->InitialiserAPartirDeResIdent(m_ulId);
+ 		}
+ 		// 
+ 		else if (m_pControleListe && m_pControleListe->GetResIdent() != m_ulId)
+ 		{
+ 			delete m_pControleListe; m_pControleListe = nullptr;
+ 			return GetControleListe(bInit);
+ 		}
+ 
+ 		return m_pControleListe;
+ 	}
 
 
 
@@ -434,7 +400,7 @@ namespace GDSObject
 
 
 	//! Constructeur
-	CControleListe::CControleListe()
+	CRessourceListe::CRessourceListe()
 	{
 		/* Initialisation des pointeurs. */
 
@@ -443,14 +409,14 @@ namespace GDSObject
 	}
 
 	//! Destructeur
-	CControleListe::~CControleListe(void)
+	CRessourceListe::~CRessourceListe(void)
 	{
 		/* Initialisation des données. */
 		InitialiserDonnees();
 	}
 
 	//! Constructeur par copie.
-	CControleListe::CControleListe(const CControleListe &source)
+	CRessourceListe::CRessourceListe(const CRessourceListe &source)
 	{
 		/* Initialisation des pointeurs. */
 
@@ -462,7 +428,7 @@ namespace GDSObject
 	}
 
 	//! Opérateur =
-	CControleListe & CControleListe::operator=(const CControleListe &source)
+	CRessourceListe & CRessourceListe::operator=(const CRessourceListe &source)
 	{
 		/* Initialisation des pointeurs. */
 
@@ -476,7 +442,7 @@ namespace GDSObject
 	}
 
 	//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-	void CControleListe::ClonnerDonnees(const CControleListe &source)
+	void CRessourceListe::ClonnerDonnees(const CRessourceListe &source)
 	{
 		/* Copie des éléments de la liste */
 		__super::ClonnerDonnees(source);
@@ -485,19 +451,19 @@ namespace GDSObject
 		InitialiserDonnees();
 
 		/* Copie des variables membres de l'objet. */
-		m_ulResIdent = source.m_ulResIdent;
+		m_ulFtrIdent = source.m_ulFtrIdent;
 
 		/* Copie des pointeurs membres de l'objet. */
 	}
 
 	//! Initialisation des données membres de la classe
-	void CControleListe::InitialiserDonnees()
+	void CRessourceListe::InitialiserDonnees()
 	{
-		m_ulResIdent = DefULong;
+		m_ulFtrIdent = DefULong;
 	}
 
 	//! Initialisation de la liste d'objet
-	bool CControleListe::Initialiser()
+	bool CRessourceListe::Initialiser()
 	{
 		if (DoitEtreInitialiser() == false) return true;
 		if (PeutEtreInitialiser() == false) return false;
@@ -506,20 +472,20 @@ namespace GDSObject
 		if (!EstAcquis())
 		{
 			std::ostringstream osQuery;
-			osQuery << "select CTR_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT from CONTROLE";
+			osQuery << "select RES_IDENT, RES_LIBELLE, RES_FILE, RES_FTR_IDENT from RESSOURCE";
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			while (query.executeStep())
 			{
-				CControle* pControle		= new CControle(query.getColumn(0).getInt());
-				pControle->m_sLibelle		= query.getColumn(1).getText();
-				pControle->m_sType			= query.getColumn(2).getText();
-				pControle->m_ulResdent		= query.getColumn(3).getInt();
+				CRessource* pRessource		= new CRessource(query.getColumn(0).getInt());
+				pRessource->m_sLibelle		= query.getColumn(1).getText();
+				pRessource->m_file			= query.getColumn(2).getText();
+				pRessource->m_ulFtrIdent	= query.getColumn(3).getInt();
 
 				// L'objet est acquis
-				pControle->SetAcquis();
+				pRessource->SetAcquis();
 
-				Add(pControle);
+				Add(pRessource);
 			}
 
 			// L'objet est acquis
@@ -533,14 +499,14 @@ namespace GDSObject
 	}
 
 	//! Verification
-	bool CControleListe::Verifier(std::string* sMsg)
+	bool CRessourceListe::Verifier(std::string* sMsg)
 	{
 		// Vérifications de base
 		return CDObjListe::Verifier(sMsg);
 	}
 
 	//! Sauvegarde
-	bool CControleListe::Sauver()
+	bool CRessourceListe::Sauver()
 	{
 		if (!(DoitEtreSauver() || DoitEtreSupprimer())) return true;
 		if (!(PeutEtreSauver() || PeutEtreSupprimer())) return false;
@@ -566,7 +532,7 @@ namespace GDSObject
 	}
 
 	//! Suppression
-	bool CControleListe::Supprimer()
+	bool CRessourceListe::Supprimer()
 	{
 		if (DoitEtreSupprimer() == false) return true;
 		if (PeutEtreSupprimer() == false) return false;
@@ -592,7 +558,7 @@ namespace GDSObject
 		return true;
 	}
 
-	bool CControleListe::InitialiserAPartirDeResIdent(unsigned long ulResIdent)
+	bool CRessourceListe::InitialiserAPartirDeFtrIdent(unsigned long ulFtrIdent)
 	{
 		if (DoitEtreInitialiser() == false) return true;
 		if (PeutEtreInitialiser() == false) return false;
@@ -600,26 +566,26 @@ namespace GDSObject
 		//! Initialisation des données membres de la classe
 		InitialiserDonnees();
 		
-		m_ulResIdent = ulResIdent;
+		m_ulFtrIdent = ulFtrIdent;
 
 		// Initialisation depuis la base
 		if (!EstAcquis())
 		{
 			std::ostringstream osQuery;
-			osQuery << "select CTR_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT from CONTROLE where CTR_RES_IDENT = " << ToQuery(ulResIdent);
+			osQuery << "select RES_IDENT, RES_LIBELLE, RES_FILE, RES_FTR_IDENT from RESSOURCE where RES_FTR_IDENT = " << ToQuery(ulFtrIdent);
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			while (query.executeStep())
 			{
-				CControle* pControle		= new CControle(query.getColumn(0).getInt());
-				pControle->m_sLibelle		= query.getColumn(1).getText();
-				pControle->m_sType			= query.getColumn(2).getText();
-				pControle->m_ulResdent		= query.getColumn(3).getInt();
+				CRessource* pRessource		= new CRessource(query.getColumn(0).getInt());
+				pRessource->m_sLibelle		= query.getColumn(1).getText();
+				pRessource->m_file			= query.getColumn(2).getText();
+				pRessource->m_ulFtrIdent	= query.getColumn(3).getInt();
 
 				// L'objet est acquis
-				pControle->SetAcquis();
+				pRessource->SetAcquis();
 
-				Add(pControle);
+				Add(pRessource);
 			}
 
 			// L'objet est acquis
@@ -632,28 +598,28 @@ namespace GDSObject
 		return true;
 	}
 
-	unsigned long CControleListe::GetResIdent()
+	unsigned long CRessourceListe::GetFtrIdent()
 	{
 		// L'objet doit être initialisé
 		if (!Initialiser()) return DefULong;
 
-		return m_ulResIdent;
+		return m_ulFtrIdent;
 	}
 
-	bool CControleListe::SetResIdent(unsigned long ulResIdent)
+	bool CRessourceListe::SetFtrIdent(unsigned long ulFtrIdent)
 	{
 		if (!Initialiser()) return false;
 
 		// Mise à jour de la variable
-		if (m_ulResIdent != ulResIdent)
+		if (m_ulFtrIdent != ulFtrIdent)
 		{
-			m_ulResIdent = ulResIdent;
+			m_ulFtrIdent = ulFtrIdent;
 			SetModifier();
 		}
 
 		// Mise à jour de la liste
 		for (int i = 0; i < GetSize(); i++)
-			if (GetAt(i)->SetResIdent(ulResIdent) == false)
+			if (GetAt(i)->SetFtrIdent(ulFtrIdent) == false)
 				return false;
 
 		return true;

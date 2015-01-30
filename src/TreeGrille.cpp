@@ -219,6 +219,11 @@ GDSObject::CFiltre* CTreeGrille::GetPointer(CSItemFiltre* pSItemFiltre)
 	return (GDSObject::CFiltre*)pSItemFiltre;
 }
 
+GDSObject::CRessource* CTreeGrille::GetPointer(CSItemRessource* pSItemRessource)
+{
+	return (GDSObject::CRessource*)pSItemRessource;
+}
+
 //
 CSItemStructure* CTreeGrille::GetSelectedItem()
 {
@@ -548,6 +553,10 @@ void CTreeGrille::OnSupprimer()
 			OnSupprimerFilte(pSItem);
 			break;
 
+		case SItemType::Ressource :
+			OnSupprimerRessource(pSItem);
+			break;
+
 		default :
 			break;
 	}
@@ -567,6 +576,28 @@ bool CTreeGrille::OnSupprimerFilte(CSItemStructure* pSItem)
 	// Suppression
 	pFiltre->SetPourSupprimer(true);
 	if(!pFiltre->Supprimer())
+		return false;
+
+	// Supression dans la grille
+	m_pStructureMgr->RemoveTreeRow(pRow);
+
+	return true;
+}
+
+bool CTreeGrille::OnSupprimerRessource(CSItemStructure* pSItem)
+{
+	// Test de cohérence
+	if(!IsSupprimerAllowed(pSItem)) return false;
+
+	//
+	GDSObject::CRessource* pRessource = GetPointer((CSItemRessource*)pSItem);
+
+	// Ligne de la grille
+	CBCGPGridRow* pRow = pSItem->GetGridRow();
+
+	// Suppression
+	pRessource->SetPourSupprimer(true);
+	if(!pRessource->Supprimer())
 		return false;
 
 	// Supression dans la grille
@@ -683,6 +714,18 @@ bool CTreeGrille::OnModifierFilte(CSItemStructure* pSItem)
 	if(!IsModifierAllowed(pSItem)) false;
 
 	return false;
+}
+
+void CTreeGrille::OnSelChanged(const CBCGPGridRange &range, BOOL bSelect)
+{
+	CBCGPGridCtrl::OnSelChanged(range,bSelect);
+
+	// Récupère l'item sélectionné
+	CSItemStructure* pSItem = GetSelectedItem();
+	if (pSItem == nullptr) return;
+
+	// Mise à jour du propertygrid
+	m_pStructureMgr->UpdatePropertyGrid(pSItem);
 }
 
 

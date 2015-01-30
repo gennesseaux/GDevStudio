@@ -53,6 +53,9 @@ public:
 
 public:
 	virtual void UpdateTreeItem() = 0;
+	virtual void UpdatePropertyGrid(CBCGPPropList* pPropList);
+	static LRESULT CALLBACK OnPropertyChangedCallback(CBCGPProp* pProp);
+	virtual LRESULT OnPropertyChanged(CBCGPProp* pProp) = 0;
 
 protected:
 	CStructureMgr*	m_pStructureMgr = nullptr;

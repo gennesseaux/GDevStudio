@@ -19,9 +19,24 @@
 #define IDR_TOOLBAR_IMAGES              172
 #define IDB_TOOLBAR_IMAGES_16           173
 #define IDB_TOOLBAR_IMAGES_D16          174
-#define IDB_CONTROLE                    177
-#define IDB_RESSOURCE                   178
+#define IDB_CTRL_INCONNU                177
+#define IDB_RES_DIALOG                  178
 #define IDD_RESSOURCE                   179
+#define IDB_PNG1                        181
+#define IDB_RES_STATIC_TEXT             181
+#define IDB_RES_EDIT                    182
+#define IDB_RES_COMBOBOX                183
+#define IDB_RES_LISTBOX                 184
+#define IDB_PNG2                        185
+#define IDB_RES_MENU_BUTTON             185
+#define IDB_RES_IMAGE                   186
+#define IDB_RES_SLIDER                  187
+#define IDB_RES_PROGRESS                188
+#define IDB_PNG3                        189
+#define IDB_RES_BUTTON                  189
+#define IDB_RES_CHECKBOX                190
+#define IDB_PNG4                        191
+#define IDB_RES_RADIO_BUTTON            191
 #define IDC_COMPANY_URL                 1041
 #define IDC_STATUS_BAR_PROGRESS         1060
 #define IDC_PROJET_CODE                 1061
@@ -55,7 +70,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        181
+#define _APS_NEXT_RESOURCE_VALUE        192
 #define _APS_NEXT_COMMAND_VALUE         32876
 #define _APS_NEXT_CONTROL_VALUE         1077
 #define _APS_NEXT_SYMED_VALUE           117

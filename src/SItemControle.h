@@ -7,6 +7,7 @@
 #include "DObject/Controle.h"
 
 //
+using GDSObject::ControleType;
 using GDSObject::CControle;
 using GDSObject::CControleListe;
 
@@ -22,5 +23,13 @@ public:
 	virtual ~CSItemControle();
 
 public:
+	// Image 
+	void SetImage(ControleType controleType);
+
+public:
+	// Mise à jour de l'item
 	void UpdateTreeItem();
+	// Interface pour la mise à jour du property grid
+	virtual void UpdatePropertyGrid(CBCGPPropList* pPropList);
+	virtual LRESULT OnPropertyChanged(CBCGPProp* pProp);
 };

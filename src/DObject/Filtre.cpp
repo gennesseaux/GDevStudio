@@ -63,6 +63,13 @@ namespace GDSObject
 	//! Opérateur =
 	CFiltre & CFiltre::operator=(const CFiltre &source)
 	{
+		/* Initialisation des pointeurs. */
+		m_pFiltreListe = nullptr;
+		m_pRessourceListe = nullptr;
+
+		/* Initialisation des données. */
+		InitialiserDonnees();
+
 		/* Clonage des données. */
 		ClonnerDonnees(source);
 
@@ -570,6 +577,11 @@ namespace GDSObject
 	//! Opérateur =
 	CFiltreListe & CFiltreListe::operator=(const CFiltreListe &source)
 	{
+		/* Initialisation des pointeurs. */
+
+		/* Initialisation des données. */
+		InitialiserDonnees();
+
 		/* Clonage des données. */
 		ClonnerDonnees(source);
 
@@ -579,6 +591,9 @@ namespace GDSObject
 	//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
 	void CFiltreListe::ClonnerDonnees(const CFiltreListe &source)
 	{
+		/* Copie des éléments de la liste */
+		__super::ClonnerDonnees(source);
+
 		/* Initialisation des données. */
 		InitialiserDonnees();
 

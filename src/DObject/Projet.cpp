@@ -63,6 +63,12 @@ namespace GDSObject
 	//! Opérateur =
 	CProjet & CProjet::operator=(const CProjet &source)
 	{
+		/* Initialisation des pointeurs. */
+		m_pFiltreListe = nullptr;
+
+		/* Initialisation des données. */
+		InitialiserDonnees();
+
 		/* Clonage des données. */
 		ClonnerDonnees(source);
 
@@ -447,6 +453,11 @@ namespace GDSObject
 	//! Opérateur =
 	CProjetListe & CProjetListe::operator=(const CProjetListe &source)
 	{
+		/* Initialisation des pointeurs. */
+
+		/* Initialisation des données. */
+		InitialiserDonnees();
+
 		/* Clonage des données. */
 		ClonnerDonnees(source);
 
@@ -456,6 +467,9 @@ namespace GDSObject
 	//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
 	void CProjetListe::ClonnerDonnees(const CProjetListe &source)
 	{
+		/* Copie des éléments de la liste */
+		__super::ClonnerDonnees(source);
+
 		/* Initialisation des données. */
 		InitialiserDonnees();
 

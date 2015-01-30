@@ -67,7 +67,9 @@
     <ClCompile Include="..\src\RessourceDlg.cpp">
       <Filter>Structure\Création/Modification</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ProprieterViewBar.cpp" />
+    <ClCompile Include="..\src\ProprieterViewBar.cpp">
+      <Filter>Structure\PropertyGrid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\GDevStudio.h">
@@ -142,7 +144,9 @@
     <ClInclude Include="..\src\RessourceDlg.h">
       <Filter>Structure\Création/Modification</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ProprieterViewBar.h" />
+    <ClInclude Include="..\src\ProprieterViewBar.h">
+      <Filter>Structure\PropertyGrid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Png\projet.png">
@@ -193,10 +197,43 @@
     <Image Include="res\BCGSoft_ribbon\ribbon_bar.png">
       <Filter>Ressources\PngRibbon</Filter>
     </Image>
-    <Image Include="res\Png\ressource.png">
+    <Image Include="res\Png\dialog.png">
       <Filter>Ressources\Png</Filter>
     </Image>
-    <Image Include="res\Png\controle.png">
+    <Image Include="res\Png\res_static_text.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\controleInconnu.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_edit.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_combobox.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_image.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_listbox.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_menu_button.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_progress.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_slider.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_button.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_checkbox.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_radio_button.png">
       <Filter>Ressources\Png</Filter>
     </Image>
   </ItemGroup>
@@ -226,6 +263,7 @@
     </Filter>
     <Filter Include="Ressources\Png">
       <UniqueIdentifier>{8c2378a0-9204-4b87-9990-631e4e4a9791}</UniqueIdentifier>
+      <Extensions>*.png</Extensions>
     </Filter>
     <Filter Include="Structure">
       <UniqueIdentifier>{a3a264e5-d867-4b23-ab0b-670dce3d32c7}</UniqueIdentifier>
@@ -253,6 +291,10 @@
     </Filter>
     <Filter Include="Ressources\Ico">
       <UniqueIdentifier>{93a1f412-0d85-46f4-aa81-1e6f41f3de16}</UniqueIdentifier>
+      <Extensions>*.ico</Extensions>
+    </Filter>
+    <Filter Include="Structure\PropertyGrid">
+      <UniqueIdentifier>{14234678-6786-412f-9bc8-ff4d56d3f622}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

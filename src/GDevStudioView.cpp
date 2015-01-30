@@ -112,22 +112,13 @@ void CGDevStudioView::AdjustLayout()
 		CRect rectClient;
 		GetClientRect(rectClient);
 
+		rectClient.DeflateRect(0,6,0,2);
 		int x = rectClient.left;
-		int y = rectClient.top + 10;
+		int y = rectClient.top;
 		int cx = rectClient.Width();
 		int cy = rectClient.Height();
 
 		m_pTreeGrille->SetWindowPos(NULL, x, y, cx, cy, SWP_NOZORDER | /*SWP_NOMOVE |*/ SWP_NOACTIVATE);
-	}
-
-	if(m_bInitialUpdate)
-	{
-		// Suppression des bords de la vue
-		ModifyStyle(0, WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
-		ModifyStyleEx(WS_EX_CLIENTEDGE, 0);
-
-		// Force la vue à ce redessiner
-		this->SetWindowPos(NULL, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 	}
 }
 
@@ -191,8 +182,7 @@ void CGDevStudioView::OnContextMenu(CWnd*, CPoint point)
 void CGDevStudioView::OnInitialUpdate()
 {
 	// Suppression des bords de la vue
-	m_bInitialUpdate = true;
-	AdjustLayout();
+	ModifyStyleEx(WS_EX_CLIENTEDGE, 0, SWP_FRAMECHANGED); 
 }
 
 

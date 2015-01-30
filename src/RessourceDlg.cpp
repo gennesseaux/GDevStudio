@@ -99,6 +99,8 @@ void CRessourceDlg::UpdateConstraints()
 
 void CRessourceDlg::OnEmplacementChange()
 {
+	CWaitCursor cur;
+
 	//
 	CString sEmplacement = GetCWndWindowText(&m_edtEmplacement);
 	m_pRessource->SetFile(ToStdString(sEmplacement));
@@ -108,6 +110,7 @@ void CRessourceDlg::OnEmplacementChange()
 	m_pRcReader = new RcReader::CRcReader(ToStdString(sEmplacement));
 
 	// Mise à jour du comboBox
+	m_cbxRessource.ResetContent();
 	int iDlg = m_pRcReader->GetDialogCount();
 	for (int i = 0; i < iDlg ; i++)
 	{
@@ -144,7 +147,7 @@ void CRessourceDlg::OnAjouter()
 		GDSObject::CControle* pControl = new GDSObject::CControle();
 		pControl->SetLibelle(rcControl.GetId());
 		pControl->SetType(rcControl.GetControle().ToString());
-		m_pRessource->GetControleListe(false)->Add(pControl);
+		m_pRessource->GetControleListe()->Add(pControl);
 	}
 
 	// Sauvegarde

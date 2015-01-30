@@ -44,15 +44,12 @@ public:
 	void UpdateTreeItem(CSItemStructure* pSItem);
 	// Suppression d'ue ligne dans la grille
 	void RemoveTreeRow(CBCGPGridRow* pRow);
-
-protected:
-	//void AddToMap(SItemType sitemType, CSItemStructure* pSItemStructure);
+	// Mise à jour du propertygrid
+	void UpdatePropertyGrid(CSItemStructure* pSItem);
 
 private:
 	CGDevStudioDoc* m_pDoc = nullptr;
 	CTreeGrille*	m_pTreeGrille = nullptr;
 	CSItemProjet*	m_pSItemProjet = nullptr;
-
-	//CMap<SItemType, SItemType, CSItemStructure*, CSItemStructure*> m_mapSItemStructure;
 };
 
