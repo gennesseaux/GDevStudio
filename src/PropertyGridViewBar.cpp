@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "GDevStudio.h"
 #include "MainFrm.h"
-#include "ProprieterViewBar.h"
+#include "PropertyGridViewBar.h"
 #include "SItemStructure.h"
 
 

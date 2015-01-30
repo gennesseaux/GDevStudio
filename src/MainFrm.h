@@ -6,7 +6,7 @@
 
 
 // Inclusions
-#include "ProprieterViewBar.h"
+#include "PropertyGridViewBar.h"
 
 
 class CMainFrame : public CBCGPFrameWnd

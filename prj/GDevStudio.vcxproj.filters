@@ -67,7 +67,7 @@
     <ClCompile Include="..\src\RessourceDlg.cpp">
       <Filter>Structure\Création/Modification</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ProprieterViewBar.cpp">
+    <ClCompile Include="..\src\PropertyGridViewBar.cpp">
       <Filter>Structure\PropertyGrid</Filter>
     </ClCompile>
   </ItemGroup>
@@ -144,7 +144,7 @@
     <ClInclude Include="..\src\RessourceDlg.h">
       <Filter>Structure\Création/Modification</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ProprieterViewBar.h">
+    <ClInclude Include="..\src\PropertyGridViewBar.h">
       <Filter>Structure\PropertyGrid</Filter>
     </ClInclude>
   </ItemGroup>

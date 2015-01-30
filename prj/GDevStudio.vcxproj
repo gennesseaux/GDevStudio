@@ -170,7 +170,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClInclude Include="..\src\MainFrm.h" />
     <ClInclude Include="..\src\Outils\MenuFunctions\MenuFunctions.h" />
     <ClInclude Include="..\src\ProjetDlg.h" />
-    <ClInclude Include="..\src\ProprieterViewBar.h" />
+    <ClInclude Include="..\src\PropertyGridViewBar.h" />
     <ClInclude Include="..\src\RessourceDlg.h" />
     <ClInclude Include="..\src\SItemControle.h" />
     <ClInclude Include="..\src\SItemDef.h" />
@@ -197,7 +197,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClCompile Include="..\src\MainFrm.cpp" />
     <ClCompile Include="..\src\Outils\MenuFunctions\MenuFunctions.cpp" />
     <ClCompile Include="..\src\ProjetDlg.cpp" />
-    <ClCompile Include="..\src\ProprieterViewBar.cpp" />
+    <ClCompile Include="..\src\PropertyGridViewBar.cpp" />
     <ClCompile Include="..\src\RessourceDlg.cpp" />
     <ClCompile Include="..\src\SItemControle.cpp" />
     <ClCompile Include="..\src\SItemFiltre.cpp" />

@@ -6,7 +6,7 @@
 
 // Inclusions
 #include "StructureMgr.h"
-#include "ProprieterViewBar.h"
+#include "PropertyGridViewBar.h"
 
 
 namespace PropertyGridCallbackItem { CSItemStructure* pSItem = nullptr; };
