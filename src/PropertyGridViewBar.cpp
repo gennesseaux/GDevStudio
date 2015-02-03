@@ -81,6 +81,7 @@ void CProprieterViewBar::InitialiserPropertyGrid ()
 	m_propertyList.SetVSDotNetLook(FALSE);
 	m_propertyList.MarkModifiedProperties(TRUE);
 	m_propertyList.EnableContextMenu(TRUE);
+	m_propertyList.SetBoolLabels(_T("Oui"),_T("Non"));
 }
 
 void CProprieterViewBar::OnSize(UINT nType, int cx, int cy) 

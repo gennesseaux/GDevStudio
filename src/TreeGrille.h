@@ -46,6 +46,8 @@ public:
 
 protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	void OnDestroy();
 
 	DECLARE_MESSAGE_MAP()
 
@@ -63,10 +65,16 @@ protected:
 	GDSObject::CRessource*	GetPointer(CSItemRessource* pSItemRessource);
 	//
 	CSItemStructure* GetSelectedItem();
+	CSItemStructure* GetItem(int iRow);
 	// Début de l'édition dans la grille
 	virtual void OnAfterInplaceEditCreated(CBCGPGridItem* pItem, CWnd* pInplaceEdit);
 	// Fin de l'édition dans la grille
 	virtual void OnEndInplaceEdit(CBCGPGridItem* pItem);
+	// Drag and drop
+ 	virtual BOOL StartDragItems (CPoint point);
+	virtual void StopDragItems ();
+	virtual BOOL DoDragOver(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
+	virtual BOOL DoDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
 
 
 // Surcharges de la grille
@@ -120,5 +128,8 @@ protected:
 protected:
 	CTreeIconMgr*	m_pTreeImageMgr = nullptr;		//! Manager d'icones
 	CStructureMgr*	m_pStructureMgr = nullptr;		//! Manager des structures
+
+	CSItemStructure* m_pSItemDrag = nullptr;
+	CSItemStructure* m_pSItemDrop = nullptr;
 };
 

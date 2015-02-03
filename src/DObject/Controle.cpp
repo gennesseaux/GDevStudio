@@ -15,7 +15,7 @@
 
 // Inclusions
 #include "Stdafx.h"
-#include "Controle.h"
+#include "DObject\Controle.h"
 
 // Inclusions
 #include <SQLite/SQLiteSource.h>
@@ -90,6 +90,7 @@ namespace GDSObject
 		m_sLibelle = std::string();
 		m_sType = std::string();
 		m_ulResdent = DefULong;
+		m_bExclu = false;
 	}
 
 	//! Initialisation de l'objet
@@ -101,14 +102,15 @@ namespace GDSObject
 		if (!EstAcquis() && m_ulId!=DefULong)
 		{
 			std::ostringstream osQuery;
-			osQuery << "select CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT from CONTROLE where RES_IDENT = " << ToQuery(m_ulId);
+			osQuery << "select CTR_RES_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_EXCLU from CONTROLE where RES_IDENT = " << ToQuery(m_ulId);
 			
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			if (query.executeStep())
 			{
-				m_sLibelle		= query.getColumn(0).getText();
-				m_sType			= query.getColumn(1).getText();
-				m_ulResdent		= query.getColumn(2).getInt();
+				m_ulResdent		= query.getColumn(0).getInt();
+				m_sLibelle		= query.getColumn(1).getText();
+				m_sType			= query.getColumn(2).getText();
+				m_bExclu		= query.getColumn(3).getInt();
 
 				// L'objet est acquis
 				SetAcquis();
@@ -165,12 +167,13 @@ namespace GDSObject
 				if (EstNouveau())
 				{
 					std::ostringstream osQuery;
-					osQuery << "insert into CONTROLE (CTR_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT)";
+					osQuery << "insert into CONTROLE (CTR_IDENT, CTR_RES_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_EXCLU)";
 					osQuery << " values (";
 					osQuery << "	" << ToQuery(DefULong) << ",";
+					osQuery << "	" << ToQuery(m_ulResdent) << ",";
 					osQuery << "	" << ToQuery(m_sLibelle) << ",";
 					osQuery << "	" << ToQuery(m_sType) << ",";
-					osQuery << "	" << ToQuery(m_ulResdent) << "";
+					osQuery << "	" << ToQuery(m_bExclu) << "";
 					osQuery << ");";
 
 					CSQLiteSource::database()->exec(osQuery.str());
@@ -182,9 +185,10 @@ namespace GDSObject
 				{
 					std::ostringstream osQuery;
 					osQuery << "update CONTROLE set";
+					osQuery << "	CTR_RES_IDENT = "	<< ToQuery(m_ulResdent) << ",";
 					osQuery << "	CTR_LIBELLE = "		<< ToQuery(m_sLibelle) << ",";
 					osQuery << "	CTR_TYPE = "		<< ToQuery(m_sType) << ",";
-					osQuery << "	CTR_RES_IDENT = "	<< ToQuery(m_ulResdent) << ",";
+					osQuery << "	CTR_EXCLU = "		<< ToQuery(m_bExclu) << " ";
 					osQuery << "where";
 					osQuery << "	CTR_IDENT = "		<< ToQuery(m_ulId) << ";";
 
@@ -338,6 +342,33 @@ namespace GDSObject
 		return true;
 	}
 
+	bool CControle::GetExclu()
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return false;
+
+		return m_bExclu;
+	}
+
+	bool CControle::SetExclu(bool bExclu)
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return false;
+
+		// Le champ est modifié uniquement si sa valeur change.
+		if (m_bExclu != bExclu)
+		{
+			// Affectation de la nouvelle valeur.
+			m_bExclu = bExclu;
+
+			// Marquer l'objet comme modifié.
+			SetModifier();
+		}
+
+		// Le changement de valeur a réussi.
+		return true;
+	}
+
 	GDSObject::ControleType CControle::GetControleType()
 	{
 		// L'objet doit être initialisé
@@ -433,6 +464,7 @@ namespace GDSObject
 
 
 
+
 	//! Constructeur
 	CControleListe::CControleListe()
 	{
@@ -506,15 +538,16 @@ namespace GDSObject
 		if (!EstAcquis())
 		{
 			std::ostringstream osQuery;
-			osQuery << "select CTR_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT from CONTROLE";
+			osQuery << "select CTR_IDENT, CTR_RES_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_EXCLU from CONTROLE";
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			while (query.executeStep())
 			{
 				CControle* pControle		= new CControle(query.getColumn(0).getInt());
-				pControle->m_sLibelle		= query.getColumn(1).getText();
-				pControle->m_sType			= query.getColumn(2).getText();
-				pControle->m_ulResdent		= query.getColumn(3).getInt();
+				pControle->m_ulResdent		= query.getColumn(1).getInt();
+				pControle->m_sLibelle		= query.getColumn(2).getText();
+				pControle->m_sType			= query.getColumn(3).getText();
+				pControle->m_bExclu			= query.getColumn(4).getInt();
 
 				// L'objet est acquis
 				pControle->SetAcquis();
@@ -606,15 +639,16 @@ namespace GDSObject
 		if (!EstAcquis())
 		{
 			std::ostringstream osQuery;
-			osQuery << "select CTR_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_RES_IDENT from CONTROLE where CTR_RES_IDENT = " << ToQuery(ulResIdent);
+			osQuery << "select CTR_IDENT, CTR_RES_IDENT, CTR_LIBELLE, CTR_TYPE, CTR_EXCLU from CONTROLE where CTR_RES_IDENT = " << ToQuery(ulResIdent) << " order by CTR_IDENT";
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			while (query.executeStep())
 			{
 				CControle* pControle		= new CControle(query.getColumn(0).getInt());
-				pControle->m_sLibelle		= query.getColumn(1).getText();
-				pControle->m_sType			= query.getColumn(2).getText();
-				pControle->m_ulResdent		= query.getColumn(3).getInt();
+				pControle->m_ulResdent		= query.getColumn(1).getInt();
+				pControle->m_sLibelle		= query.getColumn(2).getText();
+				pControle->m_sType			= query.getColumn(3).getText();
+				pControle->m_bExclu			= query.getColumn(4).getInt();
 
 				// L'objet est acquis
 				pControle->SetAcquis();

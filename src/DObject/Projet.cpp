@@ -15,14 +15,12 @@
 
 // Inclusions
 #include "Stdafx.h"
-#include "Projet.h"
+#include "DObject\Projet.h"
+#include "DObject\Filtre.h"
 
 // Inclusions
 #include <SQLite/SQLiteSource.h>
 #include <Poco/NumberFormatter.h>
-
-// Inclusions
-#include "Filtre.h"
 
 
 namespace GDSObject
@@ -114,7 +112,7 @@ namespace GDSObject
 		if (!EstAcquis() && m_ulId!=DefULong)
 		{
 			std::ostringstream osQuery;
-			osQuery << "select PRJ_LIBELLE, PRJ_DESCRIPTION, PRJ_H_FOLDER, PRJ_CPP_FOLDER from PROJET where PRJ_IDENT = " << ToQuery(m_ulId);
+			osQuery << "select PRJ_LIBELLE, PRJ_DESCRIPTION, PRJ_H_FOLDER, PRJ_CPP_FOLDER, PRJ_UUID_RES_GEN, PRJ_UUID_CLS_GEN from PROJET where PRJ_IDENT = " << ToQuery(m_ulId);
 			
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			if (query.executeStep())
@@ -123,6 +121,8 @@ namespace GDSObject
 				m_sDescription = query.getColumn(1);
 				m_ptHFolder = query.getColumn(2).getText();
 				m_ptCppFolder = query.getColumn(3).getText();
+				m_uuidResGen = Poco::UUID(query.getColumn(4).getText());
+				m_uuidClsGen = Poco::UUID(query.getColumn(5).getText());
 
 				// L'objet est acquis
 				SetAcquis();
@@ -178,13 +178,15 @@ namespace GDSObject
 				if (EstNouveau())
 				{
 					std::ostringstream osQuery;
-					osQuery << "insert into PROJET (PRJ_IDENT, PRJ_LIBELLE, PRJ_DESCRIPTION, PRJ_H_FOLDER, PRJ_CPP_FOLDER)";
+					osQuery << "insert into PROJET (PRJ_IDENT, PRJ_LIBELLE, PRJ_DESCRIPTION, PRJ_H_FOLDER, PRJ_CPP_FOLDER, PRJ_UUID_RES_GEN, PRJ_UUID_CLS_GEN)";
 					osQuery << " values (";
 					osQuery << "	" << ToQuery(DefULong) << ",";
 					osQuery << "	" << ToQuery(m_sLibelle) << ",";
 					osQuery << "	" << ToQuery(m_sDescription) << ",";
 					osQuery << "	" << ToQuery(m_ptHFolder.toString()) << ",";
-					osQuery << "	" << ToQuery(m_ptCppFolder.toString()) << "";
+					osQuery << "	" << ToQuery(m_ptCppFolder.toString()) << ",";
+					osQuery << "	" << ToQuery(m_uuidResGen.toString()) << ",";
+					osQuery << "	" << ToQuery(m_uuidClsGen.toString()) << "";
 					osQuery << ");";
 
 					CSQLiteSource::database()->exec(osQuery.str());
@@ -196,10 +198,12 @@ namespace GDSObject
 				{
 					std::ostringstream osQuery;
 					osQuery << "update PROJET set";
-					osQuery << "	PRJ_LIBELLE = "		<< ToQuery(m_sLibelle) << ",";
-					osQuery << "	PRJ_DESCRIPTION = "	<< ToQuery(m_sDescription) << ",";
-					osQuery << "	PRJ_H_FOLDER = "	<< ToQuery(m_ptHFolder.toString()) << ",";
-					osQuery << "	PRJ_CPP_FOLDER = "	<< ToQuery(m_ptCppFolder.toString()) << " ";
+					osQuery << "	PRJ_LIBELLE = "			<< ToQuery(m_sLibelle) << ",";
+					osQuery << "	PRJ_DESCRIPTION = "		<< ToQuery(m_sDescription) << ",";
+					osQuery << "	PRJ_H_FOLDER = "		<< ToQuery(m_ptHFolder.toString()) << ",";
+					osQuery << "	PRJ_CPP_FOLDER = "		<< ToQuery(m_ptCppFolder.toString()) << ",";
+					osQuery << "	PRJ_UUID_RES_GEN = "	<< ToQuery(m_uuidResGen.toString()) << ",";
+					osQuery << "	PRJ_UUID_CLS_GEN = "	<< ToQuery(m_uuidClsGen.toString()) << " ";
 					osQuery << "where";
 					osQuery << "	PRJ_IDENT = "		<< ToQuery(m_ulId) << ";";
 
@@ -389,6 +393,98 @@ namespace GDSObject
 		// Le changement de valeur a réussi.
 		return true;
 	}
+	
+	Poco::UUID CProjet::GetUuidResGen()
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return Poco::UUID();
+
+		return m_uuidResGen;
+	}
+
+	bool CProjet::SetUuidResGen(Poco::UUID uuid)
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return false;
+
+		// Le champ est modifié uniquement si sa valeur change.
+		if (m_uuidResGen != uuid)
+		{
+			// Affectation de la nouvelle valeur.
+			m_uuidResGen = uuid;
+
+			// Marquer l'objet comme modifié.
+			SetModifier();
+		}
+
+		// Le changement de valeur a réussi.
+		return true;
+	}
+
+	bool CProjet::SetUuidResGen(std::string uuid)
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return false;
+
+		// Le champ est modifié uniquement si sa valeur change.
+		if (m_uuidResGen.toString() != uuid)
+		{
+			// Affectation de la nouvelle valeur.
+			m_uuidResGen = Poco::UUID(uuid);
+
+			// Marquer l'objet comme modifié.
+			SetModifier();
+		}
+
+		// Le changement de valeur a réussi.
+		return true;
+	}
+
+	Poco::UUID CProjet::GetUuidClsGen()
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return Poco::UUID();
+
+		return m_uuidClsGen;
+	}
+
+	bool CProjet::SetUuidClsGen(Poco::UUID uuid)
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return false;
+
+		// Le champ est modifié uniquement si sa valeur change.
+		if (m_uuidClsGen != uuid)
+		{
+			// Affectation de la nouvelle valeur.
+			m_uuidClsGen = uuid;
+
+			// Marquer l'objet comme modifié.
+			SetModifier();
+		}
+
+		// Le changement de valeur a réussi.
+		return true;
+	}
+
+	bool CProjet::SetUuidClsGen(std::string uuid)
+	{
+		// L'objet doit être initialisé
+		if (!Initialiser()) return false;
+
+		// Le champ est modifié uniquement si sa valeur change.
+		if (m_uuidClsGen.toString() != uuid)
+		{
+			// Affectation de la nouvelle valeur.
+			m_uuidClsGen = Poco::UUID(uuid);
+
+			// Marquer l'objet comme modifié.
+			SetModifier();
+		}
+
+		// Le changement de valeur a réussi.
+		return true;
+	}
 
 	CFiltreListe* CProjet::GetFiltreListe(bool bInit)
 	{
@@ -493,7 +589,7 @@ namespace GDSObject
 		if (!EstAcquis())
 		{
 			std::ostringstream osQuery;
-			osQuery << "select PRJ_IDENT, PRJ_LIBELLE, PRJ_DESCRIPTION, PRJ_H_FOLDER, PRJ_CPP_FOLDER from PROJET";
+			osQuery << "select PRJ_IDENT, PRJ_LIBELLE, PRJ_DESCRIPTION, PRJ_H_FOLDER, PRJ_CPP_FOLDER, PRJ_UUID_RES_GEN, PRJ_UUID_CLS_GEN from PROJET";
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			while (query.executeStep())
@@ -502,6 +598,8 @@ namespace GDSObject
 				pProjet->SetInitaliser(true);
 				pProjet->SetLibelle(query.getColumn(1).getText());
 				pProjet->SetDesciption(query.getColumn(2).getText());
+				pProjet->SetDesciption(query.getColumn(3).getText());
+				pProjet->SetDesciption(query.getColumn(4).getText());
 
 				Add(pProjet);
 			}

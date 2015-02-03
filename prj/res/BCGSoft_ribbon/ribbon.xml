@@ -2,7 +2,7 @@
 <BCGP_RIBBON>
 	<HEADER>
 		<VERSION>1</VERSION>
-		<VERSION_STAMP>2</VERSION_STAMP>
+		<VERSION_STAMP>3</VERSION_STAMP>
 	</HEADER>
 	<RIBBON_BAR>
 		<ELEMENT_NAME>RibbonBar</ELEMENT_NAME>
@@ -140,7 +140,7 @@
 		<CATEGORIES>
 			<CATEGORY>
 				<ELEMENT_NAME>Category</ELEMENT_NAME>
-				<NAME>Acceuil</NAME>
+				<NAME>Fichier</NAME>
 				<IMAGE_SMALL>
 					<NAME>IDR_BCGP_IMAGE_CATEGORY_SMALL_0</NAME>
 				</IMAGE_SMALL>
@@ -187,76 +187,6 @@
 								<DESCRIPTION>Enregistrer le projet sous un nom différent</DESCRIPTION>
 								<INDEX_SMALL>6</INDEX_SMALL>
 								<INDEX_LARGE>3</INDEX_LARGE>
-							</ELEMENT>
-						</ELEMENTS>
-					</PANEL>
-					<PANEL>
-						<ELEMENT_NAME>Panel</ELEMENT_NAME>
-						<NAME>Presse-papiers</NAME>
-						<KEYS>zc</KEYS>
-						<ELEMENTS>
-							<ELEMENT>
-								<ELEMENT_NAME>Button</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_EDIT_PASTE</NAME>
-									<VALUE>57637</VALUE>
-								</ID>
-								<TEXT>Coller</TEXT>
-								<TOOLTIP>Coller</TOOLTIP>
-								<KEYS>v</KEYS>
-								<INDEX_SMALL>0</INDEX_SMALL>
-								<INDEX_LARGE>0</INDEX_LARGE>
-								<ELEMENTS>
-									<ELEMENT>
-										<ELEMENT_NAME>Button</ELEMENT_NAME>
-										<ID>
-											<NAME>ID_EDIT_PASTE</NAME>
-											<VALUE>57637</VALUE>
-										</ID>
-										<TEXT>&amp;Paste</TEXT>
-									</ELEMENT>
-									<ELEMENT>
-										<ELEMENT_NAME>Button</ELEMENT_NAME>
-										<ID>
-											<NAME>ID_EDIT_PASTE_SPECIAL</NAME>
-											<VALUE>57639</VALUE>
-										</ID>
-										<TEXT>Paste &amp;Special...</TEXT>
-									</ELEMENT>
-								</ELEMENTS>
-							</ELEMENT>
-							<ELEMENT>
-								<ELEMENT_NAME>Button</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_EDIT_CUT</NAME>
-									<VALUE>57635</VALUE>
-								</ID>
-								<TEXT>Couper</TEXT>
-								<TOOLTIP>Couper</TOOLTIP>
-								<KEYS>x</KEYS>
-								<INDEX_SMALL>1</INDEX_SMALL>
-							</ELEMENT>
-							<ELEMENT>
-								<ELEMENT_NAME>Button</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_EDIT_COPY</NAME>
-									<VALUE>57634</VALUE>
-								</ID>
-								<TEXT>Copier</TEXT>
-								<TOOLTIP>Copier</TOOLTIP>
-								<KEYS>c</KEYS>
-								<INDEX_SMALL>2</INDEX_SMALL>
-							</ELEMENT>
-							<ELEMENT>
-								<ELEMENT_NAME>Button</ELEMENT_NAME>
-								<ID>
-									<NAME>ID_EDIT_CLEAR</NAME>
-									<VALUE>57632</VALUE>
-								</ID>
-								<TEXT>Supprimer</TEXT>
-								<TOOLTIP>Supprimer</TOOLTIP>
-								<KEYS>r</KEYS>
-								<INDEX_SMALL>3</INDEX_SMALL>
 							</ELEMENT>
 						</ELEMENTS>
 					</PANEL>

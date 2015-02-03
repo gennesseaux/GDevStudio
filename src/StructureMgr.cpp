@@ -36,6 +36,9 @@ void CStructureMgr::Initialiser(unsigned long ulIdProjet)
 	// Projet
 	delete m_pSItemProjet;
 	m_pSItemProjet = new CSItemProjet(this,ulIdProjet);
+
+	// Propertygrid
+	UpdatePropertyGrid(m_pSItemProjet);
 }
 
 // Pointeur sur la grille utilisé comme Tree

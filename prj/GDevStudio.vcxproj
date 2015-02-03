@@ -59,7 +59,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\src;..\..\Commun\DObject\include;..\..\Commun\Outils\\include;..\..\Commun\RcReader\include;..\..\Commun\SQLite\include;..\..\Poco\Crypto\include;..\..\Poco\Foundation\include;..\..\Poco\JSON\include;..\..\Poco\Net\include;..\..\Poco\NetSSL_OpenSSL\include;..\..\Poco\Util\include;..\..\Poco\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\include;..\src;..\..\Commun\DObject\include;..\..\Commun\Outils\\include;..\..\Commun\RcReader\include;..\..\Commun\SQLite\include;..\..\Poco\Crypto\include;..\..\Poco\Foundation\include;..\..\Poco\JSON\include;..\..\Poco\Net\include;..\..\Poco\NetSSL_OpenSSL\include;..\..\Poco\Util\include;..\..\Poco\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -113,7 +113,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
       <MinimalRebuild>false</MinimalRebuild>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\src;..\..\Commun\DObject\include;..\..\Commun\Outils\\include;..\..\Commun\RcReader\include;..\..\Commun\SQLite\include;..\..\Poco\Crypto\include;..\..\Poco\Foundation\include;..\..\Poco\JSON\include;..\..\Poco\Net\include;..\..\Poco\NetSSL_OpenSSL\include;..\..\Poco\Util\include;..\..\Poco\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\include;..\src;..\..\Commun\DObject\include;..\..\Commun\Outils\\include;..\..\Commun\RcReader\include;..\..\Commun\SQLite\include;..\..\Poco\Crypto\include;..\..\Poco\Foundation\include;..\..\Poco\JSON\include;..\..\Poco\Net\include;..\..\Poco\NetSSL_OpenSSL\include;..\..\Poco\Util\include;..\..\Poco\XML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -159,10 +159,14 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\DObject\Controle.h" />
-    <ClInclude Include="..\src\DObject\Filtre.h" />
-    <ClInclude Include="..\src\DObject\Projet.h" />
-    <ClInclude Include="..\src\DObject\Ressource.h" />
+    <ClInclude Include="..\include\DObject\Controle.h" />
+    <ClInclude Include="..\include\DObject\Filtre.h" />
+    <ClInclude Include="..\include\DObject\Projet.h" />
+    <ClInclude Include="..\include\DObject\Ressource.h" />
+    <ClInclude Include="..\include\IClasseGenerateurPlugin.h" />
+    <ClInclude Include="..\include\IGenerateurPlugin.h" />
+    <ClInclude Include="..\include\IRessourceGenerateurPlugin.h" />
+    <ClInclude Include="..\include\PluginLoader.h" />
     <ClInclude Include="..\src\GDevStudio.h" />
     <ClInclude Include="..\src\GDevStudioDialogBase.h" />
     <ClInclude Include="..\src\GDevStudioDoc.h" />
@@ -196,6 +200,7 @@ if /I %CONFIG%==Release	copy /y ..\..\Poco\bin\PocoXML.dll			"$(ProjectDir)..\bi
     <ClCompile Include="..\src\GDevStudioView.cpp" />
     <ClCompile Include="..\src\MainFrm.cpp" />
     <ClCompile Include="..\src\Outils\MenuFunctions\MenuFunctions.cpp" />
+    <ClCompile Include="..\src\PluginLoader.cpp" />
     <ClCompile Include="..\src\ProjetDlg.cpp" />
     <ClCompile Include="..\src\PropertyGridViewBar.cpp" />
     <ClCompile Include="..\src\RessourceDlg.cpp" />

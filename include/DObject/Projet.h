@@ -2,7 +2,7 @@
 //
 //	-----------------------------------------------------------------------
 //
-//	 Fichier		: 	Filtre.h
+//	 Fichier		: 	Projet.h
 //
 //	 Auteur			:	GENNESSEAUX Jocelyn
 //
@@ -20,39 +20,30 @@
 #include <DObject/DObjListe.h>
 
 // Inclusions Poco
+#include <Poco/Foundation.h>
 #include <Poco/Path.h>
+#include <Poco/UUID.h>
 
 namespace GDSObject
 {
+	class CProjetListe;
 	class CFiltreListe;
-	class CRessourceListe;
-
-	enum class FiltreType
-	{
-		Filtre,
-		SQL,
-		SQLite,
-		Ressource
-	};
 
 	// Classe CDObjTest
-	class CFiltre : public DObject::CDObjBase
+	class CProjet : public DObject::CDObjBase
 	{
-		friend class CFiltreListe;
-
 	public:
 		//! Constructeur
-		CFiltre(unsigned long ulId = DefULong);
+		CProjet(unsigned long ulId = DefULong);
 		//! Destructeur
-		~CFiltre(void);
+		~CProjet(void);
 
 		//! Constructeur par copie.
-		CFiltre(const CFiltre &source);
+		CProjet(const CProjet &source);
 		//! Opérateur =
-		CFiltre &operator=(const CFiltre &source);
-
+		CProjet &operator=(const CProjet &source);
 		//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-		void ClonnerDonnees(const CFiltre &source);
+		void ClonnerDonnees(const CProjet &source);
 
 	public:
 		//! Initialisation des données membres de la classe
@@ -71,54 +62,54 @@ namespace GDSObject
 		std::string GetLibelle();
 		bool SetLibelle(std::string sName);
 
-		GDSObject::FiltreType GetType();
-		bool SetType(GDSObject::FiltreType iType);
-
-		unsigned long GetPrjIdent();
-		bool SetPrjIdent(unsigned long ulPrjIdent);
-
-		unsigned long GetFtrIdent();
-		bool SetFtrIdent(unsigned long ulFtrIdent);
+		std::string GetDesciption();
+		bool SetDesciption(std::string sDesciption);
 
 		Poco::Path GetHFolder();
 		bool SetHFolder(Poco::Path ptHFolder);
 
 		Poco::Path GetCppFolder();
 		bool SetCppFolder(Poco::Path ptCppFolder);
-		
+
+		Poco::UUID GetUuidResGen();
+		bool SetUuidResGen(Poco::UUID uuid);
+		bool SetUuidResGen(std::string uuid);
+
+		Poco::UUID GetUuidClsGen();
+		bool SetUuidClsGen(Poco::UUID uuid);
+		bool SetUuidClsGen(std::string uuid);
+
 		CFiltreListe* GetFiltreListe(bool bInit = true);
-		CRessourceListe* GetRessourceListe(bool bInit = true);
 
 	protected:
 		// Données membres
-		std::string			m_sLibelle;
-		FiltreType			m_iType;
-		unsigned long		m_ulPrjIdent;		// Identifiant du projet parent
-		unsigned long		m_ulFtrIdent;		// Identifiant du filtre parent
-		Poco::Path			m_ptHFolder;
-		Poco::Path			m_ptCppFolder;
+		std::string		m_sLibelle;
+		std::string		m_sDescription;
+		Poco::Path		m_ptHFolder;
+		Poco::Path		m_ptCppFolder;
+		Poco::UUID		m_uuidResGen;
+		Poco::UUID		m_uuidClsGen;
 		// Pointeurs
-		CFiltreListe*		m_pFiltreListe = nullptr;		// Liste des filtres
-		CRessourceListe*	m_pRessourceListe = nullptr;	// Liste des ressouurces
+		CFiltreListe*	m_pFiltreListe;		// Liste des diltre directement associés au projet
 	};
 
 
 
 	// Classe CDObjTestListe
-	class CFiltreListe : public DObject::CDObjListe<CFiltre>
+	class CProjetListe : public DObject::CDObjListe<CProjet>
 	{
 	public:
 		//! Constructeur
-		CFiltreListe();
+		CProjetListe();
 		//! Destructeur
-		~CFiltreListe(void);
+		~CProjetListe(void);
 
 		//! Constructeur par copie.
-		CFiltreListe(const CFiltreListe &source);
+		CProjetListe(const CProjetListe &source);
 		//! Opérateur =
-		CFiltreListe &operator=(const CFiltreListe &source);
+		CProjetListe &operator=(const CProjetListe &source);
 		//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-		void ClonnerDonnees(const CFiltreListe &source);
+		void ClonnerDonnees(const CProjetListe &source);
 
 	public:
 		//! Initialisation des données membres de la classe
@@ -131,26 +122,6 @@ namespace GDSObject
 		virtual bool Sauver();
 		//! Suppression
 		virtual bool Supprimer();
-
-	public:
-		//
-		bool InitialiserAPartirDePrjIdent(unsigned long ulPrjIdent);
-		//
-		bool InitialiserAPartirDeFtrIdent(unsigned long ulFtrIdent);
-
-
-	public:
-		unsigned long GetPrjIdent();
-		bool SetPrjIdent(unsigned long ulPrjIdent);
-
-		unsigned long GetFtrIdent();
-		bool SetFtrIdent(unsigned long ulFtrIdent);
-
-
-	protected:
-		// Données membres
-		unsigned long	m_ulPrjIdent;		// Identifiant du projet parent
-		unsigned long	m_ulFtrIdent;		// Identifiant du filtre parent
 	};
 
 }

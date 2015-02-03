@@ -15,6 +15,8 @@ class CStructureMgr;
 
 class CSItemStructure
 {
+	friend class CStructureMgr;
+
 public:
 	// Constructeur
 	CSItemStructure(SItemType sitemType, CStructureMgr* pStructureMgr);
@@ -51,11 +53,20 @@ public:
 	void Expand(BOOL bExpand = TRUE);
 
 
-public:
+protected:
 	virtual void UpdateTreeItem() = 0;
+
+	// Property grid
 	virtual void UpdatePropertyGrid(CBCGPPropList* pPropList);
 	static LRESULT CALLBACK OnPropertyChangedCallback(CBCGPProp* pProp);
 	virtual LRESULT OnPropertyChanged(CBCGPProp* pProp) = 0;
+
+
+public:
+	// Drag & Drop
+ 	virtual bool CanDrag() = 0;
+ 	virtual bool CanDrop(CSItemStructure* pSItemDrag) = 0;
+
 
 protected:
 	CStructureMgr*	m_pStructureMgr = nullptr;

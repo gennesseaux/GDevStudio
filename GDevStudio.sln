@@ -13,6 +13,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SQLite", "..\Commun\SQLite\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GDevStudio", "prj\GDevStudio.vcxproj", "{BAB00890-013F-4542-A304-805BA8E40837}"
 	ProjectSection(ProjectDependencies) = postProject
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3} = {A20E9808-C9F7-4810-B318-6126BAFB33B3}
 		{407D9119-86DD-4CE1-8E3D-37A00BCD3849} = {407D9119-86DD-4CE1-8E3D-37A00BCD3849}
 		{966A6830-49CF-43C3-8FAD-D8BF4A6054CC} = {966A6830-49CF-43C3-8FAD-D8BF4A6054CC}
 		{F9BF2EC1-C5E7-43D8-944D-DC5E2DF1F976} = {F9BF2EC1-C5E7-43D8-944D-DC5E2DF1F976}
@@ -21,6 +22,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GDevStudio", "prj\GDevStudi
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RcReader", "..\Commun\RcReader\RcReader.vcxproj", "{966A6830-49CF-43C3-8FAD-D8BF4A6054CC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GyResGen", "GyResGen\prj\GyResGen.vcxproj", "{A20E9808-C9F7-4810-B318-6126BAFB33B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -258,6 +261,38 @@ Global
 		{966A6830-49CF-43C3-8FAD-D8BF4A6054CC}.Unicode Release|Win32.ActiveCfg = Release|Win32
 		{966A6830-49CF-43C3-8FAD-D8BF4A6054CC}.Unicode Release|Win32.Build.0 = Release|Win32
 		{966A6830-49CF-43C3-8FAD-D8BF4A6054CC}.Unicode Release|x64.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Debug MFC Shared|ARM.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Debug MFC Shared|Win32.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Debug MFC Shared|Win32.Build.0 = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Debug MFC Shared|x64.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Debug|ARM.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Debug|Win32.Build.0 = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Debug|x64.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Release MFC Shared|ARM.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Release MFC Shared|Win32.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Release MFC Shared|Win32.Build.0 = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Release MFC Shared|x64.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Release|ARM.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Release|Win32.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Release|Win32.Build.0 = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Release|x64.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Debug MFC Shared|ARM.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Debug MFC Shared|Win32.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Debug MFC Shared|Win32.Build.0 = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Debug MFC Shared|x64.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Debug|ARM.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Debug|Win32.Build.0 = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Debug|x64.ActiveCfg = Debug|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Release MFC Shared|ARM.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Release MFC Shared|Win32.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Release MFC Shared|Win32.Build.0 = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Release MFC Shared|x64.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Release|ARM.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Release|Win32.Build.0 = Release|Win32
+		{A20E9808-C9F7-4810-B318-6126BAFB33B3}.Unicode Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

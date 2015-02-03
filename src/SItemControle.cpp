@@ -9,6 +9,14 @@
 using GDSObject::CControle;
 using GDSObject::CControleListe;
 
+enum PropID
+{
+	Nom,
+	Type,
+
+	Exclu,
+};
+
 
 // Constructeur
 CSItemControle::CSItemControle(CStructureMgr* pStructureMgr, const CControle &source, CSItemRessource* pSItemRessource) : CSItemStructure(SItemType::Controle,pStructureMgr), CControle(source)
@@ -87,11 +95,65 @@ void CSItemControle::UpdateTreeItem()
 // Interface pour la mise à jour du property grid
 void CSItemControle::UpdatePropertyGrid(CBCGPPropList* pPropList)
 {
-	pPropList->RemoveAll();
+	CSItemStructure::UpdatePropertyGrid(pPropList);
+
+	// Divers
+	CBCGPProp* pGroupDivers = new CBCGPProp(_T("Divers"));
+	CBCGPProp* pNom		= new CBCGPProp(_T("Nom"),		(UINT)Nom,		(_variant_t)ToString(GetLibelle()),		_T("Identifiant du contrôle"));
+	CBCGPProp* pType	= new CBCGPProp(_T("Type"),		(UINT)Type,		(_variant_t)ToString(GetType()),		_T("Type de contrôle"));
+
+	pNom->Enable(FALSE);
+	pType->Enable(FALSE);
+	pGroupDivers->AddSubItem(pNom);
+	pGroupDivers->AddSubItem(pType);
+
+	pPropList->AddProperty (pGroupDivers);
+
+
+	// Paramètres de génération
+	CBCGPProp* pGroupParamGen = new CBCGPProp(_T("génération"));
+	CBCGPProp* pExclu		= new CBCGPProp(_T("Exclu"),		(UINT)Exclu,		(_variant_t)false,		_T("Exclure de la génération"));
+
+	pGroupParamGen->AddSubItem(pExclu);
+
+	pPropList->AddProperty (pGroupParamGen);
+
+	// Mise à jour de l'affichage
 	pPropList->Invalidate();
 }
 
 LRESULT CSItemControle::OnPropertyChanged(CBCGPProp* pProp)
 {
+	PropID id = (PropID)pProp->GetID();
+
+	switch(id)
+	{
+		case Exclu:
+			{
+				//
+				bool bExclu = (bool)pProp->GetValue();
+
+				//
+				GDSObject::CControle controle(this->GetId());
+ 				controle.SetExclu(bExclu);
+ 				controle.Sauver();
+
+				//
+				UpdateTreeItem();
+
+				break;
+			}
+	}
+
 	return 0;
+}
+
+bool CSItemControle::CanDrag()
+{
+	return false;
+}
+
+bool CSItemControle::CanDrop(CSItemStructure* pSItemDrag)
+{
+	return false;
 }

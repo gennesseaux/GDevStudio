@@ -70,6 +70,9 @@
     <ClCompile Include="..\src\PropertyGridViewBar.cpp">
       <Filter>Structure\PropertyGrid</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\PluginLoader.cpp">
+      <Filter>Plugins</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\GDevStudio.h">
@@ -86,12 +89,6 @@
     </ClInclude>
     <ClInclude Include="..\src\SQLite\SQLiteSource.h">
       <Filter>DObject\SQLite</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DObject\Projet.h">
-      <Filter>DObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DObject\Filtre.h">
-      <Filter>DObject</Filter>
     </ClInclude>
     <ClInclude Include="..\src\TreeGrille.h">
       <Filter>Structure</Filter>
@@ -129,12 +126,6 @@
     <ClInclude Include="..\src\GDevStudioDialogBase.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DObject\Ressource.h">
-      <Filter>DObject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DObject\Controle.h">
-      <Filter>DObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\SItemRessource.h">
       <Filter>Structure\Items</Filter>
     </ClInclude>
@@ -146,6 +137,30 @@
     </ClInclude>
     <ClInclude Include="..\src\PropertyGridViewBar.h">
       <Filter>Structure\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IClasseGenerateurPlugin.h">
+      <Filter>Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IRessourceGenerateurPlugin.h">
+      <Filter>Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IGenerateurPlugin.h">
+      <Filter>Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\PluginLoader.h">
+      <Filter>Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\DObject\Ressource.h">
+      <Filter>DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\DObject\Controle.h">
+      <Filter>DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\DObject\Filtre.h">
+      <Filter>DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\DObject\Projet.h">
+      <Filter>DObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +310,9 @@
     </Filter>
     <Filter Include="Structure\PropertyGrid">
       <UniqueIdentifier>{14234678-6786-412f-9bc8-ff4d56d3f622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins">
+      <UniqueIdentifier>{d5b29012-acd7-4af6-9ec1-9c1a32c8495a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -15,8 +15,8 @@
 
 // Inclusions
 #include "Stdafx.h"
-#include "Ressource.h"
-#include "Controle.h"
+#include "DObject\Ressource.h"
+#include "DObject\Controle.h"
 
 // Inclusions
 #include <SQLite/SQLiteSource.h>
@@ -472,7 +472,7 @@ namespace GDSObject
 		if (!EstAcquis())
 		{
 			std::ostringstream osQuery;
-			osQuery << "select RES_IDENT, RES_LIBELLE, RES_FILE, RES_FTR_IDENT from RESSOURCE";
+			osQuery << "select RES_IDENT, RES_LIBELLE, RES_FILE, RES_FTR_IDENT from RESSOURCE order by RES_LIBELLE";
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			while (query.executeStep())
@@ -572,7 +572,7 @@ namespace GDSObject
 		if (!EstAcquis())
 		{
 			std::ostringstream osQuery;
-			osQuery << "select RES_IDENT, RES_LIBELLE, RES_FILE, RES_FTR_IDENT from RESSOURCE where RES_FTR_IDENT = " << ToQuery(ulFtrIdent);
+			osQuery << "select RES_IDENT, RES_LIBELLE, RES_FILE, RES_FTR_IDENT from RESSOURCE where RES_FTR_IDENT = " << ToQuery(ulFtrIdent) << " order by RES_LIBELLE";
 
 			SQLite::Statement query(*CSQLiteSource::database(), osQuery.str());
 			while (query.executeStep())

@@ -2,7 +2,7 @@
 //
 //	-----------------------------------------------------------------------
 //
-//	 Fichier		: 	Projet.h
+//	 Fichier		: 	Filtre.h
 //
 //	 Auteur			:	GENNESSEAUX Jocelyn
 //
@@ -18,28 +18,42 @@
 // Inclusions
 #include <DObject/DObjBase.h>
 #include <DObject/DObjListe.h>
+
+// Inclusions Poco
 #include <Poco/Path.h>
+#include <Poco/File.h>
 
 namespace GDSObject
 {
-	class CProjetListe;
 	class CFiltreListe;
+	class CRessourceListe;
+
+	enum class FiltreType
+	{
+		Filtre,
+		SQL,
+		SQLite,
+		Ressource
+	};
 
 	// Classe CDObjTest
-	class CProjet : public DObject::CDObjBase
+	class CFiltre : public DObject::CDObjBase
 	{
+		friend class CFiltreListe;
+
 	public:
 		//! Constructeur
-		CProjet(unsigned long ulId = DefULong);
+		CFiltre(unsigned long ulId = DefULong);
 		//! Destructeur
-		~CProjet(void);
+		~CFiltre(void);
 
 		//! Constructeur par copie.
-		CProjet(const CProjet &source);
+		CFiltre(const CFiltre &source);
 		//! Opérateur =
-		CProjet &operator=(const CProjet &source);
+		CFiltre &operator=(const CFiltre &source);
+
 		//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-		void ClonnerDonnees(const CProjet &source);
+		void ClonnerDonnees(const CFiltre &source);
 
 	public:
 		//! Initialisation des données membres de la classe
@@ -58,44 +72,54 @@ namespace GDSObject
 		std::string GetLibelle();
 		bool SetLibelle(std::string sName);
 
-		std::string GetDesciption();
-		bool SetDesciption(std::string sDesciption);
+		GDSObject::FiltreType GetType();
+		bool SetType(GDSObject::FiltreType iType);
+
+		unsigned long GetPrjIdent();
+		bool SetPrjIdent(unsigned long ulPrjIdent);
+
+		unsigned long GetFtrIdent();
+		bool SetFtrIdent(unsigned long ulFtrIdent);
 
 		Poco::Path GetHFolder();
 		bool SetHFolder(Poco::Path ptHFolder);
 
 		Poco::Path GetCppFolder();
 		bool SetCppFolder(Poco::Path ptCppFolder);
-
+		
 		CFiltreListe* GetFiltreListe(bool bInit = true);
+		CRessourceListe* GetRessourceListe(bool bInit = true);
 
 	protected:
 		// Données membres
-		std::string		m_sLibelle;
-		std::string		m_sDescription;
-		Poco::Path		m_ptHFolder;
-		Poco::Path		m_ptCppFolder;
+		std::string			m_sLibelle;
+		FiltreType			m_iType;
+		unsigned long		m_ulPrjIdent;		// Identifiant du projet parent
+		unsigned long		m_ulFtrIdent;		// Identifiant du filtre parent
+		Poco::Path			m_ptHFolder;
+		Poco::Path			m_ptCppFolder;
 		// Pointeurs
-		CFiltreListe*	m_pFiltreListe;		// Liste des diltre directement associés au projet
+		CFiltreListe*		m_pFiltreListe = nullptr;		// Liste des filtres
+		CRessourceListe*	m_pRessourceListe = nullptr;	// Liste des ressouurces
 	};
 
 
 
 	// Classe CDObjTestListe
-	class CProjetListe : public DObject::CDObjListe<CProjet>
+	class CFiltreListe : public DObject::CDObjListe<CFiltre>
 	{
 	public:
 		//! Constructeur
-		CProjetListe();
+		CFiltreListe();
 		//! Destructeur
-		~CProjetListe(void);
+		~CFiltreListe(void);
 
 		//! Constructeur par copie.
-		CProjetListe(const CProjetListe &source);
+		CFiltreListe(const CFiltreListe &source);
 		//! Opérateur =
-		CProjetListe &operator=(const CProjetListe &source);
+		CFiltreListe &operator=(const CFiltreListe &source);
 		//! Clonage des données utilisée par le constructeur par copie ainsi que l'opérateur =
-		void ClonnerDonnees(const CProjetListe &source);
+		void ClonnerDonnees(const CFiltreListe &source);
 
 	public:
 		//! Initialisation des données membres de la classe
@@ -108,6 +132,26 @@ namespace GDSObject
 		virtual bool Sauver();
 		//! Suppression
 		virtual bool Supprimer();
+
+	public:
+		//
+		bool InitialiserAPartirDePrjIdent(unsigned long ulPrjIdent);
+		//
+		bool InitialiserAPartirDeFtrIdent(unsigned long ulFtrIdent);
+
+
+	public:
+		unsigned long GetPrjIdent();
+		bool SetPrjIdent(unsigned long ulPrjIdent);
+
+		unsigned long GetFtrIdent();
+		bool SetFtrIdent(unsigned long ulFtrIdent);
+
+
+	protected:
+		// Données membres
+		unsigned long	m_ulPrjIdent;		// Identifiant du projet parent
+		unsigned long	m_ulFtrIdent;		// Identifiant du filtre parent
 	};
 
 }

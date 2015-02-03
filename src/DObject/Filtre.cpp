@@ -15,8 +15,9 @@
 
 // Inclusions
 #include "Stdafx.h"
-#include "Filtre.h"
-#include "Ressource.h"
+#include "DObject\Filtre.h"
+#include "DObject\Projet.h"
+#include "DObject\Ressource.h"
 
 // Inclusions
 #include <SQLite/SQLiteSource.h>
@@ -444,6 +445,19 @@ namespace GDSObject
 		// L'objet doit être initialisé
 		if (!Initialiser()) return Poco::Path();
 
+		//
+		if(m_ptHFolder.toString().length()>0)
+			return m_ptHFolder;
+
+		//
+		CFiltre* pFiltreParent = GetParent<CFiltre*>();
+		if(pFiltreParent)	return pFiltreParent->GetHFolder();
+
+		//
+		CProjet* pProjetParent = GetParent<CProjet*>();
+		if(pProjetParent)	return pProjetParent->GetHFolder();
+
+		//
 		return m_ptHFolder;
 	}
 
@@ -471,6 +485,19 @@ namespace GDSObject
 		// L'objet doit être initialisé
 		if (!Initialiser()) return Poco::Path();
 
+		//
+		if(m_ptCppFolder.toString().length()>0)
+			return m_ptCppFolder;
+
+		//
+		CFiltre* pFiltreParent = GetParent<CFiltre*>();
+		if(pFiltreParent)	return pFiltreParent->GetCppFolder();
+
+		//
+		CProjet* pProjetParent = GetParent<CProjet*>();
+		if(pProjetParent)	return pProjetParent->GetHFolder();
+
+		//
 		return m_ptCppFolder;
 	}
 

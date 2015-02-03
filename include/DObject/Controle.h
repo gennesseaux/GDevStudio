@@ -113,6 +113,9 @@ namespace GDSObject
 
 		unsigned long GetResIdent();
 		bool SetResIdent(unsigned long ulResIdent);
+
+		bool GetExclu();
+		bool SetExclu(bool bExclu);
 		
 		ControleType GetControleType();
 
@@ -121,6 +124,8 @@ namespace GDSObject
 		std::string		m_sLibelle;
 		std::string		m_sType;
 		unsigned long	m_ulResdent;				// Identifiant du filtre parent
+
+		bool			m_bExclu;
 
 		ControleType	m_controlType = ControleType::Inconnu;
 	};

@@ -10,6 +10,14 @@
 #include "resource.h"       // main symbols
 
 // Inclusions
+#include "PluginLoader.h"
+
+// Inclusions STL
+#include <string>
+#include <vector>
+
+// Inclusions Poco
+#include <Poco/Foundation.h>
 #include <Poco/Path.h>
 
 
@@ -20,7 +28,13 @@ public:
 
 	// Override from CBCGPWorkspace
 	virtual void PreLoadState ();
-
+	
+	// Liste des générateurs de ressources
+	std::vector<CPluginLoader::PluginDesc>& GetRessourcePlugins();
+	// Liste des générateurs de classe
+	std::vector<CPluginLoader::PluginDesc>& GetClassePlugins();
+	// Plugin en fonction de son uuid
+	CPluginLoader::PluginDesc GetPlugin(Poco::UUID uuid);
 
 // Overrides
 public:
@@ -38,6 +52,11 @@ protected:
 	void OnFileOpen();
 
 	void Test();
+
+protected:
+	CPluginLoader pluginLoader;
+	std::vector<CPluginLoader::PluginDesc> vRessourcePlugins;
+	std::vector<CPluginLoader::PluginDesc> vClassePlugins;
 };
 
 extern CGDevStudioApp theApp;

@@ -43,6 +43,8 @@ BOOL CGDevStudioDoc::OnNewDocument()
  	// Création du projet par défault
  	GDSObject::CProjet projet;
  	projet.SetLibelle("Nouveau projet");
+ 	projet.SetUuidClsGen(theApp.GetClassePlugins().size()>0?theApp.GetClassePlugins()[0]._uuid:Poco::UUID());
+ 	projet.SetUuidResGen(theApp.GetRessourcePlugins().size()>0?theApp.GetRessourcePlugins()[0]._uuid:Poco::UUID());
  
  	GDSObject::CFiltre* pFiltreSql = new GDSObject::CFiltre();
  	pFiltreSql->SetLibelle("SQL");

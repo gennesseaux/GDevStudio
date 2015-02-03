@@ -8,9 +8,12 @@
 
 #include "GDevStudioDoc.h"
 #include "GDevStudioView.h"
+#include "IRessourceGenerateurPlugin.h"
+#include "IClasseGenerateurPlugin.h"
 
 // Inclusions
 #include "SQLite/SQLiteSource.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -223,4 +226,49 @@ void CGDevStudioApp::Test()
 	pProjet->Sauver();
 
 	delete pProjet;
+}
+
+std::vector<CPluginLoader::PluginDesc>& CGDevStudioApp::GetRessourcePlugins()
+{
+	if(vRessourcePlugins.size()>0)
+		return vRessourcePlugins;
+
+	std::vector<CPluginLoader::PluginDesc> vPlugins = pluginLoader.GetPluginsDesc();
+
+	for(auto &plugin : vPlugins)
+	{
+		if(plugin._type == IGenerateurPlugin::Ressource)
+			vRessourcePlugins.emplace_back(plugin);
+	}
+
+	return vRessourcePlugins;
+}
+
+std::vector<CPluginLoader::PluginDesc>& CGDevStudioApp::GetClassePlugins()
+{
+	if(vClassePlugins.size()>0)
+		return vClassePlugins;
+
+	std::vector<CPluginLoader::PluginDesc> vPlugins = pluginLoader.GetPluginsDesc();
+
+	for(auto &plugin : vPlugins)
+	{
+		if(plugin._type == IGenerateurPlugin::Classe)
+			vClassePlugins.emplace_back(plugin);
+	}
+
+	return vClassePlugins;
+}
+
+CPluginLoader::PluginDesc CGDevStudioApp::GetPlugin(Poco::UUID uuid)
+{
+	std::vector<CPluginLoader::PluginDesc> vPlugins = pluginLoader.GetPluginsDesc();
+
+	for(auto &plugin : vPlugins)
+	{
+		if(plugin._uuid == uuid)
+			return plugin;
+	}
+
+	return CPluginLoader::PluginDesc();
 }

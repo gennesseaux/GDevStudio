@@ -174,7 +174,9 @@ void CSQLiteSource::CreateTablePROJET()
 	osTable << "PRJ_LIBELLE			TEXT		NOT NULL	UNIQUE,	";
 	osTable << "PRJ_DESCRIPTION		TEXT		NULL,		";
 	osTable << "PRJ_H_FOLDER		TEXT		NULL,		";
-	osTable << "PRJ_CPP_FOLDER		TEXT		NULL		";
+	osTable << "PRJ_CPP_FOLDER		TEXT		NULL,		";
+	osTable << "PRJ_UUID_RES_GEN	TEXT		NULL,		";
+	osTable << "PRJ_UUID_CLS_GEN	TEXT		NULL		";
 	osTable << ");";
 	m_pDatabase->exec(osTable.str());
 
@@ -240,9 +242,10 @@ void CSQLiteSource::CreateTableCONTROLE()
 	std::ostringstream osTable;
 	osTable << "create table CONTROLE (						";
 	osTable << "CTR_IDENT			INTEGER		NOT NULL	PRIMARY KEY AUTOINCREMENT,	";
+	osTable << "CTR_RES_IDENT		INTEGER		NOT NULL,	";
 	osTable << "CTR_LIBELLE			TEXT		NOT NULL,	";
 	osTable << "CTR_TYPE			TEXT		NOT NULL,	";
-	osTable << "CTR_RES_IDENT		INTEGER		NOT NULL,	";
+	osTable << "CTR_EXCLU			INTEGER		NOT NULL,	";
 	osTable << "CONSTRAINT FK_CONTROLE_RESSOURCE		FOREIGN KEY(CTR_RES_IDENT) REFERENCES RESSOURCE(RES_IDENT)";
 	osTable << ");";
 	m_pDatabase->exec(osTable.str());

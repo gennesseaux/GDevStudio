@@ -27,6 +27,8 @@
 IMPLEMENT_DYNAMIC(CTreeGrille, CBCGPGridCtrl)
 
 BEGIN_MESSAGE_MAP(CTreeGrille, CBCGPGridCtrl)
+	ON_WM_CREATE()
+	ON_WM_DESTROY()
 	ON_WM_CONTEXTMENU()
 
 	// --------------------------------------------------
@@ -50,10 +52,6 @@ END_MESSAGE_MAP()
 // Constructeur
 CTreeGrille::CTreeGrille()
 {
-	// Paramétrage de la grille
-	InitialiserProprites();
-	// Images dans la grille
-	InitialiserImages();
 }
 
 // Destructeur
@@ -82,6 +80,24 @@ BOOL CTreeGrille::Create(CView* pView)
 	SetScrollBarsStyle(CBCGPScrollBar::BCGP_SBSTYLE_VISUAL_MANAGER);
 
 	return TRUE;
+}
+
+int CTreeGrille::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CBCGPGridCtrl::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	// Paramétrage de la grille
+	InitialiserProprites();
+	// Images dans la grille
+	InitialiserImages();
+
+	return 0;
+}
+
+void CTreeGrille::OnDestroy()
+{
+	CBCGPGridCtrl::OnDestroy();
 }
 
 BOOL CTreeGrille::PreTranslateMessage(MSG* pMsg)
@@ -160,14 +176,21 @@ void CTreeGrille::InitialiserProprites()
 {
 	// Propriétés
 	EnableColumnAutoSize(TRUE);
-	SetSingleSel(FALSE);
-	SetReadOnly(TRUE);
-	SetWholeRowSel(TRUE);
 	EnableGroupByBox(FALSE);
 	EnableHeader(FALSE, 0);
 	EnableGridLines(FALSE);
+
+	m_bWholeRowSel = TRUE;
 	SetSelectionBorder(FALSE);
-	//SetRowMarker(TRUE);
+	SetHighlightActiveItem (TRUE);
+	SetEditFirstClick (FALSE);
+
+	// Drag and drop
+ 	EnableDragSelection(TRUE);
+ 	HideDragInsertMarker();
+ 	HideDragFrame();
+	m_pSerializeManager->SetClipboardFormatType (CBCGPGridSerializeManager::CF_Rows);
+
 
 	// Colonne par défaut
 	InsertColumn(0, _T("Tree"), 100);
@@ -231,6 +254,11 @@ CSItemStructure* CTreeGrille::GetSelectedItem()
 	GetSelectedItems(lstSelected);
 	
 	return lstSelected.GetCount() ?  (CSItemStructure*)lstSelected.GetHead()->GetParentRow()->GetData() : nullptr; 
+}
+
+CSItemStructure* CTreeGrille::GetItem(int iRow)
+{
+	return (CSItemStructure*)GetRow(iRow)->GetData();
 }
 
 // Menu
@@ -452,6 +480,9 @@ bool CTreeGrille::OnNouveauFiltre(CSItemFiltre* pSItem)
 	pFiltreListe->RemoveAt(iIndexListe);
 	pFiltreListe->Add(pSItemFiltre);
 
+	//
+	pSItem->Expand(TRUE);
+
 	return true;
 }
 
@@ -493,11 +524,13 @@ bool CTreeGrille::OnNouveauRessource(CSItemFiltre* pSItemFiltre)
 	{
 		CSItemRessource* pSItemRessource = new CSItemRessource(m_pStructureMgr, ressource, pSItemFiltre);
 		pFiltreParent->GetRessourceListe()->Add(pSItemRessource);
+
+		//
+		pSItemFiltre->Expand(TRUE);
 	}
 
 	return bRet ? true : false;
 }
-
 
 void CTreeGrille::OnCouper()
 {
@@ -726,6 +759,49 @@ void CTreeGrille::OnSelChanged(const CBCGPGridRange &range, BOOL bSelect)
 
 	// Mise à jour du propertygrid
 	m_pStructureMgr->UpdatePropertyGrid(pSItem);
+}
+
+BOOL CTreeGrille::StartDragItems(CPoint point)
+{
+	m_pSItemDrag = nullptr;
+	m_pSItemDrop = nullptr;
+
+	return CBCGPGridCtrl::StartDragItems(point);
+}
+
+void CTreeGrille::StopDragItems()
+{
+	m_pSItemDrag = nullptr;
+	m_pSItemDrop = nullptr;
+
+	return CBCGPGridCtrl::StopDragItems();
+}
+
+BOOL CTreeGrille::DoDragOver(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point)
+{
+	// Récupère le CSItemStructure sélectionné
+	if(m_pSItemDrag == nullptr)
+	{
+		CSItemStructure* pSItemDrag = GetItem(m_idDragFrom.m_nRow);
+		if(!pSItemDrag->CanDrag()) return FALSE;
+		m_pSItemDrag = pSItemDrag;
+	}
+	else
+	{
+		CSItemStructure* pSItemDrop = GetItem(m_idDropTo.m_nRow);
+		if(!pSItemDrop->CanDrop(m_pSItemDrag)) return FALSE;
+		m_pSItemDrop = pSItemDrop;
+	}
+
+	//		
+	return CBCGPGridCtrl::DoDragOver(pDataObject, dwKeyState, point);
+}
+
+BOOL CTreeGrille::DoDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point)
+{
+	if(m_pSItemDrag && m_pSItemDrop && m_pSItemDrop->CanDrop(m_pSItemDrag))
+		return CBCGPGridCtrl::DoDrop(pDataObject, dropEffect, point);
+	return FALSE;
 }
 
 
