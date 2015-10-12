@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Outils\MenuFunctions\MenuFunctions.cpp">
+      <Filter>Outils\MenuFunctions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\GDevStudio.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\GDevStudioDialogBase.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\MainFrm.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\SItemControle.cpp">
+      <Filter>Structure\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\SItemFiltre.cpp">
+      <Filter>Structure\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\SItemProjet.cpp">
+      <Filter>Structure\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\SItemRessource.cpp">
+      <Filter>Structure\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\SItemStructure.cpp">
+      <Filter>Structure\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\GDevStudioDoc.cpp">
+      <Filter>Structure\Doc/Vue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\GDevStudioView.cpp">
+      <Filter>Structure\Doc/Vue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\RessourceDlg.cpp">
+      <Filter>Structure\Création/Modification</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\PropertyGridViewBar.cpp">
+      <Filter>Structure\PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\StructureMgr.cpp">
+      <Filter>Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\TreeGrille.cpp">
+      <Filter>Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\TreeIconMgr.cpp">
+      <Filter>Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\ProjetDlg.cpp">
+      <Filter>Structure\Création/Modification</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\TreeRow.cpp">
+      <Filter>Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudio\RessourceChecker.cpp">
+      <Filter>Structure</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h">
+      <Filter>Ressources</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Outils\MenuFunctions\MenuFunctions.h">
+      <Filter>Outils\MenuFunctions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\GDevStudio.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\GDevStudioDialogBase.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\MainFrm.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\SItemControle.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\SItemDef.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\SItemFiltre.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\SItemProjet.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\SItemRessource.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\SItemStructure.h">
+      <Filter>Structure\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\GDevStudioDoc.h">
+      <Filter>Structure\Doc/Vue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\GDevStudioView.h">
+      <Filter>Structure\Doc/Vue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\ProjetDlg.h">
+      <Filter>Structure\Création/Modification</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\RessourceDlg.h">
+      <Filter>Structure\Création/Modification</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\PropertyGridViewBar.h">
+      <Filter>Structure\PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\StructureMgr.h">
+      <Filter>Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\TreeGrille.h">
+      <Filter>Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\TreeIconMgr.h">
+      <Filter>Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\TreeRow.h">
+      <Filter>Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudio\RessourceChecker.h">
+      <Filter>Structure</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Png\projet.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\filtre.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\filtreRessource.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\filtreSQL.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\filtreSQLite.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Toolbar\ToolbarImages.bmp">
+      <Filter>Ressources\Toolbar</Filter>
+    </Image>
+    <Image Include="res\Toolbar\ToolbarImages16.bmp">
+      <Filter>Ressources\Toolbar</Filter>
+    </Image>
+    <Image Include="res\Toolbar\ToolbarImagesD16.bmp">
+      <Filter>Ressources\Toolbar</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\category_large_0.png">
+      <Filter>Ressources\PngRibbon</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\category_main_large.png">
+      <Filter>Ressources\PngRibbon</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\category_main_small.png">
+      <Filter>Ressources\PngRibbon</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\category_small_0.png">
+      <Filter>Ressources\PngRibbon</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\main.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\GDevStudio.ico">
+      <Filter>Ressources\Ico</Filter>
+    </Image>
+    <Image Include="res\GDevStudioDoc.ico">
+      <Filter>Ressources\Ico</Filter>
+    </Image>
+    <Image Include="res\BCGSoft_ribbon\ribbon_bar.png">
+      <Filter>Ressources\PngRibbon</Filter>
+    </Image>
+    <Image Include="res\Png\dialog.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_static_text.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\controleInconnu.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_edit.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_combobox.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_image.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_listbox.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_menu_button.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_progress.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_slider.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_button.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_checkbox.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\res_radio_button.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Png\remove_overlay.png">
+      <Filter>Ressources\Png</Filter>
+    </Image>
+    <Image Include="res\Bmp\logo52.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\GDevStudio.rc2">
+      <Filter>Ressources</Filter>
+    </None>
+    <None Include="res\BCGSoft_ribbon\GDevStudio.ribbon.rc2">
+      <Filter>Ressources</Filter>
+    </None>
+    <None Include="GDevStudio.reg">
+      <Filter>Application</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Ressources">
+      <UniqueIdentifier>{24ad185c-ce62-4488-98a7-def229fc5362}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{abdecf4a-c706-4e0c-abbd-546f78b09b61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ressources\Png">
+      <UniqueIdentifier>{8c2378a0-9204-4b87-9990-631e4e4a9791}</UniqueIdentifier>
+      <Extensions>*.png</Extensions>
+    </Filter>
+    <Filter Include="Structure">
+      <UniqueIdentifier>{a3a264e5-d867-4b23-ab0b-670dce3d32c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Items">
+      <UniqueIdentifier>{b1d38686-2df1-4e2b-9c9a-fafb13103d3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Création/Modification">
+      <UniqueIdentifier>{6df30510-fb3d-4fcb-8bcd-ce2db736ea13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\Doc/Vue">
+      <UniqueIdentifier>{4a1c9b9d-d8b4-471f-81c0-944b9603ee1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Outils">
+      <UniqueIdentifier>{8ae7d02c-e186-4c60-b71f-e77873b71554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Outils\MenuFunctions">
+      <UniqueIdentifier>{c7dd7a78-aa8b-4f1a-89a4-414557b10b1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ressources\Toolbar">
+      <UniqueIdentifier>{bc351fe3-1685-447b-b63f-0060b186cd86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ressources\PngRibbon">
+      <UniqueIdentifier>{6b24423d-a55d-4e74-b819-c8b1f73ee79c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ressources\Ico">
+      <UniqueIdentifier>{93a1f412-0d85-46f4-aa81-1e6f41f3de16}</UniqueIdentifier>
+      <Extensions>*.ico</Extensions>
+    </Filter>
+    <Filter Include="Structure\PropertyGrid">
+      <UniqueIdentifier>{14234678-6786-412f-9bc8-ff4d56d3f622}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GDevStudio.rc">
+      <Filter>Ressources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="res\BCGSoft_ribbon\ribbon.xml">
+      <Filter>Ressources</Filter>
+    </Xml>
+  </ItemGroup>
+</Project>

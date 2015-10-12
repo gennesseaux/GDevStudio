@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\src\GyResGen\RessourceGenerateur.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <Filter>config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GyResGen\GyResGen.cpp">
+      <Filter>config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GyResGen\events\PropertyGridListener.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GyResGen\events\Listener.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GyResGen\DObject\Ressource.cpp">
+      <Filter>DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GyResGen\DObject\Controle.cpp">
+      <Filter>DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GyResGen\DObject\SQLiteHelper.cpp">
+      <Filter>DObject\SQLite</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\GyResGen\RessourceGenerateur.h" />
+    <ClInclude Include="stdafx.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GyResGen\events\PropertyGridListener.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GyResGen\TypeDocuments.h" />
+    <ClInclude Include="..\include\GyResGen\events\Listener.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GyResGen\DObject\SQLiteHelper.h">
+      <Filter>DObject\SQLite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GyResGen\DObject\Controle.h">
+      <Filter>DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GyResGen\DObject\Ressource.h">
+      <Filter>DObject</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="config">
+      <UniqueIdentifier>{1eb66b64-a68e-49fe-8705-3ba832978ed6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{1730f065-4193-4863-bf32-51d1bd1ca0fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DObject">
+      <UniqueIdentifier>{a1fa0ce1-a5d2-4d74-9d71-184c559c8a56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DObject\SQLite">
+      <UniqueIdentifier>{63bcc240-0d4b-441c-958b-5d123ec5725c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

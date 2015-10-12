@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A20E9808-C9F7-4810-B318-6126BAFB33B3}</ProjectGuid>
+    <ProjectGuid>{461C0337-6306-4CD1-B72D-AB8DF8DCF2C2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GyResGen</RootNamespace>
+    <RootNamespace>GDevStudio_test</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -21,7 +21,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -29,7 +29,7 @@
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -43,27 +43,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\bin\$(Configuration)\modules\</OutDir>
-    <IntDir>..\..\obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\bin\$(Configuration)\modules\</OutDir>
-    <IntDir>..\..\obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_WINDOWS;_USRDLL;GYRESGEN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\..\GDevStudioApi\include;..\..\GDevStudioModulesManager\include;..\..\..\Commun\DObject\include;..\..\..\Commun\Outils\include;..\..\..\Commun\SQLite\include;..\..\..\Poco\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;..\GDevStudioApi\include;..\..\Commun\DObject\include;..\..\Commun\Outils\include;..\..\Commun\RcReader\include;..\..\Commun\SQLite\include;..\..\Poco\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\Poco\lib;..\..\..\Commun\lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;..\..\Commun\bin\$(Configuration)\;..\..\Poco\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -73,47 +69,32 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_WINDOWS;_USRDLL;GYRESGEN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\..\GDevStudioApi\include;..\..\GDevStudioModulesManager\include;..\..\..\Commun\DObject\include;..\..\..\Commun\Outils\include;..\..\..\Commun\SQLite\include;..\..\..\Poco\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;..\GDevStudioApi\include;..\..\Commun\DObject\include;..\..\Commun\Outils\include;..\..\Commun\RcReader\include;..\..\Commun\SQLite\include;..\..\Poco\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\..\Poco\lib;..\..\..\Commun\lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;..\..\Commun\bin\$(Configuration)\;..\..\Poco\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\GyResGen\DObject\Controle.cpp" />
-    <ClCompile Include="..\src\GyResGen\DObject\Ressource.cpp" />
-    <ClCompile Include="..\src\GyResGen\DObject\SQLiteHelper.cpp" />
-    <ClCompile Include="..\src\GyResGen\events\Listener.cpp" />
-    <ClCompile Include="..\src\GyResGen\events\PropertyGridListener.cpp" />
-    <ClCompile Include="..\src\GyResGen\GyResGen.cpp" />
-    <ClCompile Include="..\src\GyResGen\RessourceGenerateur.cpp" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GDevStudioApiTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\GyResGen\DObject\Controle.h" />
-    <ClInclude Include="..\include\GyResGen\DObject\Ressource.h" />
-    <ClInclude Include="..\include\GyResGen\DObject\SQLiteHelper.h" />
-    <ClInclude Include="..\include\GyResGen\events\Listener.h" />
-    <ClInclude Include="..\include\GyResGen\events\PropertyGridListener.h" />
-    <ClInclude Include="..\include\GyResGen\RessourceGenerateur.h" />
-    <ClInclude Include="..\include\GyResGen\TypeDocuments.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\GDevStudioApi\prj\GDevStudioApi.vcxproj">
+    <ProjectReference Include="..\GDevStudioApi\prj\GDevStudioApi.vcxproj">
       <Project>{d979b86d-adef-4379-9328-e3fdc7366f24}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GDevStudioModulesManager\prj\GDevStudioModulesManager.vcxproj">
-      <Project>{3b9e00b6-a86e-4203-87ba-ae23fa4c68b0}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

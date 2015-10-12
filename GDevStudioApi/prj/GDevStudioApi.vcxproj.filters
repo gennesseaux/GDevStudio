@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\include\GDevStudioApi\Controle.h" />
+    <ClInclude Include="..\include\GDevStudioApi\Filtre.h" />
+    <ClInclude Include="..\include\GDevStudioApi\Projet.h" />
+    <ClInclude Include="..\include\GDevStudioApi\Ressource.h" />
+    <ClInclude Include="..\include\GDevStudioApi\Config.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GDevStudioApi\SQLiteSource.h">
+      <Filter>SQLite</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="SQLite">
+      <UniqueIdentifier>{1471a696-c6b1-43e4-a98f-0c5b7bd6efb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{9f34f4fb-4cb5-4de9-8a03-7a7c0be0ee1b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\GDevStudioApi\Controle.cpp" />
+    <ClCompile Include="..\src\GDevStudioApi\Filtre.cpp" />
+    <ClCompile Include="..\src\GDevStudioApi\Projet.cpp" />
+    <ClCompile Include="..\src\GDevStudioApi\Ressource.cpp" />
+    <ClCompile Include="..\src\GDevStudioApi\GDevStudioApi.cpp">
+      <Filter>Config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GDevStudioApi\SQLiteSource.cpp">
+      <Filter>SQLite</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
